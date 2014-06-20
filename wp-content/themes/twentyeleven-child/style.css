@@ -1,0 +1,11 @@
+/*
+Theme Name:     Twenty Twelve Child
+Theme URI:      http://wp.tutsplus.com/
+Description:    Child theme for Twenty Twelve
+Author:         Japh
+Author URI:     http://wp.tutsplus.com/author/japh
+Template:       twentytwelve
+Version:        1.0.0
+*/
+ 
+@import url('../twentytwelve/style.css');
