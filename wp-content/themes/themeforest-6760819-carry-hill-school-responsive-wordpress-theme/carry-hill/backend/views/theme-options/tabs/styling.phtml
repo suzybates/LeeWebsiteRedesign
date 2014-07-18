@@ -1,0 +1,285 @@
+<?php
+$cssdbvalue = get_option(CHT_APP_PREFIX . 'css');
+$css        = !empty($cssdbvalue) ? $cssdbvalue : 'default';
+?>
+
+<?php
+/*
+ * COLORS
+ */
+?>
+<h4 class="option_heading"><?php echo $this->translate('Colors'); ?></h4>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php echo $this->translate('Select Color Scheme'); ?></h5>
+        <div id="current_color_scheme"><?php echo $this->translate('Current color scheme'); ?>: <b><?php echo $css; ?></b></div>
+    </div>
+    <div class="option_description">
+        <?php _e('Choose one color scheme preset below. You are free to alter the preset to your liking. Whenever you wish to return to original preset colors just click on one of the preset icons again. Beware that all colors will be reset to preset colors selected.', CHT_APP_TEXT_DOMAIN); ?>
+    </div>
+</div> 
+<div class="color_scheme ui-helper-clearfix">
+
+    <?php
+    foreach ($this->colorSchemes as $colorScheme) {
+        echo '<div id="' . $colorScheme['name'] . '">';
+        echo '<img class="image"  alt="' . $colorScheme['name'] . '" src="' . $colorScheme['imgSrc'] . '" data-toggle="tooltip">';
+        echo '</div>';
+    }
+    ?>   
+</div>
+<div class="element ui-helper-clearfix"></div>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php _e('Color Presets', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->hidden('user_color_preset_values'); ?>
+
+        <input type="text" id="color-presets-color-picker">
+        <br />
+        <div id="user-color-presets"></div>
+    </div>
+    <div class="option_description">
+        <?php echo $this->translate('This color picker allows you to predifine colors which will be displayed in all other color pickers as presets.'); ?>      
+    </div>
+    <input id="css_hidden" type="hidden" name="<?php echo CHT_APP_PREFIX; ?>css" value="<?php echo $css; ?>" />
+</div>
+
+<?php
+/*
+ * HEADER MENU
+ */
+?>
+<h4 class="option_heading"><?php _e('Header Menu', CHT_APP_TEXT_DOMAIN); ?></h4>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php _e('Text Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('header_menu_text_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Active Background Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('header_menu_active_bg_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Active Text Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('header_menu_active_text_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Hover Background Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('header_menu_hover_bg_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Hover Text Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('header_menu_hover_text_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Shadow Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('header_menu_shadow_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="option_description">
+        <?php echo $this->translate('Some of the color settings for the main manu will also be applied to other elements e.g. widget hover colors...'); ?>
+    </div>
+</div>
+<div class="element ui-helper-clearfix">
+    <h5><?php _e('Header Menu Font Size', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('header_menu_font_size'); ?>
+</div>
+<?php
+/*
+ * HEADINGS FONT SETTINGS
+ */
+?>
+<h4 class="option_heading"><?php _e('Headings Font settings', CHT_APP_TEXT_DOMAIN); ?></h4>
+<div class="element ui-helper-clearfix">
+    <h5><?php _e('H1 Font Size', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('headings_font_size_h1'); ?>
+    <h5><?php _e('H2 Font Size', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('headings_font_size_h2'); ?>
+    <h5><?php _e('H3 Font Size', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('headings_font_size_h3'); ?>
+    <h5><?php _e('H4 Font Size', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('headings_font_size_h4'); ?>
+    <h5><?php _e('H5 Font Size', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('headings_font_size_h5'); ?>
+    <h5><?php _e('H6 Font Size', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('headings_font_size_h6'); ?>
+    <h5><?php _e('Headings Text Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('headings_text_color', 'admin-color-picker'); ?>
+    <h5><?php _e('Headings Hover Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('headings_hover_color', 'admin-color-picker'); ?>
+    <h5><?php _e('Headings Font Family', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->select('headings_font_family', $this->webFonts); ?>
+    <h5><?php _e('Subtitle Text Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('subtitle_text_color', 'admin-color-picker'); ?>
+    <h5><?php _e('Subtitle Font Family', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->select('subtitle_font_family', $this->webFonts); ?>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $('#<?php echo CHT_APP_PREFIX; ?>headings_font_family').GWF();
+            $('#<?php echo CHT_APP_PREFIX; ?>subtitle_font_family').GWF();
+        });
+    </script>
+</div>
+<?php
+/*
+ * Slider Text Styling
+ */
+?>
+<h4 class="option_heading"><?php _e('Slider Title Settings', CHT_APP_TEXT_DOMAIN); ?></h4>
+<div class="element ui-helper-clearfix">
+    <hr />
+    <p><?php _e('CSS Class: ch-slider-title-big', CHT_APP_TEXT_DOMAIN); ?></p>
+    <hr />
+    <h5><?php _e('Font Size', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('slider_title_big_font_size'); ?>
+    <h5><?php _e('Text Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('slider_title_big_text_color', 'admin-color-picker'); ?>
+    <h5><?php _e('Text Shadow', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('slider_title_big_text_shadow', 'admin-color-picker'); ?>
+    <br />
+    <br />
+    <hr />
+    <p><?php _e('CSS Class: ch-slider-title, ch-slider-title-italic', CHT_APP_TEXT_DOMAIN); ?></p>
+    <hr />
+    <h5><?php _e('Text Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('slider_title_italic_text_color', 'admin-color-picker'); ?>
+    <h5><?php _e('Text Shadow', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('slider_title_italic_text_shadow', 'admin-color-picker'); ?>
+    <br />
+    <br />
+    <hr />
+    <p><?php _e('CSS Class: ch-slider-border-title', CHT_APP_TEXT_DOMAIN); ?></p>
+    <hr />
+    <h5><?php _e('Text Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('slider_border_title_text_color', 'admin-color-picker'); ?>
+    <h5><?php _e('Text Shadow', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('slider_border_title_text_shadow', 'admin-color-picker'); ?>
+    <div class="option_description">
+        <?php echo $this->translate('Please use this classes when setting layer attributes for text layer on a Layer Slider slide.'); ?>      
+    </div>
+</div>
+<?php
+/*
+ * BODY FONT SETTINGS
+ */
+?>
+<h4 class="option_heading"><?php _e('Body Font settings', CHT_APP_TEXT_DOMAIN); ?></h4>
+<div class="element ui-helper-clearfix">
+    <h5><?php _e('Body Font Family', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->select('body_font_family', $this->webFonts); ?>
+    <h5><?php _e('Body Font Size', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('body_font_size'); ?>
+    <h5><?php _e('Body Background Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('body_bg_color', 'admin-color-picker'); ?>
+    <h5><?php _e('Body Text Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+    <?php echo $this->formElement->textField('body_text_color', 'admin-color-picker'); ?>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $('#<?php echo CHT_APP_PREFIX; ?>body_font_family').GWF();
+        });
+    </script>
+</div>
+<?php
+/*
+ * Feature Box 
+ */
+?>
+<h4 class="option_heading"><?php _e('Feature Box settings', CHT_APP_TEXT_DOMAIN); ?></h4>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php _e('Icon Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('feature_box_icon_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Icon Hover Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('feature_box_icon_hover_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Circle Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('feature_box_circle_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Circle Hover Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('feature_box_circle_hover_color', 'admin-color-picker'); ?>
+    </div>
+</div>
+<?php
+/*
+ * LINK COLOR
+ */
+?>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php _e('Link Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('link_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Link Hover Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('link_hover_color', 'admin-color-picker'); ?>
+    </div>
+</div>
+<?php
+/*
+ * BUTTONS
+ */
+?>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php _e('Button Font Size', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('button_font_size'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Button Background Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('button_bg_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Button Background Hover Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('button_bg_hover_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Button Text Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('button_text_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Button Text Hover Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('button_text_hover_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Button Text Shadow Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('button_text_shadow_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Button Text Shadow Hover Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('button_text_shadow_hover_color', 'admin-color-picker'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php _e('Button Border Shadow Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('button_border_shadow_color', 'admin-color-picker'); ?>
+    </div>
+</div>
+<?php
+/*
+ * FOOTER
+ */
+?>
+<h4 class="option_heading"><?php _e('Footer', CHT_APP_TEXT_DOMAIN); ?></h4>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php _e('Text Color', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textField('footer_text_color', 'admin-color-picker'); ?>
+    </div>
+</div>
+<?php
+/*
+ * CUSTOM CSS
+ */
+?>
+<h4 class="option_heading"><?php _e('Custom CSS', CHT_APP_TEXT_DOMAIN); ?></h4>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php _e('Custom CSS', CHT_APP_TEXT_DOMAIN); ?></h5>
+        <?php echo $this->formElement->textarea('custom_css'); ?>
+    </div>
+    <div class="option_description">
+        <?php echo $this->translate('Enter custom CSS code.'); ?>     
+    </div>
+</div>

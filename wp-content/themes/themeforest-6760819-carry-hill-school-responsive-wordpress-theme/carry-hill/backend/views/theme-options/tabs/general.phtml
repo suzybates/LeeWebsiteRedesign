@@ -1,0 +1,59 @@
+<em style="font-size: 11px;">
+    <?php echo $this->translate('If any of the fields is left blank, any visual or textual content corresponding to that field will not be displayed.'); ?>
+</em>
+<h4 class="option_heading"><?php echo $this->translate('Favicon'); ?></h4>
+<div class="element ui-helper-clearfix">
+    <div class="option_description">
+        <?php echo $this->translate('Upload favicon. (<em>16px x 16px ico format</em>)'); ?>
+    </div>
+    <?php echo $this->formElement->upload('favicon'); ?>
+</div>
+<h4 class="option_heading"><?php echo $this->translate('Logo'); ?></h4>    
+<div class="element ui-helper-clearfix">
+    <div class="option_description">
+        <?php echo $this->translate('Upload logo.'); ?>
+    </div>
+    <?php echo $this->formElement->upload('logo'); ?>
+</div>
+
+<h4 class="option_heading"><?php echo $this->translate('Header'); ?></h4>
+
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php echo $this->translate('Enable Sticky Header Menu'); ?></h5>
+        <?php echo $this->translate('yes'); ?>:
+        <?php echo $this->formElement->radioButton('header_menu_sticky_use', 'true'); ?>
+        <?php echo $this->translate('no'); ?>:
+        <?php echo $this->formElement->radioButton('header_menu_sticky_use', 'false'); ?>
+    </div>
+</div>
+<h4 class="option_heading"><?php echo $this->translate('Inner Page Title'); ?></h4>    
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php echo $this->translate('Use Icon'); ?></h5>
+        <?php echo $this->translate('yes'); ?>:
+        <?php echo $this->formElement->radioButton('page_title_use_icon', 'true'); ?>
+        <?php echo $this->translate('no'); ?>:
+        <?php echo $this->formElement->radioButton('page_title_use_icon', 'false'); ?>
+    </div>
+</div>
+<h4 class="option_heading"><?php echo $this->translate('Footer Text'); ?></h4>    
+<div class="element ui-helper-clearfix">
+    <div class="option_description">
+        <?php echo $this->translate('Footer Text on the right.'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php echo $this->formElement->label('Footer Text', 'footer_text'); ?></h5>
+        <?php echo $this->formElement->textarea('footer_text'); ?>
+    </div>
+</div>
+<h4 class="option_heading"><?php echo $this->translate('Google Analytics'); ?></h4>    
+<div class="element ui-helper-clearfix">
+    <div class="option_description">
+        <?php echo $this->translate('Paste your google analytics code here.'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php echo $this->formElement->label('Google Analytics Code', 'google_analytics_code'); ?></h5>
+        <?php echo $this->formElement->textarea('google_analytics_code'); ?>
+    </div>
+</div>

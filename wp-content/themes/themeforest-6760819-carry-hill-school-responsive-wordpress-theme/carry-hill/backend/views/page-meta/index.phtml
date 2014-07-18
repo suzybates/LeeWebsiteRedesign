@@ -1,0 +1,3 @@
+<?php $iconName = ChtUtils::getMeta($this->post->ID, 'page_icon'); ?>
+<label for="<?php echo CHT_APP_PREFIX . 'page_icon'; ?>" name="<?php echo CHT_APP_PREFIX . 'page_icon'; ?>"><?php echo ChtUtils::translate('Font Awesome Icon'); ?>:</label>
+<input type="text" id="<?php echo CHT_APP_PREFIX . 'page_icon'; ?>" name="<?php echo CHT_APP_PREFIX . 'page_icon'; ?>" value="<?php echo $iconName; ?>"/>

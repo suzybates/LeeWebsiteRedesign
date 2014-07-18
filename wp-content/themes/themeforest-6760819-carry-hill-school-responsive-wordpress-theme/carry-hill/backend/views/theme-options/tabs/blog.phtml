@@ -1,0 +1,25 @@
+<h4 class="option_heading"><?php echo $this->translate('Blog Settings'); ?></h4>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php echo $this->translate('Use Layouts With Posts'); ?></h5>
+        <?php echo $this->formElement->checkbox('single_post_use_content_builder'); ?>
+    </div>
+    <div class="option_description">
+        <?php echo $this->translate('If this is checked a layout can be assigned to single post.'); ?>
+    </div>
+</div>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php echo $this->translate('Single Post Layout'); ?></h5>
+        <?php $layouts  = get_posts(array('post_type' => 'layouts')); ?>
+        <?php $lyts = array(); ?>
+        <?php foreach ($layouts as $layout): ?>
+            <?php $lyts[$layout->ID] = $layout->post_title; ?>
+        <?php endforeach; ?>
+        <?php echo $this->formElement->select('single_post_layout', $lyts, true); ?>
+    </div>
+    <div class="option_description">
+        <?php echo $this->translate('Select a layout for single blog.'); ?>
+    </div>
+</div>
+    
