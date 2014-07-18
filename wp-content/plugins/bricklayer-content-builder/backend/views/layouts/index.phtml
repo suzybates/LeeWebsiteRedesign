@@ -1,0 +1,190 @@
+<!--This view is generated from CbpBootstrap as meta box view-->
+<!--There is no controller "Layouts"-->
+<?php global $post; ?>
+<?php CbpContentBuilder::render('layout_builder'); ?>
+<br>
+<?php if (CbpUtils::getOption('use_layout_global_settings_override')): ?> 
+<hr>
+    <h2>
+        <?php echo $this->translate('Global Override Settings'); ?>
+    </h2>
+    <hr>
+    <table class="form-table">
+        <tbody>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Override Global Settings for Theme Header and Footer:'); ?></th>
+                <td>
+                    <?php $layoutOverrideGlobalThemeOverride    = CbpUtils::getMeta($post->ID, 'layout_override_global_theme_override'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_override_global_theme_override'; ?>" type="checkbox" <?php echo $layoutOverrideGlobalThemeOverride ? 'checked="checked"' : ''; ?>/>
+                </td>
+            </tr>                
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Override theme header and footer:'); ?></th>
+                <td>
+                    <?php $layoutThemeOverride                  = CbpUtils::getMeta($post->ID, 'layout_theme_override'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_theme_override'; ?>" type="checkbox" <?php echo $layoutThemeOverride ? 'checked="checked"' : ''; ?>/>
+                    <p class="description"><?php echo $this->translate('This will exclude theme header and footer html (only if global override is checked).'); ?></p>
+                    <hr>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Override Global Settings for Container width:'); ?></th>
+                <td>
+                    <?php $layoutOverrideGlobalContainerWidth   = CbpUtils::getMeta($post->ID, 'layout_override_global_container_width'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_override_global_container_width'; ?>" type="checkbox" <?php echo $layoutOverrideGlobalContainerWidth ? 'checked="checked"' : ''; ?>/>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Container Width:'); ?></th>
+                <td>
+                    <?php $layoutContainerWidth                 = CbpUtils::getMeta($post->ID, 'layout_container_width'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_container_width'; ?>" type="text" value="<?php echo $layoutContainerWidth; ?>"/>
+                    <p class="description"><?php echo $this->translate('Set the container width in pixels. Please enter number only (only if global override is checked).'); ?></p>
+                    <hr>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Override Global Settings for Container Padding:'); ?></th>
+                <td>
+                    <?php $layoutOverrideGlobalContainerPadding = CbpUtils::getMeta($post->ID, 'layout_override_global_container_padding'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_override_global_container_padding'; ?>" type="checkbox" <?php echo $layoutOverrideGlobalContainerPadding ? 'checked="checked"' : ''; ?>/>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Container Padding Top:'); ?></th>
+                <td>
+                    <?php $layoutContainerPaddingTop            = CbpUtils::getMeta($post->ID, 'layout_container_padding_top'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_container_padding_top'; ?>" type="text" value="<?php echo $layoutContainerPaddingTop; ?>"/>
+                    <p class="description"><?php echo $this->translate('Set the container top padding in pixels. Please enter number only (only if global override is checked).'); ?></p>
+                    <hr>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Container Padding Right:'); ?></th>
+                <td>
+                    <?php $layoutContainerPaddingRight          = CbpUtils::getMeta($post->ID, 'layout_container_padding_right'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_container_padding_right'; ?>" type="text" value="<?php echo $layoutContainerPaddingRight; ?>"/>
+                    <p class="description"><?php echo $this->translate('Set the container right padding in pixels. Please enter number only (only if global override is checked).'); ?></p>
+                    <hr>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Container Padding Bottom:'); ?></th>
+                <td>
+                    <?php $layoutContainerPaddingBottom         = CbpUtils::getMeta($post->ID, 'layout_container_padding_bottom'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_container_padding_bottom'; ?>" type="text" value="<?php echo $layoutContainerPaddingBottom; ?>"/>
+                    <p class="description"><?php echo $this->translate('Set the container bottom padding in pixels. Please enter number only (only if global override is checked).'); ?></p>
+                    <hr>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Container Padding Left:'); ?></th>
+                <td>
+                    <?php $layoutContainerPaddingLeft           = CbpUtils::getMeta($post->ID, 'layout_container_padding_left'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_container_padding_left'; ?>" type="text" value="<?php echo $layoutContainerPaddingLeft; ?>"/>
+                    <p class="description"><?php echo $this->translate('Set the container left padding in pixels. Please enter number only (only if global override is checked).'); ?></p>
+                    <hr>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Override Global Body Background Color:'); ?></th>
+                <td>
+                    <?php $layoutOverrideGlobalBodyBgColor      = CbpUtils::getMeta($post->ID, 'layout_override_global_body_background_color'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_override_global_body_background_color'; ?>" type="checkbox" <?php echo $layoutOverrideGlobalBodyBgColor ? 'checked="checked"' : ''; ?>/>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Override Global Use Body Background Color:'); ?></th>
+                <td>
+                    <?php $layoutOverrideGlobalUseBodyBgColor   = CbpUtils::getMeta($post->ID, 'layout_override_global_use_body_background_color'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_override_global_use_body_background_color'; ?>" type="checkbox" <?php echo $layoutOverrideGlobalUseBodyBgColor ? 'checked="checked"' : ''; ?>/>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Set Body Background Color:'); ?></th>
+                <td>
+                    <?php $layoutBgColor                        = CbpUtils::getMeta($post->ID, 'layout_body_background_color'); ?>
+                    <input id="<?php echo CBP_APP_PREFIX . 'layout_body_background_color'; ?>" name="<?php echo CBP_APP_PREFIX . 'layout_body_background_color'; ?>" type="text" value="<?php echo $layoutBgColor; ?>"/>
+                    <p class="description"><?php echo $this->translate('(only if global override is checked).'); ?></p>
+                    <hr>
+                    <script type="text/javascript">
+                        //<![CDATA[
+                        jQuery(document).ready(function($)
+                        {     
+                            $('#<?php echo CBP_APP_PREFIX . 'layout_body_background_color'; ?>').spectrum('destroy').spectrum({
+                                preferredFormat: 'hex',
+                                color: "<?php echo $layoutBgColor; ?>",    
+                                showPalette: true,
+                                showInput: true,
+                                showAlpha: 'false',
+                                showInitial: true
+                            });
+
+                            $("#<?php echo CBP_APP_PREFIX . 'layout_body_background_color'; ?>").spectrum("set", "<?php echo $layoutBgColor; ?>");
+                        });
+                        //]]>   
+                    </script>
+                </td>
+            </tr>                
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Override Global Body Background Image:'); ?></th>
+                <td>
+                    <?php $layoutOverrideGlobalBodyBgImg        = CbpUtils::getMeta($post->ID, 'layout_override_global_body_background_image'); ?>
+                    <input name="<?php echo CBP_APP_PREFIX . 'layout_override_global_body_background_image'; ?>" type="checkbox" <?php echo $layoutOverrideGlobalBodyBgImg ? 'checked="checked"' : ''; ?>/>
+                </td>
+            </tr>                
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Set Body Background Image:'); ?></th>
+                <td>
+                    <?php $layoutBodyBgImg                      = CbpUtils::getMeta($post->ID, 'layout_body_background_image'); ?>
+                    <input id="<?php echo CBP_APP_PREFIX . 'layout_body_background_image'; ?>" name="<?php echo CBP_APP_PREFIX . 'layout_body_background_image'; ?>" type="text" value="<?php echo $layoutBodyBgImg; ?>"/>
+                    <button class="button upload-button"><?php echo CbpTranslate::translateString('Browse'); ?></button>
+                    <br>
+                    <br>
+                    <div id="<?php echo CBP_APP_PREFIX . 'img-container'; ?>" class="image-container"><?php if ($layoutBodyBgImg): ?><img src="<?php echo $layoutBodyBgImg; ?>" alt="cbp-bg-image" /><?php endif; ?></div>
+                    <p class="description"><?php echo $this->translate('(only if global override is checked).'); ?></p>
+
+                    <hr>
+                    <script type="text/javascript">
+                        (function($){
+                            cbp_content_builder.data.execScript = function () {
+
+                                var $formfield = null;
+                                var $imgContainer;
+
+                                $('.upload-button').on('click', function(e) {
+                                    e.preventDefault();
+                                        
+                                    var $parent = $(this).parent();
+
+                                    $formfield    = $('#<?php echo CBP_APP_PREFIX . 'layout_body_background_image'; ?>');
+                                    $imgContainer = $('#<?php echo CBP_APP_PREFIX . 'img-container'; ?>');
+
+                                    tb_show('', 'media-upload.php?type=image&TB_iframe=true');
+                                });
+
+
+                                window.original_send_to_editor = window.send_to_editor;
+                                window.send_to_editor = function(html) {
+                                    var imgurl;
+
+                                    if ($formfield) {
+                                        imgurl = $('img',html).attr('src');
+                                        $formfield.val(imgurl);
+                                        $imgContainer.html(html);
+                                        tb_remove();
+                                    }
+                                    else {
+                                        window.original_send_to_editor(html);
+                                    }
+                                    $formfield = null;
+                                }
+                            };
+                            cbp_content_builder.data.execScript();
+                        })(jQuery);
+                    </script>
+                </td>
+            </tr>                
+        </tbody>
+    </table>
+<?php endif; ?>

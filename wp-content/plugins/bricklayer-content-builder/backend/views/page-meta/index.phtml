@@ -1,0 +1,25 @@
+<?php if (CbpUtils::getOption('use_content_builder_layouts_and_templates')): ?>
+    <p>
+        <label for="use-layout"><?php echo $this->translate('Use Layout'); ?></label>
+        <?php $useLayout = CbpUtils::getMeta($this->post->ID, 'use_layout'); ?>
+        <?php $checked   = $useLayout ? 'checked="checked"' : ''; ?>
+        <input name="cbp_use_layout" id="use-layout" type="checkbox" <?php echo $checked; ?>/>
+    </p>
+
+    <p>
+        <?php $layouts   = get_posts(array('post_type' => 'layouts', 'posts_per_page' => -1)); ?>
+        <?php $dbLayout   = CbpUtils::getMeta($this->post->ID, 'layout'); ?>
+        <label for="cbp-layout-select"><?php echo $this->translate('Select Layout'); ?></label>
+    <div id="cbp-layout-select">
+        <select name="cbp_layout">
+            <option value=""><?php echo $this->translate('No Layout'); ?></option>
+            <?php foreach ($layouts as $layout): ?>
+                <?php $selected = $layout->ID == $dbLayout ? 'selected="selected"' : ''; ?>
+                <option <?php echo $selected; ?> value="<?php echo $layout->ID; ?>"><?php echo $layout->post_title; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    </p>
+<?php endif; ?>
+
+<?php CbpContentBuilder::render(); ?>

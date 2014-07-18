@@ -1,0 +1,115 @@
+<?php if ($this->templateLinks): ?>
+
+    <?php foreach ($this->templateLinks as $templateLink): ?>
+
+        <?php $linkTitle           = isset($templateLink['title']) ? $templateLink['title'] : ''; ?>
+        <?php $linkContentTemplate = isset($templateLink['content_template']) ? $templateLink['content_template'] : ''; ?>
+        <?php $linkPostType        = isset($templateLink['post_type']) ? $templateLink['post_type'] : ''; ?>
+        <?php $linkTerm            = isset($templateLink['term']) ? $templateLink['term'] : ''; ?>
+        <?php $linkLayout          = isset($templateLink['layout']) ? $templateLink['layout'] : ''; ?>
+
+        <div class="widget ui-draggable widget-in-question">
+            <div class="widget-top">
+                <div class="widget-title-action">
+                    <a class="widget-action hide-if-no-js" href="#available-widgets"></a>
+                    <a class="widget-control-edit hide-if-js" href="/wp-plg-content-builder/wp-admin/widgets.php?editwidget=archives-3&amp;addnew=1&amp;num=4&amp;base=archives">
+                        <span class="edit">Edit</span>
+                        <span class="add">Add</span>
+                        <span class="screen-reader-text"><?php echo $linkTitle; ?></span>
+                    </a>
+                </div>
+                <div class="widget-title">
+                    <h4><?php echo $linkTitle; ?>
+                        <?php if (!empty($linkTerm)): ?>
+                            <i class="fa fa-flag-checkered pull-right"></i>
+                        <?php endif; ?>
+                    </h4>
+                </div>
+            </div>
+
+            <div class="widget-inside">
+                <form action="" method="post">
+                    <div class="widget-content">
+                        <p>
+                            <label for="cbp-link-title"><?php echo $this->translate('Title'); ?>:</label>
+                            <input class="widefat cbp-link-title" name="cbp-link-title" type="text" value="<?php echo $templateLink['title']; ?>">
+                        </p>
+                        <p>
+                            <label for="cbp-template-select"><?php echo $this->translate('Content Template'); ?>:</label>
+                            <br />
+                            <select class="cbp-template-select" name="cbp-template-select" class="cbp-template-select">
+                                <?php foreach ($this->contentTemplates as $key => $contentTemplate): ?>
+                                    <option value="<?php echo $key; ?>" <?php echo $key == $linkContentTemplate ? 'selected="selected"' : ''; ?>><?php echo $contentTemplate; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </p>
+                        <p>
+                            <label for="cbp-post-type-select"><?php echo $this->translate('Post Type'); ?>:</label>
+                            <br />
+                            <select class="cbp-post-type-select" name="cbp-post-type-select" class="cbp-template-select">
+                                <?php
+                                $post_types = get_post_types(array(
+                                    'public' => true,
+                                        ), 'names');
+                                ?>
+                                <?php unset($post_types['page']); ?>
+                                <?php foreach ($post_types as $post_type): ?>
+                                    <option value="<?php echo $post_type; ?>" <?php echo $post_type == $linkPostType ? 'selected="selected"' : ''; ?>><?php echo $post_type; ?></option>
+                                <?php endforeach; ?>
+
+                            </select>
+                        </p>
+
+                        <p>
+                            <label for="cbp-term-select"><?php echo $this->translate('Filter by Term'); ?>:</label>
+                            <br />
+                            <?php
+                            $terms = array();
+                            foreach (get_taxonomies() as $taxonomy) {
+                                $terms = array_merge($terms, get_categories(array('taxonomy' => $taxonomy)));
+                            }
+                            ?>
+                            <select class="cbp-term-select" name="cbp-term-select" class="cbp-term-select">
+                                <option value=""><?php echo $this->translate('No Filter'); ?></option>
+                                <?php foreach ($terms as $term): ?>
+                                    <option value="<?php echo $term->term_id; ?>" <?php echo $term->term_id == $linkTerm ? 'selected="selected"' : ''; ?>><?php echo $term->name; ?></option>
+                                <?php endforeach; ?>
+
+                            </select>
+                        </p>
+                        <p>
+                            <label for="cbp-layout-select"><?php echo $this->translate('Layout'); ?>:</label>
+                            <br />
+                            <?php $layouts = get_posts(array('post_type' => 'layouts', 'posts_per_page' => -1)); ?>
+                            <select class="cbp-layout-select" name="cbp-layout-select">
+                                <option value=""><?php echo $this->translate('No Layout'); ?></option>
+                                <?php foreach ($layouts as $layout): ?>
+                                    <option value="<?php echo $layout->ID; ?>" <?php echo $layout->ID == $linkLayout ? 'selected="selected"' : ''; ?>><?php echo $layout->post_title; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </p>
+
+                    </div>
+
+
+                    <div class="widget-control-actions">
+                        <div class="alignleft">
+                            <a class="widget-control-remove" href="#remove">Delete</a> |
+                            <a class="widget-control-close" href="#close">Close</a>
+                        </div>
+                        <div class="alignright">
+                            <input type="submit" name="savewidget" class="button button-primary widget-control-save right" value="Save">
+                            <span class="spinner"></span>
+                        </div>
+                        <br class="clear">
+                    </div>
+                </form>
+            </div>
+
+            <div class="widget-description">
+                A monthly archive of your site’s Posts.
+            </div>
+
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>

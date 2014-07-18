@@ -1,0 +1,23 @@
+#eps_subtitle input.eps_subtitle{
+    border-radius: 3px 3px 3px 3px;
+    border: solid 1px #CCCCCC;
+    font-size: 1.7em;
+    line-height: 100%; 
+    outline: medium none;
+    padding: 3px 4px;
+    width: 100%;
+    color: #ccc;
+}
+
+#eps_subtitle label{
+    color: #BBBBBB;
+    font-size: 1.7em;
+    padding: 5px 8px;
+    position: absolute;
+    line-height: 25px !important;
+   
+}
+
+#eps_subtitle {
+    margin-bottom: 10px;
+}

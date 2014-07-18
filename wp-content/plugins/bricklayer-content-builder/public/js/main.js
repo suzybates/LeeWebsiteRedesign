@@ -1,0 +1,2 @@
+/*! 21-10-2013 by krivinarius@gmail.com */
+jQuery(function(a){var b="cbp";a(".sf-menu ul").superfish(),a("."+b+"-accordion").accordion({collapsible:!0,heightStyle:"content"}),a(".tab-container").easytabs(),a("."+b+"-gallery").mixitup(),a("."+b+"-slider").bxSlider();var c=a("."+b+"-parallax");c.length&&a("."+b+'-parallax[data-type="background"]').each(function(){var b=a(this);a(window).scroll(function(){var c=-(a(window).scrollTop()/b.data("speed")),d="50% "+c+"px";b.css({backgroundPosition:d})})})});

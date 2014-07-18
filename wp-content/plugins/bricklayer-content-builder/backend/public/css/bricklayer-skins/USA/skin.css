@@ -1,0 +1,47 @@
+/* USA */
+
+#cbp-page-layout .element-remove { color: red; }
+#cbp-page-layout .element-remove:hover { color: black; }
+
+
+.cbp_widget_row { background-color: white; }
+.cbp_widget_row .cbp-edit-bar .element-remove { color: red; }
+.cbp_widget_row .cbp-edit-bar:hover { background-color: white;}
+.cbp_widget_row .cbp-edit-bar .element-remove:hover { color: black; }
+
+
+.cbp_widget_box { background-color: #0158A8; }
+.cbp_widget_box .cbp-edit-bar .element-remove { color: white; }
+.cbp_widget_box .cbp-edit-bar .element-remove:hover { color: red; }
+.cbp_widget_box .cbp-edit-bar:hover { background-color: #0158A8; }
+.cbp_widget_box .cbp-edit-bar .width-spinner { color: white; }
+.cbp_widget_box .cbp-edit-bar .width-spinner:hover { color: lime; }
+
+
+.cbp_widget_row .cbp-edit-bar .content-element-edit { color: black; }
+.cbp_widget_row .cbp-edit-bar .content-element-duplicate { color: black; }
+.cbp_widget_row .cbp-edit-bar .content-element-edit:hover { color: lime; }
+.cbp_widget_row .cbp-edit-bar .content-element-duplicate:hover { color: lime; }
+
+
+.cbp_widget_box .cbp-edit-bar .content-element-edit { color: white; }
+.cbp_widget_box .cbp-edit-bar .content-element-duplicate { color: white; }
+.cbp_widget_box .cbp-edit-bar .content-element-edit:hover { color: lime; }
+.cbp_widget_box .cbp-edit-bar .content-element-duplicate:hover { color: lime; }
+
+
+.cbp_widget_element .cbp-edit-bar:hover { background-color: white;}
+.cbp_widget_element .cbp-edit-bar .element-remove { color: #0158A8; }
+.cbp_widget_element .cbp-edit-bar .element-remove:hover { color: red; }
+
+
+.cbp_widget_element .cbp-edit-bar .content-element-edit { color: black; }
+.cbp_widget_element .cbp-edit-bar .content-element-duplicate { color: black; }
+.cbp_widget_element .cbp-edit-bar .content-element-edit:hover { color: lime; }
+.cbp_widget_element .cbp-edit-bar .content-element-duplicate:hover { color: lime; }
+
+
+                                                                                                                                                                  
+
+
+
