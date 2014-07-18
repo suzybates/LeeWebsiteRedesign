@@ -1,0 +1,66 @@
+<div class="wrap">
+    <h2>
+        <?php echo $this->translate('Style Editor') ?>
+    </h2>
+    <?php if (isset($_GET['edited'])) : ?>
+        <div class="cbp-success">
+            <div><?php echo $this->translate('Your changes have been saved!'); ?></div>
+        </div>
+    <?php endif; ?>
+    <form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post" class="cbp-skin-editor-box">
+        <input type="hidden" name="cbp-skin" value="1">
+        <?php wp_nonce_field('cbp-save-skin'); ?>
+        <h3 class="header medium">
+            <p>
+                <span><?php echo $this->translate('Choose a skin:') ?></span>
+                <select name="skin" class="cbp-skin-editor-select">
+                    <?php foreach ($this->skins as $item) : ?>
+                        <?php if ($item == $this->skin) { ?>
+                            <option selected="selected"><?php echo $item ?></option>
+                        <?php } else { ?>
+                            <option><?php echo $item ?></option>
+                        <?php } ?>
+                    <?php endforeach; ?>
+                </select>
+            </p>
+        </h3>
+        <p class="inner"><?php echo $this->translate('Built-in skins will be overwritten by plugin updates.') ?></p>
+        <p class="inner"><?php echo $this->translate('Ctrl+Q to fold/unfold a block') ?></p>
+        <div class="inner">
+            <textarea rows="10" cols="50" name="contents" class="cbp-codemirror"><?php echo file_get_contents($this->file); ?></textarea>
+            <p class="footer">
+                <?php if (!is_writable($this->folder)) { ?>
+                    <?php echo $this->translate('You need to make this file writable before you can save your changes. See the <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">Codex</a> for more information.'); ?>
+                <?php } else { ?>
+                <button class="button-primary"><?php echo $this->translate('Save changes') ;?></button>
+                    <?php echo $this->translate('Changes cannot be reverted after saving.'); ?>
+                <?php } ?>
+            </p>
+        </div>
+    </form>
+    <hr />
+    <h2><?php echo $this->translate('Custom CSS Rules'); ?></h2>
+    <form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post" class="cbp-skin-editor-box">
+        <input type="hidden" name="cbp-skin-custom" value="1">
+        <?php wp_nonce_field('cbp-save-skin-custom'); ?>
+        <p class="inner"><?php echo $this->translate('This file is persisted even after update.') ?></p>
+        <p class="inner"><?php echo $this->translate('Ctrl+Q to fold/unfold a block') ?></p>
+        <div class="inner">
+            <textarea rows="10" cols="50" name="contents" class="cbp-codemirror"><?php if(!empty($this->customContents)) {
+					echo stripslashes($this->customContents);
+				} else {
+                                  echo $this->translate('/* Your Custonm CSS Rules */');
+					
+				}?>
+            </textarea>
+            <p class="footer">
+                <?php if (!is_writable($this->uploadDir['basedir'])) { ?>
+                    <?php echo $this->translate('You need to make this file writable before you can save your changes. See the <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">Codex</a> for more information.'); ?>
+                <?php } else { ?>
+                <button class="button-primary"><?php echo $this->translate('Save changes') ;?></button>
+                    <?php echo $this->translate('Changes cannot be reverted after saving.'); ?>
+                <?php } ?>
+            </p>
+        </div>
+    </form>
+</div>

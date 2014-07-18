@@ -1,0 +1,47 @@
+<div class="wrap">
+    <h2>
+        <?php echo $this->translate('Export/Import') ?>
+    </h2>
+    <table class="form-table">
+        <tbody>
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Export Settings'); ?>:</th>
+                <td>
+                    <form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post" class="cbp-export-settings">
+                        <input type="hidden" name="cbp-export-settings" value="1">
+                        <?php wp_nonce_field('cbp-export-settings'); ?>
+                        <button class="button-primary"><?php echo $this->translate('Download'); ?></button>
+                    </form>
+                    <p class="description">
+                        <?php echo $this->translate('Download settings file to your computer.'); ?>
+                    </p>
+                </td>
+            </tr>                
+            <tr valign="top">
+                <th scope="row"><?php echo $this->translate('Import Settings'); ?>:</th>
+                <td>
+                    <form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post" enctype="multipart/form-data" class="cbp-import-settings">
+                        <input type="hidden" name="cbp-import-settings" value="1">
+                        <label for="cbp-overwrite-template-links"><?php echo $this->translate('Overwrite Layout Links?'); ?></label>
+                        <input type="checkbox" id="cbp-overwrite-template-links" name="cbp-overwrite-template-links"/>
+                        <?php wp_nonce_field('cbp-import-settings'); ?>
+                        <input type="file" name="import_file">
+                        <button class="button-primary"><?php echo $this->translate('Upload'); ?></button>
+                    </form>
+                </td>
+            </tr>                
+
+        </tbody>
+    </table>
+
+    <?php if (isset($_GET['error'])) : ?>
+        <div class="cbp-error">
+            <div><?php echo $this->translate('Error uploading file...'); ?></div>
+        </div>
+    <?php endif; ?>
+    <?php if (isset($_GET['save'])) : ?>
+        <div class="cbp-success">
+            <div><?php echo $this->translate('Settings Import Successful!'); ?></div>
+        </div>
+    <?php endif; ?>
+</div>

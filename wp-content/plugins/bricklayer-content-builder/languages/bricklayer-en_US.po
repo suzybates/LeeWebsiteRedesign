@@ -1,0 +1,2477 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: bricklayer\n"
+"POT-Creation-Date: 2014-05-20 23:49+0100\n"
+"PO-Revision-Date: 2014-05-22 00:02+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-KeywordsList: translate;__;_e\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: backend/controllers/CbpStyleEditorSubmenuPageController.php:78
+msgid "It looks like you haven't selected any skin to edit."
+msgstr ""
+
+#: backend/controllers/CbpStyleEditorSubmenuPageController.php:78
+msgid "No skin selected."
+msgstr ""
+
+#: backend/controllers/CbpStyleEditorSubmenuPageController.php:93
+#: backend/controllers/CbpStyleEditorSubmenuPageController.php:113
+msgid ""
+"It looks like your files isn't writable, so PHP couldn't make any changes "
+"(CHMOD)."
+msgstr ""
+
+#: backend/controllers/CbpStyleEditorSubmenuPageController.php:93
+#: backend/controllers/CbpStyleEditorSubmenuPageController.php:113
+msgid "Cannot write to file"
+msgstr ""
+
+#: backend/models/CbpComments.php:17
+msgid "Pingback:"
+msgstr ""
+
+#: backend/models/CbpComments.php:17
+msgid "(Edit)"
+msgstr ""
+
+#: backend/models/CbpComments.php:36
+msgid "Reply"
+msgstr ""
+
+#: backend/models/CbpComments.php:42
+msgid "Post author -"
+msgstr ""
+
+#. translators: 1: date, 2: time
+#: backend/models/CbpComments.php:46
+#, php-format
+msgid "%1$s at %2$s"
+msgstr ""
+
+#: backend/models/CbpComments.php:54
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: backend/models/CbpComments.php:59
+#: backend/models/widgets/CbpWidgetPost.php:51
+#: backend/models/widgets/CbpWidgetTheLoop_old.php:52
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:1122
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:1158
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:1175
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:1206
+msgid "Edit"
+msgstr ""
+
+#: backend/models/CbpWidget.php:80
+msgid "Display Description"
+msgstr ""
+
+#: backend/models/CbpWidget.php:81
+msgid ""
+"This is description that is displayed on a widget. This is not used on front "
+"end. Text will be cutoff after 55 characters."
+msgstr ""
+
+#: backend/models/CbpWidget.php:92
+msgid "Select Styling"
+msgstr ""
+
+#: backend/models/CbpWidget.php:93
+msgid "Types of widget styling."
+msgstr ""
+
+#: backend/models/CbpWidget.php:103
+msgid "CSS Class"
+msgstr ""
+
+#: backend/models/CbpWidget.php:104
+msgid ""
+"This class/classes will be set to the container element of this brick in "
+"case you need to add extra styling."
+msgstr ""
+
+#: backend/models/CbpWidget.php:149
+msgid "Padding"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:169 backend/models/CbpWpEditor.php:1215
+msgid "Visual"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:757
+msgid "New document"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:761
+msgid "Heading 1"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:762
+msgid "Heading 2"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:763
+msgid "Heading 3"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:764
+msgid "Heading 4"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:765
+msgid "Heading 5"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:766
+msgid "Heading 6"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:770
+msgid "Paragraph"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:771
+msgid "Blockquote"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:777
+msgid "Underline"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:778
+msgid "Strikethrough"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:779
+msgid "Subscript"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:780
+msgid "Superscript"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:781
+msgid "Clear formatting"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:782
+msgid "Bold"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:783
+msgid "Italic"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:785
+msgid "Source code"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:786
+msgid "Font Family"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:787
+msgid "Font Sizes"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:789
+msgid "Align center"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:790
+msgid "Align right"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:791
+msgid "Align left"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:792
+msgid "Justify"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:793
+msgid "Increase indent"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:794
+msgid "Decrease indent"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:796
+msgid "Cut"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:797
+msgid "Copy"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:798
+msgid "Paste"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:799
+msgid "Select all"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:800
+msgid "Undo"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:801
+msgid "Redo"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:803
+msgid "OK"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:804 backend/models/CbpWpEditor.php:1439
+msgid "Cancel"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:805
+msgid "Close"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:806
+msgid "Visual aids"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:808
+msgid "Bulleted list"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:809
+msgid "Numbered list"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:826
+msgid "Document properties"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:827
+msgid "Robots"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:828 backend/models/CbpWpEditor.php:1404
+#: backend/models/widgets/CbpWidgetPostList.php:62
+#: backend/models/widgets/CbpWidgetPostList.php:107
+#: backend/models/widgets/CbpWidgetText.php:34
+#: backend/views/content-templates-submenu-page/render-links.phtml:34
+msgid "Title"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:829
+msgid "Keywords"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:830
+msgid "Encoding"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:831
+msgid "Description"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:832
+msgid "Author"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:835
+msgid "Insert/edit image"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:836
+msgid "General"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:837
+msgid "Advanced"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:838
+msgid "Source"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:839
+msgid "Border"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:840
+msgid "Constrain proportions"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:841
+msgid "Vertical space"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:842
+msgid "Image description"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:843
+msgid "Style"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:844
+msgid "Dimensions"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:845
+msgid "Insert image"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:846
+msgid "Insert date/time"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:847
+msgid "Insert/edit video"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:848
+msgid "Poster"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:849
+msgid "Alternative source"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:850
+msgid "Paste your embed code below:"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:851
+msgid "Insert video"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:852
+msgid "Embed"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:855
+msgid "Special character"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:858
+msgid "Emoticons"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:859
+msgid "Nonbreaking space"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:860
+msgid "Page break"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:861
+msgid "Paste as text"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:862
+msgid "Preview"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:863
+msgid "Print"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:864 backend/models/CbpWpEditor.php:1204
+msgid "Save"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:865
+msgid "Fullscreen"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:866
+msgid "Horizontal line"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:867
+msgid "Horizontal space"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:868
+msgid "Restore last draft"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:869 backend/models/CbpWpEditor.php:1394
+msgid "Insert/edit link"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:870
+msgid "Remove link"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:873
+msgid "Could not find the specified string."
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:879
+msgid "Find and replace"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:883
+msgid "Match case"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:884
+msgid "Check Spelling"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:890
+msgid "Insert table"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:891
+msgid "Delete table"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:892
+msgid "Table properties"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:893
+msgid "Table row properties"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:894
+msgid "Table cell properties"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:896
+msgid "Row"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:897
+msgid "Rows"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:901
+msgid "Header cell"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:906
+msgid "Insert row before"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:907
+msgid "Insert row after"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:908
+msgid "Insert column before"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:909
+msgid "Insert column after"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:910
+msgid "Paste table row before"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:911
+msgid "Paste table row after"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:912
+msgid "Delete row"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:913
+msgid "Delete column"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:914
+msgid "Cut table row"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:915
+msgid "Copy table row"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:916
+msgid "Merge table cells"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:917
+msgid "Split table cell"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:919
+#: backend/models/widgets/CbpWidgetMap.php:56
+msgid "Height"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:920
+msgid "Width"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:921
+#: backend/models/widgets/CbpSubwidgetGalleryItem.php:44
+msgid "Caption"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:922
+msgid "Alignment"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:923
+#: backend/models/widgets/CbpWidgetButton.php:52
+#: backend/models/widgets/CbpWidgetMenu.php:39
+msgid "Left"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:924
+msgid "Center"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:925
+#: backend/models/widgets/CbpWidgetButton.php:53
+#: backend/models/widgets/CbpWidgetMenu.php:40
+msgid "Right"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:928
+msgid "Row group"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:929
+msgid "Column group"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:930
+msgid "Row type"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:931
+msgid "Cell type"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:932
+msgid "Cell padding"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:933
+msgid "Cell spacing"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:939
+#: backend/models/widgets/CbpWidgetBox.php:48
+#: backend/models/widgets/CbpWidgetRow.php:55
+#: backend/models/widgets/CbpWidgetText.php:78
+msgid "Background color"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:940
+msgid "Text color"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:942
+msgid "Show invisible characters"
+msgstr ""
+
+#. translators: word count
+#: backend/models/CbpWpEditor.php:945
+#, php-format
+msgid "Words: %s"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:946
+msgid ""
+"Paste is now in plain text mode. Contents will now be pasted as plain text "
+"until you toggle this option off."
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:946
+msgid ""
+"If you&#8217;re looking to paste rich content from Microsoft Word, try "
+"turning this option off. The editor will clean up text pasted from Word "
+"automatically."
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:947
+msgid ""
+"Rich Text Area. Press ALT-F9 for menu. Press ALT-F10 for toolbar. Press "
+"ALT-0 for help"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:948
+msgid "The changes you made will be lost if you navigate away from this page."
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:949
+msgid ""
+"Your browser does not support direct access to the clipboard. Please use the "
+"Ctrl+X/C/V keyboard shortcuts instead."
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:961
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:962
+msgid "Toolbar Toggle"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:963
+msgid "Insert Read More tag"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:964
+msgid "Distraction Free Writing"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1204
+msgid "Update"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1210
+msgid "Exit fullscreen"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1225
+msgid "Bold (Ctrl + B)"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1226
+msgid "Italic (Ctrl + I)"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1227
+msgid "Unordered list (Alt + Shift + U)"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1228
+msgid "Ordered list (Alt + Shift + O)"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1229
+msgid "Blockquote (Alt + Shift + Q)"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1230
+msgid "Media library (Alt + Shift + M)"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1231
+msgid "Insert/edit link (Alt + Shift + A)"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1232
+msgid "Unlink (Alt + Shift + S)"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1233
+msgid "Help (Alt + Shift + H)"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1269
+msgid "Updated."
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1269
+msgid "Saved."
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1270
+msgid "Save failed."
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1279
+#, php-format
+msgid "Word count: %s"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1280
+msgid "Just write."
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1342
+msgid "Y/m/d"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1399
+msgid "Enter the destination URL"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1401
+msgid "URL"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1407
+msgid "Open link in a new window/tab"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1410
+msgid "Or link to existing content"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1414
+msgid "Search"
+msgstr ""
+
+#: backend/models/CbpWpEditor.php:1426
+msgid "No search term specified. Showing recent items."
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetAccordionItem.php:30
+#: backend/models/widgets/CbpSubwidgetGalleryItem.php:34
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:39
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:37
+#: backend/models/widgets/CbpSubwidgetTabsItem.php:30
+#: backend/models/widgets/CbpWidgetCategory.php:50
+#: extensions/contact-form/grunion-contact-form.php:37
+msgid "Name"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetAccordionItem.php:35
+#: backend/models/widgets/CbpSubwidgetGalleryItem.php:55
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:87
+#: backend/models/widgets/CbpSubwidgetTabsItem.php:35
+#: backend/models/widgets/CbpWidgetLinkToPage.php:70
+#: backend/models/widgets/CbpWidgetMap.php:68
+#: backend/models/widgets/CbpWidgetText.php:61
+msgid "Content"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetGalleryItem.php:39
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:41
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:81
+#: backend/models/widgets/CbpWidgetImage.php:32
+msgid "Image"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetGalleryItem.php:49
+msgid "Tags"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetGalleryItem.php:50
+msgid "Please use comma separated list of tags."
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:51
+msgid "Select Type"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:52
+msgid "Types of meta data."
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:64
+msgid "Date Format"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:69
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:79
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:89
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:99
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:109
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:119
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:135
+#: backend/models/widgets/CbpWidgetBox.php:36
+#: backend/models/widgets/CbpWidgetBox.php:54
+#: backend/models/widgets/CbpWidgetBox.php:64
+#: backend/models/widgets/CbpWidgetButton.php:43
+#: backend/models/widgets/CbpWidgetCategory.php:31
+#: backend/models/widgets/CbpWidgetCategory.php:40
+#: backend/models/widgets/CbpWidgetContent.php:28
+#: backend/models/widgets/CbpWidgetIcon.php:113
+#: backend/models/widgets/CbpWidgetIcon.php:123
+#: backend/models/widgets/CbpWidgetImage.php:65
+#: backend/models/widgets/CbpWidgetLinkToPage.php:60
+#: backend/models/widgets/CbpWidgetLinkToPage.php:74
+#: backend/models/widgets/CbpWidgetMenu.php:54
+#: backend/models/widgets/CbpWidgetPageTitle.php:32
+#: backend/models/widgets/CbpWidgetPostList.php:79
+#: backend/models/widgets/CbpWidgetPostList.php:124
+#: backend/models/widgets/CbpWidgetPostList.php:139
+#: backend/models/widgets/CbpWidgetPostList.php:149
+#: backend/models/widgets/CbpWidgetPostList.php:171
+#: backend/models/widgets/CbpWidgetPostList.php:181
+#: backend/models/widgets/CbpWidgetPostList.php:191
+#: backend/models/widgets/CbpWidgetPostList.php:201
+#: backend/models/widgets/CbpWidgetPostList.php:211
+#: backend/models/widgets/CbpWidgetPostList.php:221
+#: backend/models/widgets/CbpWidgetPostList.php:231
+#: backend/models/widgets/CbpWidgetPostList.php:241
+#: backend/models/widgets/CbpWidgetPostList.php:274
+#: backend/models/widgets/CbpWidgetPostTitle.php:44
+#: backend/models/widgets/CbpWidgetRow.php:33
+#: backend/models/widgets/CbpWidgetRow.php:43
+#: backend/models/widgets/CbpWidgetRow.php:67
+#: backend/models/widgets/CbpWidgetRow.php:97
+#: backend/models/widgets/CbpWidgetShortcode.php:29
+#: backend/models/widgets/CbpWidgetSinglePost.php:75
+#: backend/models/widgets/CbpWidgetSinglePost.php:84
+#: backend/models/widgets/CbpWidgetSinglePost.php:94
+#: backend/models/widgets/CbpWidgetSinglePost.php:116
+#: backend/models/widgets/CbpWidgetSinglePost.php:126
+#: backend/models/widgets/CbpWidgetSinglePost.php:136
+#: backend/models/widgets/CbpWidgetSinglePost.php:146
+#: backend/models/widgets/CbpWidgetSinglePost.php:156
+#: backend/models/widgets/CbpWidgetSinglePost.php:166
+#: backend/models/widgets/CbpWidgetSinglePost.php:176
+#: backend/models/widgets/CbpWidgetSinglePost.php:186
+#: backend/models/widgets/CbpWidgetSinglePost.php:196
+#: backend/models/widgets/CbpWidgetSlider.php:46
+#: backend/models/widgets/CbpWidgetSlider.php:56
+#: backend/models/widgets/CbpWidgetSlider.php:66
+#: backend/models/widgets/CbpWidgetSlider.php:75
+#: backend/models/widgets/CbpWidgetText.php:66
+#: extensions/contact-form/grunion-contact-form.php:100
+msgid "Yes"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:70
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:80
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:90
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:100
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:110
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:120
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:136
+#: backend/models/widgets/CbpWidgetBox.php:37
+#: backend/models/widgets/CbpWidgetBox.php:55
+#: backend/models/widgets/CbpWidgetBox.php:65
+#: backend/models/widgets/CbpWidgetButton.php:44
+#: backend/models/widgets/CbpWidgetCategory.php:32
+#: backend/models/widgets/CbpWidgetCategory.php:41
+#: backend/models/widgets/CbpWidgetContent.php:29
+#: backend/models/widgets/CbpWidgetIcon.php:114
+#: backend/models/widgets/CbpWidgetIcon.php:124
+#: backend/models/widgets/CbpWidgetImage.php:66
+#: backend/models/widgets/CbpWidgetLinkToPage.php:61
+#: backend/models/widgets/CbpWidgetLinkToPage.php:75
+#: backend/models/widgets/CbpWidgetMenu.php:55
+#: backend/models/widgets/CbpWidgetPageTitle.php:33
+#: backend/models/widgets/CbpWidgetPostList.php:80
+#: backend/models/widgets/CbpWidgetPostList.php:125
+#: backend/models/widgets/CbpWidgetPostList.php:140
+#: backend/models/widgets/CbpWidgetPostList.php:150
+#: backend/models/widgets/CbpWidgetPostList.php:172
+#: backend/models/widgets/CbpWidgetPostList.php:182
+#: backend/models/widgets/CbpWidgetPostList.php:192
+#: backend/models/widgets/CbpWidgetPostList.php:202
+#: backend/models/widgets/CbpWidgetPostList.php:212
+#: backend/models/widgets/CbpWidgetPostList.php:222
+#: backend/models/widgets/CbpWidgetPostList.php:232
+#: backend/models/widgets/CbpWidgetPostList.php:242
+#: backend/models/widgets/CbpWidgetPostList.php:275
+#: backend/models/widgets/CbpWidgetPostTitle.php:45
+#: backend/models/widgets/CbpWidgetRow.php:34
+#: backend/models/widgets/CbpWidgetRow.php:44
+#: backend/models/widgets/CbpWidgetRow.php:68
+#: backend/models/widgets/CbpWidgetRow.php:98
+#: backend/models/widgets/CbpWidgetShortcode.php:30
+#: backend/models/widgets/CbpWidgetSinglePost.php:76
+#: backend/models/widgets/CbpWidgetSinglePost.php:85
+#: backend/models/widgets/CbpWidgetSinglePost.php:95
+#: backend/models/widgets/CbpWidgetSinglePost.php:117
+#: backend/models/widgets/CbpWidgetSinglePost.php:127
+#: backend/models/widgets/CbpWidgetSinglePost.php:137
+#: backend/models/widgets/CbpWidgetSinglePost.php:147
+#: backend/models/widgets/CbpWidgetSinglePost.php:157
+#: backend/models/widgets/CbpWidgetSinglePost.php:167
+#: backend/models/widgets/CbpWidgetSinglePost.php:177
+#: backend/models/widgets/CbpWidgetSinglePost.php:187
+#: backend/models/widgets/CbpWidgetSinglePost.php:197
+#: backend/models/widgets/CbpWidgetSlider.php:47
+#: backend/models/widgets/CbpWidgetSlider.php:57
+#: backend/models/widgets/CbpWidgetSlider.php:67
+#: backend/models/widgets/CbpWidgetSlider.php:76
+#: backend/models/widgets/CbpWidgetText.php:67
+msgid "No"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:74
+msgid "Show Date Icon?"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:84
+#: backend/models/widgets/CbpWidgetPostList.php:216
+#: backend/models/widgets/CbpWidgetSinglePost.php:161
+msgid "Show Tags Icon?"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:94
+#: backend/models/widgets/CbpWidgetSinglePost.php:191
+msgid "Show Author Icon?"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:104
+#: backend/models/widgets/CbpWidgetPostList.php:186
+#: backend/models/widgets/CbpWidgetSinglePost.php:131
+msgid "Show Comment Icon?"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:114
+msgid "Tags is Link?"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:124
+msgid "Author is Link?"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:130
+msgid "Author Pretext"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetMetaItem.php:140
+msgid "Category is Link?"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:42
+msgid "Video"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:43
+msgid "Text"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:47
+msgid "Item Type"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:52
+#: backend/models/widgets/CbpWidgetVideo.php:30
+msgid "Youtube"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:53
+#: backend/models/widgets/CbpWidgetVideo.php:31
+msgid "Vimeo"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:57
+#: backend/models/widgets/CbpWidgetVideo.php:35
+msgid "Video Type"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:63
+msgid "Video ID"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:69
+#: backend/models/widgets/CbpWidgetVideo.php:45
+msgid "Video Width"
+msgstr ""
+
+#: backend/models/widgets/CbpSubwidgetSliderItem.php:75
+#: backend/models/widgets/CbpWidgetVideo.php:51
+msgid "Video Height"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:41
+#: backend/models/widgets/CbpWidgetIcon.php:128
+#: backend/models/widgets/CbpWidgetRow.php:48
+#: backend/models/widgets/CbpWidgetText.php:71
+msgid "Use Background Color?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:59
+#: backend/models/widgets/CbpWidgetContent.php:33
+#: backend/models/widgets/CbpWidgetRow.php:102
+msgid "Wrap?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:60
+msgid ""
+"If not wrapped it will add nothing. This is especially good for use when "
+"creating layout fullwidth \"content\" widget."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:69
+msgid "Use Animation?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:75
+msgid "fade-in-from-left"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:76
+msgid "fade-in-from-right"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:77
+msgid "fade-in-from-bottom"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:78
+msgid "fade-in"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:79
+msgid "grow-in"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:80
+msgid "flip-in"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:84
+msgid "Animation Effect"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBox.php:90
+msgid "Animation Delay"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBreadcrumbs.php:27
+msgid "Separator"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetBreadcrumbs.php:28
+msgid "If left empty default slash separator will be shown."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetButton.php:33
+msgid "Label"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetButton.php:38
+msgid "Link"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetButton.php:39
+msgid "Please use absolute url."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetButton.php:48
+msgid "External Link?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetButton.php:57
+#: backend/models/widgets/CbpWidgetMenu.php:44
+msgid "Position"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetCategory.php:36
+msgid "Show Category Description?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetCategory.php:45
+#: backend/models/widgets/CbpWidgetPostList.php:196
+#: backend/models/widgets/CbpWidgetSinglePost.php:141
+msgid "Show Tags?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetCategory.php:51
+#: backend/models/widgets/CbpWidgetPostList.php:106
+#: extensions/contact-form/admin.php:88
+msgid "Date"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetCategory.php:55
+#: backend/models/widgets/CbpWidgetPostList.php:111
+msgid "Order By"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetCategory.php:56
+msgid "Order tags by..."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetCategory.php:61
+#: backend/models/widgets/CbpWidgetPostList.php:115
+msgid "Ascending"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetCategory.php:62
+#: backend/models/widgets/CbpWidgetPostList.php:116
+msgid "Descending"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetCategory.php:66
+#: backend/models/widgets/CbpWidgetPostList.php:120
+msgid "Order"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetCategory.php:67
+msgid "Tag Order"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetCategory.php:73
+msgid "Taxonomy"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetCategory.php:74
+msgid "Select taxonomy."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetComments.php:69
+msgid "Comment navigation"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetComments.php:70
+msgid "&larr; Older Comments"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetComments.php:71
+msgid "Newer Comments &rarr;"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetComments.php:76
+msgid "Comments are closed."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetContent.php:34
+msgid ""
+"If not wrapped it will add nothing. This is especially good for use when "
+"creating layout fullwidht \"content\" widget."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetFeaturedImage.php:28
+#: backend/models/widgets/CbpWidgetPost.php:28
+#: backend/models/widgets/CbpWidgetTheLoop_old.php:28
+msgid "Select Image Size"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetGallery.php:40
+#: backend/models/widgets/CbpWidgetPostList.php:264
+msgid "Number Of Columns"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetGallery.php:49
+msgid "Make Containers Equal Height"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetGallery.php:85
+msgid "All"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:38
+msgid "Icon"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:43
+msgid "Default"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:44
+msgid "2x"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:45
+msgid "3x"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:46
+msgid "4x"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:50
+msgid "Icon Size"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:55
+msgid "Row (div)"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:56
+msgid "Float (span)"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:60
+msgid "Div or span"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:61
+msgid "Should it be in it's own row or should it float?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:67
+#: backend/models/widgets/CbpWidgetIcon.php:80
+#: backend/models/widgets/CbpWidgetText.php:84
+msgid "left"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:68
+#: backend/models/widgets/CbpWidgetText.php:85
+msgid "center"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:69
+#: backend/models/widgets/CbpWidgetIcon.php:81
+#: backend/models/widgets/CbpWidgetText.php:86
+msgid "right"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:73
+#: backend/models/widgets/CbpWidgetText.php:91
+msgid "Align"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:74
+msgid "Only if div is selected."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:85
+msgid "Float direction"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:86
+msgid "Only if span is selected."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:92
+#: backend/models/widgets/CbpWidgetImage.php:44
+msgid "no link"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:93
+#: backend/models/widgets/CbpWidgetImage.php:45
+msgid "Home Page"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:94
+#: backend/models/widgets/CbpWidgetIcon.php:106
+#: backend/models/widgets/CbpWidgetImage.php:46
+#: backend/models/widgets/CbpWidgetImage.php:58
+msgid "Custom Link"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:98
+#: backend/models/widgets/CbpWidgetImage.php:50
+msgid "Link To"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:99
+#: backend/models/widgets/CbpWidgetImage.php:51
+msgid ""
+"If custom link is selected it will use the url from the Custom Link field."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:107
+#: backend/models/widgets/CbpWidgetImage.php:59
+msgid "Please use absolute url (i.e. http://codex.wordpress.org/)"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:118
+#: backend/models/widgets/CbpWidgetImage.php:70
+msgid "Open Link in New Window?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:135
+msgid "Background Color"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetIcon.php:141
+msgid "Background Hover Color"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetImage.php:38
+msgid "Alt Text"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetImage.php:39
+msgid "This is important for screen readers."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:37
+msgid "Select Page"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:42
+#: backend/models/widgets/CbpWidgetPageTitle.php:44
+#: backend/models/widgets/CbpWidgetSinglePost.php:57
+msgid "Custom Title"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:43
+#: backend/models/widgets/CbpWidgetSinglePost.php:58
+msgid "If this is not set post title will be used."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:47
+#: backend/models/widgets/CbpWidgetPostList.php:66
+#: backend/models/widgets/CbpWidgetPostList.php:93
+#: backend/models/widgets/CbpWidgetPostTitle.php:30
+#: backend/models/widgets/CbpWidgetSinglePost.php:62
+#: backend/models/widgets/CbpWidgetText.php:39
+#: backend/models/widgets/CbpWidgetWpSidebar.php:44
+#: backend/models/widgets/CbpWidgetWpWidget.php:46
+msgid "H1"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:48
+#: backend/models/widgets/CbpWidgetPostList.php:67
+#: backend/models/widgets/CbpWidgetPostList.php:94
+#: backend/models/widgets/CbpWidgetPostTitle.php:31
+#: backend/models/widgets/CbpWidgetSinglePost.php:63
+#: backend/models/widgets/CbpWidgetText.php:40
+#: backend/models/widgets/CbpWidgetWpSidebar.php:45
+#: backend/models/widgets/CbpWidgetWpWidget.php:47
+msgid "H2"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:49
+#: backend/models/widgets/CbpWidgetPostList.php:68
+#: backend/models/widgets/CbpWidgetPostList.php:95
+#: backend/models/widgets/CbpWidgetPostTitle.php:32
+#: backend/models/widgets/CbpWidgetSinglePost.php:64
+#: backend/models/widgets/CbpWidgetText.php:41
+#: backend/models/widgets/CbpWidgetWpSidebar.php:46
+#: backend/models/widgets/CbpWidgetWpWidget.php:48
+msgid "H3"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:50
+#: backend/models/widgets/CbpWidgetPostList.php:69
+#: backend/models/widgets/CbpWidgetPostList.php:96
+#: backend/models/widgets/CbpWidgetPostTitle.php:33
+#: backend/models/widgets/CbpWidgetSinglePost.php:65
+#: backend/models/widgets/CbpWidgetText.php:42
+#: backend/models/widgets/CbpWidgetWpSidebar.php:47
+#: backend/models/widgets/CbpWidgetWpWidget.php:49
+msgid "H4"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:51
+#: backend/models/widgets/CbpWidgetPostList.php:70
+#: backend/models/widgets/CbpWidgetPostList.php:97
+#: backend/models/widgets/CbpWidgetPostTitle.php:34
+#: backend/models/widgets/CbpWidgetSinglePost.php:66
+#: backend/models/widgets/CbpWidgetText.php:43
+#: backend/models/widgets/CbpWidgetWpSidebar.php:48
+#: backend/models/widgets/CbpWidgetWpWidget.php:50
+msgid "H5"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:52
+#: backend/models/widgets/CbpWidgetPostList.php:71
+#: backend/models/widgets/CbpWidgetPostList.php:98
+#: backend/models/widgets/CbpWidgetPostTitle.php:35
+#: backend/models/widgets/CbpWidgetSinglePost.php:67
+#: backend/models/widgets/CbpWidgetText.php:44
+#: backend/models/widgets/CbpWidgetWpSidebar.php:49
+#: backend/models/widgets/CbpWidgetWpWidget.php:51
+msgid "H6"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:56
+#: backend/models/widgets/CbpWidgetPostList.php:75
+#: backend/models/widgets/CbpWidgetPostTitle.php:39
+#: backend/models/widgets/CbpWidgetSinglePost.php:71
+#: backend/models/widgets/CbpWidgetText.php:48
+#: backend/models/widgets/CbpWidgetWpSidebar.php:53
+#: backend/models/widgets/CbpWidgetWpWidget.php:55
+msgid "Title Size"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:65
+#: backend/models/widgets/CbpWidgetPostList.php:84
+#: backend/models/widgets/CbpWidgetSinglePost.php:80
+msgid "Should Title Link to Post?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:79
+#: backend/models/widgets/CbpWidgetPostList.php:246
+#: backend/models/widgets/CbpWidgetSinglePost.php:201
+msgid "Show Featured Image?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:85
+#: backend/models/widgets/CbpWidgetPostList.php:252
+#: backend/models/widgets/CbpWidgetSinglePost.php:207
+msgid "Featured Image Dimensions"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetLinkToPage.php:91
+#: backend/models/widgets/CbpWidgetPostList.php:285
+#: backend/models/widgets/CbpWidgetSinglePost.php:220
+msgid "Link Text"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetMap.php:39
+msgid "Marker Lat"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetMap.php:45
+msgid "Marker Lng"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetMap.php:51
+msgid "Zoom Level"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetMap.php:62
+msgid "Custom Marker"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetMenu.php:34
+msgid "Menu"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetMenu.php:49
+msgid "Depth"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetMenu.php:50
+msgid "The depth of the menu. Please enter a number."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetMenu.php:59
+msgid "Use Responsive Menu?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetMenu.php:65
+msgid "Screen Width Brake Point"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetMenu.php:66
+msgid ""
+"This is the width in pixels. Please enter only number. Bellow this brake "
+"point this menu becomes hidden and responsive menu is displayed instead."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetMenu.php:72
+msgid "Responsive Menu Title"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPageTitle.php:37
+msgid "Use Custom Title?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPageTitle.php:38
+msgid "If is set to \"No\" original page title will be used."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPageTitle.php:76
+#, php-format
+msgid "Daily Archives: %s"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPageTitle.php:80
+#, php-format
+msgid "Monthly Archives: %s"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPageTitle.php:84
+#, php-format
+msgid "Yearly Archives: %s"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPageTitle.php:89
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:178
+msgid "404 Not Found"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPost.php:68
+#: backend/models/widgets/CbpWidgetTheLoop_old.php:73
+msgid "Sticky"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPost.php:74
+#: backend/models/widgets/CbpWidgetPost.php:80
+#: backend/models/widgets/CbpWidgetTheLoop_old.php:79
+#: backend/models/widgets/CbpWidgetTheLoop_old.php:85
+msgid ", "
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPost.php:86
+#: backend/models/widgets/CbpWidgetTheLoop_old.php:91
+#, php-format
+msgid "View all posts by %s"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPost.php:97
+#: backend/models/widgets/CbpWidgetTheLoop_old.php:102
+#, php-format
+msgid "Permalink to %s"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:89
+msgid "Select Post Categories"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:102
+msgid "Post Title Size"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:129
+msgid "Use Pagination?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:134
+msgid "Posts Per Page"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:135
+#: backend/models/widgets/CbpWidgetPostList.php:270
+msgid "Enter number."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:144
+#: backend/models/widgets/CbpWidgetSinglePost.php:89
+msgid "Show Post Date?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:154
+#: backend/models/widgets/CbpWidgetSinglePost.php:99
+msgid "Show Post Date Icon?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:166
+#: backend/models/widgets/CbpWidgetSinglePost.php:111
+msgid "Post Date Format"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:176
+#: backend/models/widgets/CbpWidgetSinglePost.php:121
+msgid "Show Comment Count?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:206
+#: backend/models/widgets/CbpWidgetSinglePost.php:151
+msgid "Should Tags link to tags page?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:226
+#: backend/models/widgets/CbpWidgetSinglePost.php:171
+msgid "Show Autor?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:236
+#: backend/models/widgets/CbpWidgetSinglePost.php:181
+msgid "Should Author link to author page?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:269
+#: backend/models/widgets/CbpWidgetSinglePost.php:214
+msgid "Number Of Characters"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:279
+msgid "Use Button Link?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostList.php:418
+#: backend/models/widgets/CbpWidgetPostList.php:424
+#: backend/models/widgets/CbpWidgetSinglePost.php:327
+#: backend/models/widgets/CbpWidgetSinglePost.php:333
+msgid "by"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetPostTitle.php:49
+msgid "Link to post?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:38
+msgid "Full Width?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:62
+msgid "Background Image"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:72
+msgid "Use Parallax Effect?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:78
+msgid "1"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:79
+msgid "0.9"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:80
+msgid "0.8"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:81
+msgid "0.7"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:82
+msgid "0.6"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:83
+msgid "0.5"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:84
+msgid "0.4"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:85
+msgid "0.3"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:86
+msgid "0.2"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:87
+msgid "0.1"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:91
+msgid "Speed Factor"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetRow.php:103
+msgid ""
+"If not wrapped it will add nothing. This is especially good for use when "
+"creating layout \"content\" widget."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetShortcode.php:34
+msgid "Shortcode"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetShortcode.php:35
+msgid "Paste your shortcode here."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetSinglePost.php:52
+msgid "Select Post"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetSlider.php:35
+msgid "horizontal"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetSlider.php:36
+msgid "vertical"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetSlider.php:37
+msgid "fade"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetSlider.php:41
+msgid "Transition"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetSlider.php:51
+msgid "Auto Play?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetSlider.php:61
+msgid "Show Controls?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetSlider.php:71
+msgid "Show Bullets?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetSlider.php:80
+msgid "Adaptive Height?"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetSlider.php:85
+msgid "Speed"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetSlider.php:86
+msgid "Time between slides in miliseconds. Enter number only!"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetTemplate.php:28
+#: backend/models/widgets/CbpWidgetTheLoop.php:30
+#: backend/views/content-builder.phtml:49
+msgid "Select Template"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetText.php:54
+msgid "Title Link To..."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetText.php:55
+msgid "Should be entered as absolute url (e.i. http://www.google.com)."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetText.php:87
+msgid "justify"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetVideo.php:40
+msgid "Video Id"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetVideo.php:46
+#: backend/models/widgets/CbpWidgetVideo.php:52
+msgid "Set only if you need exact dimensions."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetWpSidebar.php:39
+msgid "Sidebar"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetWpSidebar.php:65
+msgid "Number of Columns"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetWpWidget.php:40
+msgid "Widget"
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetWpWidget.php:41
+msgid "Select widget."
+msgstr ""
+
+#: backend/models/widgets/CbpWidgetWpWidget.php:93
+msgid "Please, add a widget to \"Bricklayer Sidebar\"."
+msgstr ""
+
+#: base/CbpWidgetHelper.php:147 base/CbpWidgetHelper.php:163
+msgid "Select page"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:175
+msgid "Browse:"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:176
+msgid "Home"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:177
+#, php-format
+msgid "Search results for \"%s\""
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:179
+#, php-format
+msgid "Page %d"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:180
+msgid "Archives"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:181
+msgid "g:i a"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:182
+#, php-format
+msgid "Minute %d"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:183
+msgid "g a"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:184
+msgid "d"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:185
+#, php-format
+msgid "Week %d"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:186
+msgid "F"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:187
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:1027
+msgid "Y"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:1150
+msgid "Split"
+msgstr ""
+
+#: extensions/breadcrumb-trail/inc/breadcrumbs.php:1154
+msgid "Merge"
+msgstr ""
+
+#: extensions/contact-form/admin.php:86
+msgid "From"
+msgstr ""
+
+#: extensions/contact-form/admin.php:87
+#: extensions/contact-form/grunion-contact-form.php:44
+msgid "Message"
+msgstr ""
+
+#: extensions/contact-form/admin.php:160
+msgid "Restore"
+msgstr ""
+
+#: extensions/contact-form/admin.php:163 extensions/contact-form/admin.php:262
+msgid "Delete this item permanently"
+msgstr ""
+
+#: extensions/contact-form/admin.php:165 extensions/contact-form/admin.php:264
+msgid "Delete Permanently"
+msgstr ""
+
+#: extensions/contact-form/admin.php:196
+msgid "Mark this message as spam"
+msgstr ""
+
+#: extensions/contact-form/admin.php:205 extensions/contact-form/admin.php:492
+msgid "Trash"
+msgstr ""
+
+#: extensions/contact-form/admin.php:256
+msgid "Mark this message as NOT spam"
+msgstr ""
+
+#: extensions/contact-form/admin.php:295
+msgid "Y-m-d @ g:i:s A"
+msgstr ""
+
+#: extensions/contact-form/admin.php:414
+msgid "You are not allowed to manage this item."
+msgstr ""
+
+#: extensions/contact-form/admin.php:448
+msgid "You are not allowed to move this item out of the Trash."
+msgstr ""
+
+#: extensions/contact-form/admin.php:451
+msgid "Error in restoring from Trash."
+msgstr ""
+
+#: extensions/contact-form/admin.php:455
+msgid "You are not allowed to move this item to the Trash."
+msgstr ""
+
+#: extensions/contact-form/admin.php:458
+msgid "Error in moving to Trash."
+msgstr ""
+
+#: extensions/contact-form/admin.php:482
+msgid "Messages"
+msgstr ""
+
+#: extensions/contact-form/admin.php:505
+msgid "Spam"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:38
+msgid "Email"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:39
+msgid "Website"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:42
+msgid "Subject"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:82
+#: extensions/contact-form/grunion-contact-form.php:87
+#: extensions/contact-form/grunion-contact-form.php:91
+#: extensions/contact-form/grunion-contact-form.php:102
+#: extensions/contact-form/grunion-contact-form.php:107
+#: extensions/contact-form/grunion-contact-form.php:121
+msgid "(required)"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:142
+#, php-format
+msgid "%s requires a valid email address"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:149
+#, php-format
+msgid "%s is required"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:297
+msgid "The Captcha is invalid, please try again"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:303
+#: extensions/contact-form/grunion-contact-form.php:357
+msgid "Error!"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:318
+msgid "Submit"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:362
+msgid "Message Sent"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:468
+msgid "l F j, Y \\a\\t g:i a"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:484
+msgid "Time:"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:485
+msgid "IP Address:"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:486
+msgid "Contact Form URL:"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:506
+#, php-format
+msgid ""
+"\n"
+"Sent by a verified %s user."
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:510
+msgid "Sent by an unverified visitor to your site."
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:670
+msgid "Form Feedbacks"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:671
+msgid "Feedback"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:672
+msgid "Search Feedback"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:673
+#: extensions/contact-form/grunion-contact-form.php:674
+msgid "No feedback found"
+msgstr ""
+
+#: extensions/contact-form/grunion-contact-form.php:715
+msgid "Add a custom form"
+msgstr ""
+
+#: init/CbpBootstrap.php:151
+msgid "Layouts"
+msgstr ""
+
+#: init/CbpBootstrap.php:152
+#: backend/views/content-templates-submenu-page/index.phtml:83
+#: backend/views/content-templates-submenu-page/render-links.phtml:81
+msgid "Layout"
+msgstr ""
+
+#: init/CbpBootstrap.php:153 init/CbpBootstrap.php:154
+#: init/CbpBootstrap.php:156
+msgid "Add New Layout"
+msgstr ""
+
+#: init/CbpBootstrap.php:155
+msgid "Edit Layout"
+msgstr ""
+
+#: init/CbpBootstrap.php:157
+msgid "View Layout"
+msgstr ""
+
+#: init/CbpBootstrap.php:158
+msgid "Search Layouts"
+msgstr ""
+
+#: init/CbpBootstrap.php:159
+msgid "No Layouts found"
+msgstr ""
+
+#: init/CbpBootstrap.php:160
+msgid "No Layouts found in trash"
+msgstr ""
+
+#: init/CbpBootstrap.php:194
+msgid "Templates"
+msgstr ""
+
+#: init/CbpBootstrap.php:195
+msgid "Template"
+msgstr ""
+
+#: init/CbpBootstrap.php:196 init/CbpBootstrap.php:197
+#: init/CbpBootstrap.php:199
+msgid "Add New Template"
+msgstr ""
+
+#: init/CbpBootstrap.php:198
+msgid "Edit Template"
+msgstr ""
+
+#: init/CbpBootstrap.php:200
+msgid "View Template"
+msgstr ""
+
+#: init/CbpBootstrap.php:201
+msgid "Search Templates"
+msgstr ""
+
+#: init/CbpBootstrap.php:202
+msgid "No Templates found"
+msgstr ""
+
+#: init/CbpBootstrap.php:203
+msgid "No Templates found in trash"
+msgstr ""
+
+#: backend/views/content-builder.phtml:43
+msgid "Make this layout a template"
+msgstr ""
+
+#: backend/views/content-builder.phtml:54
+msgid "Add Template"
+msgstr ""
+
+#: backend/views/content-builder.phtml:55
+msgid "Add Template Brick"
+msgstr ""
+
+#: backend/views/content-builder.phtml:61
+msgid "Add Row"
+msgstr ""
+
+#: backend/views/content-templates-submenu-page/index.phtml:6
+msgid "Create New Link"
+msgstr ""
+
+#: backend/views/content-templates-submenu-page/index.phtml:11
+msgid ""
+"This is where you create a bond between default content template like "
+"single, archive, post type etc. and a Bricklayer layout.\n"
+"                        To be more specific, here you replace a default "
+"content template with a Bricklayer layout."
+msgstr ""
+
+#: backend/views/content-templates-submenu-page/index.phtml:27
+msgid "Enter a new name"
+msgstr ""
+
+#: backend/views/content-templates-submenu-page/index.phtml:39
+#: backend/views/content-templates-submenu-page/render-links.phtml:38
+msgid "Content Template"
+msgstr ""
+
+#: backend/views/content-templates-submenu-page/index.phtml:50
+#: backend/views/content-templates-submenu-page/render-links.phtml:47
+msgid "Post Type"
+msgstr ""
+
+#: backend/views/content-templates-submenu-page/index.phtml:66
+#: backend/views/content-templates-submenu-page/render-links.phtml:64
+msgid "Filter by Term"
+msgstr ""
+
+#: backend/views/content-templates-submenu-page/index.phtml:75
+#: backend/views/content-templates-submenu-page/render-links.phtml:73
+msgid "No Filter"
+msgstr ""
+
+#: backend/views/content-templates-submenu-page/index.phtml:87
+#: backend/views/content-templates-submenu-page/render-links.phtml:85
+#: backend/views/page-meta/index.phtml:15
+msgid "No Layout"
+msgstr ""
+
+#: backend/views/content-templates-submenu-page/index.phtml:121
+msgid "Add"
+msgstr ""
+
+#: backend/views/content-templates-submenu-page/index.phtml:144
+msgid "Layout Links"
+msgstr ""
+
+#: backend/views/export-import-submenu-page/index.phtml:3
+msgid "Export/Import"
+msgstr ""
+
+#: backend/views/export-import-submenu-page/index.phtml:8
+msgid "Export Settings"
+msgstr ""
+
+#: backend/views/export-import-submenu-page/index.phtml:13
+msgid "Download"
+msgstr ""
+
+#: backend/views/export-import-submenu-page/index.phtml:16
+msgid "Download settings file to your computer."
+msgstr ""
+
+#: backend/views/export-import-submenu-page/index.phtml:21
+msgid "Import Settings"
+msgstr ""
+
+#: backend/views/export-import-submenu-page/index.phtml:25
+msgid "Overwrite Layout Links?"
+msgstr ""
+
+#: backend/views/export-import-submenu-page/index.phtml:29
+msgid "Upload"
+msgstr ""
+
+#: backend/views/export-import-submenu-page/index.phtml:39
+msgid "Error uploading file..."
+msgstr ""
+
+#: backend/views/export-import-submenu-page/index.phtml:44
+msgid "Settings Import Successful!"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:9
+msgid "Global Override Settings"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:15
+msgid "Override Global Settings for Theme Header and Footer:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:22
+msgid "Override theme header and footer:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:26
+msgid ""
+"This will exclude theme header and footer html (only if global override is "
+"checked)."
+msgstr ""
+
+#: backend/views/layouts/index.phtml:31
+msgid "Override Global Settings for Container width:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:38
+msgid "Container Width:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:42
+msgid ""
+"Set the container width in pixels. Please enter number only (only if global "
+"override is checked)."
+msgstr ""
+
+#: backend/views/layouts/index.phtml:47
+msgid "Override Global Settings for Container Padding:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:54
+msgid "Container Padding Top:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:58
+msgid ""
+"Set the container top padding in pixels. Please enter number only (only if "
+"global override is checked)."
+msgstr ""
+
+#: backend/views/layouts/index.phtml:63
+msgid "Container Padding Right:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:67
+msgid ""
+"Set the container right padding in pixels. Please enter number only (only if "
+"global override is checked)."
+msgstr ""
+
+#: backend/views/layouts/index.phtml:72
+msgid "Container Padding Bottom:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:76
+msgid ""
+"Set the container bottom padding in pixels. Please enter number only (only "
+"if global override is checked)."
+msgstr ""
+
+#: backend/views/layouts/index.phtml:81
+msgid "Container Padding Left:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:85
+msgid ""
+"Set the container left padding in pixels. Please enter number only (only if "
+"global override is checked)."
+msgstr ""
+
+#: backend/views/layouts/index.phtml:90
+msgid "Override Global Body Background Color:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:97
+msgid "Override Global Use Body Background Color:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:104
+msgid "Set Body Background Color:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:108 backend/views/layouts/index.phtml:145
+msgid "(only if global override is checked)."
+msgstr ""
+
+#: backend/views/layouts/index.phtml:130
+msgid "Override Global Body Background Image:"
+msgstr ""
+
+#: backend/views/layouts/index.phtml:137
+msgid "Set Body Background Image:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:3
+msgid "Bricklayer Settings"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:8
+msgid "Global Override Theme Header and Footer:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:11
+msgid ""
+"This will exclude theme header and footer html for all layouts, unless "
+"overriden in layout."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:15
+msgid "Global Container Width:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:18
+msgid ""
+"This will set container width for all layouts, unless overriden in layout. "
+"Set the container width in pixels. Please enter number only."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:22
+msgid "Global Container Padding Top:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:25
+msgid ""
+"This will set container top padding for all layouts, unless overriden in "
+"layout. Set the container top padding in pixels. Please enter number only."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:29
+msgid "Global Container Padding Right:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:32
+msgid ""
+"This will set container right padding for all layouts, unless overriden in "
+"layout. Set the container right padding in pixels. Please enter number only."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:36
+msgid "Global Container Padding Bottom:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:39
+msgid ""
+"This will set container bottom padding for all layouts, unless overriden in "
+"layout. Set the container bottom padding in pixels. Please enter number only."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:43
+msgid "Global Container Padding Left:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:46
+msgid ""
+"This will set container left padding for all layouts, unless overriden in "
+"layout. Set the container left padding in pixels. Please enter number only."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:50
+msgid "Global Use Background Color:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:53
+msgid "Check if you want to use background color."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:57
+msgid "Global Background Color:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:63
+msgid "Global Background Image:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:69
+msgid "Global Load Font Awesome:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:72
+msgid ""
+"Uncheck this if you dont want to load Font Awesome (maybe a theme is loading "
+"it, so we dont want to load it twice)."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:76
+msgid "Use Layout Global Settings Override:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:79
+msgid ""
+"Uncheck this if you dont want to override these global settings per layout."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:83
+msgid "Enable Layouts and Templates:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:86
+msgid "Check to enable Layouts and Templates."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:90
+msgid "Use Bricklayer Builder With Pages:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:93
+msgid "Check to use Bricklayer Builder With Pages."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:97
+msgid "Use Bricklayer Builder With Posts:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:100
+msgid "Check to use Bricklayer Builder With Posts."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:104
+msgid "Enable Bricklayer for Custom Post Type:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:110
+msgid "Enable Form Builder:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:113
+msgid "Check to enable Form Builder."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:117
+msgid "Use Recaptcha with Forms:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:120
+msgid ""
+"Check to use Recaptcha. If you enable Recaptcha you need to enter Recaptcha "
+"public and pravate keys bellow. (Only if Form Builder is enabled)"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:124
+msgid "Recaptcha Public Key:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:127
+#: backend/views/menu-page/index.phtml:134
+msgid "(Only if Form Builder is enabled)"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:131
+msgid "Recaptcha Private Key:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:138
+msgid "Custom Thumbnail Sizes:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:141
+msgid ""
+"Pipe separated list of custom thumbnail size names and sizes. Please use "
+"this format: <strong>custom-thumbnail-size:500x500|another-custom-thumbnail-"
+"size:320x150</strong>. No spaces allowed. Thumnail Sizes you register here "
+"will only be applied to any new image from now on. If you wish to apply them "
+"on any of the old images we recomend using <a href=\"http://wordpress.org/"
+"plugins/regenerate-thumbnails/\">Regenerate Thumbnails Plugin</a>"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:145
+msgid "Custom CSS:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:148
+msgid "Enter any valid custom css rules. Will be included in the frontend."
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:152
+msgid "Bricklayer Builder Skin:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:158
+msgid "Use Scroll To Top Button:"
+msgstr ""
+
+#: backend/views/menu-page/index.phtml:167
+msgid "Reset to Defaults"
+msgstr ""
+
+#: backend/views/page-meta/index.phtml:3
+msgid "Use Layout"
+msgstr ""
+
+#: backend/views/page-meta/index.phtml:12
+msgid "Select Layout"
+msgstr ""
+
+#: backend/views/style-editor-submenu-page/index.phtml:3
+msgid "Style Editor"
+msgstr ""
+
+#: backend/views/style-editor-submenu-page/index.phtml:7
+msgid "Your changes have been saved!"
+msgstr ""
+
+#: backend/views/style-editor-submenu-page/index.phtml:15
+msgid "Choose a skin:"
+msgstr ""
+
+#: backend/views/style-editor-submenu-page/index.phtml:27
+msgid "Built-in skins will be overwritten by plugin updates."
+msgstr ""
+
+#: backend/views/style-editor-submenu-page/index.phtml:28
+#: backend/views/style-editor-submenu-page/index.phtml:47
+msgid "Ctrl+Q to fold/unfold a block"
+msgstr ""
+
+#: backend/views/style-editor-submenu-page/index.phtml:33
+#: backend/views/style-editor-submenu-page/index.phtml:58
+msgid ""
+"You need to make this file writable before you can save your changes. See "
+"the <a href=\"http://codex.wordpress.org/Changing_File_Permissions\" target="
+"\"_blank\">Codex</a> for more information."
+msgstr ""
+
+#: backend/views/style-editor-submenu-page/index.phtml:35
+#: backend/views/style-editor-submenu-page/index.phtml:60
+msgid "Save changes"
+msgstr ""
+
+#: backend/views/style-editor-submenu-page/index.phtml:36
+#: backend/views/style-editor-submenu-page/index.phtml:61
+msgid "Changes cannot be reverted after saving."
+msgstr ""
+
+#: backend/views/style-editor-submenu-page/index.phtml:42
+msgid "Custom CSS Rules"
+msgstr ""
+
+#: backend/views/style-editor-submenu-page/index.phtml:46
+msgid "This file is persisted even after update."
+msgstr ""
+
+#: backend/views/style-editor-submenu-page/index.phtml:52
+msgid "/* Your Custonm CSS Rules */"
+msgstr ""

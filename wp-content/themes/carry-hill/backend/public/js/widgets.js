@@ -1,0 +1,2 @@
+/*! 28-01-2014 by krivinarius@gmail.com */
+jQuery(function(a){a("#widgets-right").ajaxComplete(function(b,c,d){var e,f,g,h={},i=d.data.split("&");for(e in i)f=i[e].split("="),h[decodeURIComponent(f[0])]=decodeURIComponent(f[1]);h.action&&"save-widget"===h.action&&(g=a('input.widget-id[value="'+h["widget-id"]+'"]').parents(".widget"),c.responseText.length<3?wpWidgets.save(g,0,1,0):a(document).trigger("saved_widget",g))})});

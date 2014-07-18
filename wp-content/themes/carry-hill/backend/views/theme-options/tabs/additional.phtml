@@ -1,0 +1,27 @@
+<h4 class="option_heading"><?php echo $this->translate('Additional Settings'); ?></h4>
+
+<div class="element ui-helper-clearfix">
+    <div class="option_description">
+        <?php echo $this->translate('If you choose to use Recaptcha, please visit this link to create your Rechaptcha keys. <a target="_blank" href="http://www.google.com/recaptcha">Recaptcha</a>'); ?>
+    </div>
+    <div class="left_element">
+        <h5><?php echo $this->translate('Use reCaptcha'); ?></h5>
+        yes:
+        <?php echo $this->formElement->radioButton('recaptcha_use', 'true'); ?>
+        no:
+        <?php echo $this->formElement->radioButton('recaptcha_use', 'false'); ?>
+
+    </div>
+</div>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php echo $this->translate('reCaptcha public key'); ?></h5>       
+        <?php echo $this->formElement->textField('rechaptcha_public_key'); ?>
+    </div>
+</div>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php echo $this->translate('reCaptcha private key'); ?></h5>
+        <?php echo $this->formElement->textField('rechaptcha_private_key'); ?>
+    </div>
+</div>

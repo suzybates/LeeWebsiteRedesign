@@ -1,0 +1,62 @@
+
+<div class="wrapper">
+
+    <div id="save-background">
+        <div id="save-succes">Theme settings updated successfully.</div>
+    </div>
+
+    <div id="reset-background">
+        <div id="reset-succes">Theme settings reseted successfully.</div>
+    </div>
+
+    <img style="display:none;" src="<?php echo CHT_BACKEND_PUBLIC_URI; ?>/css/img/ajax-loader.gif" id="ajax-loading-img" alt="Working..." />          
+
+
+    <div id="options-header" class="ui-widget-header ui-widget ui-corner-all ui-tabs">
+        <i class="fa fa-cogs fa-3x"></i>
+        <!--<img src="<?php // echo CHT_FRONT_PUBLIC_URI; ?>/img/logo-light-orange.png" alt="logo" width="80px"/>-->
+        <div class="options-title"><?php echo $this->option_name; ?></div><br />
+    </div>
+
+    <form action="" enctype="multipart/form-data"  id="options_form" >
+
+        <!--Start of jQuery tabs-->
+
+        <div id="tabs-left" >
+            <ul>
+                <div id="empty" ></div>
+                <?php foreach ($this->tabs as $index => $tab): ?>
+                    <li>
+                        <a href="#tabs-left-<?php echo $index; ?>">
+                            <?php if ($tab->icon) echo  $tab->icon; ?>  
+                            <?php echo $tab->title; ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+
+            <!--Start of tab content-->
+            
+            <?php foreach ($this->tabs as $index => $tab): ?>
+                <div id="tabs-left-<?php echo $index; ?>">
+                    <!--passing down formElement-->
+                    <?php $tab->formElement  = $this->formElement; ?>
+                    <?php $tab->webFonts     = $this->webFonts; ?>
+                    <?php $tab->colorSchemes = $this->colorSchemes; ?>
+                    <?php $tab->render(); ?>
+                </div> <!--end of tabs-# -->        
+            <?php endforeach; ?>
+                
+        </div><!--end of tabs-->
+
+        <div id="options-footer" class="ui-widget-header ui-widget ui-corner-all ui-tabs">
+            <?php echo $this->formElement->submitButton('save', 'Save All Changes', 'save-button button-primary'); ?>
+    </form><!--end of options_form-->
+
+    <form action="" method="POST" id="options_form_reset">
+        <?php echo $this->formElement->submitButton('total-reset', 'Reset to Defaults'); ?>
+    </form><!--end of options_form_reset-->
+</div><!--end of options_footer-->
+
+
+</div><!--end of wrapper-->

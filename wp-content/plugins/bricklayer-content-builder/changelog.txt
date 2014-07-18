@@ -1,0 +1,31 @@
+/*-----2014-07-05-----*/
+- fix backbone template tags
+- bx slider update js v4.1.2
+- use of date_i18n
+
+/*-----2014-03-10-----*/
+- Bricklayer widgets renamed to "Bricks"
+- New Section: "Layout Assignment"
+- ADDED: enable Bricklayer builder for any Custom Post Type from Settings page
+- ADDED: enable / disable Bricklayer builder for Pages
+- New Brick: "The Loop"
+- New Brick: "Post Title"
+- New Brick: "Post Content"
+- New Brick: "Meta Data"
+- New Brick: "Comments"
+- New Brick: "Featured Image"
+- New Brick: "Shortcode"
+- Bricks renamed: "Post List" to "Blog List", "Single Post" to "Single Blog" 
+- New Section: "Style Editor" - backend Bricklayer builder style editor
+- ADDED: 1 new Bricklayer builder skin
+- New Section: "Export/Import" - for exporting/importing Bricklayer settings
+- Layouts & Templates are "on" by default
+- Form Builder is now optional and is turned on/off in Settings page
+- "Menu" Brick: custom css classes moved to brick wrapper
+- Bugfix: "Box" brick padding
+- ADDED: New filter hooks for filtering brick default settings
+- ADDED: Brick description - Now you can describe what each brick do
+- ADDED: Template shortcode - [bricklayer_template id="x"]
+
+/*-----2014-02-16-----*/
+- Initial release

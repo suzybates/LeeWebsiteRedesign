@@ -1,0 +1,153 @@
+<div class="widget-liquid-left">
+    <div id="widgets-left" class="chooser">
+        <div id="available-widgets" class="widgets-holder-wrap ui-droppable">
+            <div class="sidebar-name">
+                <div class="sidebar-name-arrow"><br></div>
+                <h3><?php echo CbpUtils::translate('Create New Link'); ?></h3>
+            </div>
+            <div class="widget-holder">
+                <div class="sidebar-description">
+                    <p class="description">
+                        <?php echo CbpUtils::translate('This is where you create a bond between default content template like single, archive, post type etc. and a Bricklayer layout.
+                        To be more specific, here you replace a default content template with a Bricklayer layout.'); ?>
+                    </p>
+                </div>
+                <div id="widget-list">
+                    <div id="widget-1_archives-__i__" class="widget ui-draggable widget-in-question">
+                        <div class="widget-top">
+                            <div class="widget-title-action">
+                                <a class="widget-action hide-if-no-js" href="#available-widgets"></a>
+                                <a class="widget-control-edit hide-if-js" href="/wp-plg-content-builder/wp-admin/widgets.php?editwidget=archives-3&amp;addnew=1&amp;num=4&amp;base=archives">
+                                    <span class="edit">Edit</span>
+                                    <span class="add">Add</span>
+                                    <span class="screen-reader-text">Archives</span>
+                                </a>
+                            </div>
+                            <div class="widget-title">
+                                <h4><?php echo CbpUtils::translate('Enter a new name'); ?><span class="in-widget-title"></span></h4>
+                            </div>
+                        </div>
+
+                        <div class="widget-inside">
+                            <form action="" method="post">
+                                <div class="widget-content">
+                                    <p>
+                                        <label for="cbp-link-title">Title:</label>
+                                        <input class="widefat cbp-link-title" name="cbp-link-title" type="text" value="">
+                                    </p>
+                                    <p>
+                                        <label for="cbp-template-select"><?php echo CbpUtils::translate('Content Template'); ?>:</label>
+                                        <br />
+                                        <select class="cbp-template-select" name="cbp-template-select" class="cbp-template-select">
+
+                                            <?php foreach ($this->contentTemplates as $key => $contentTemplate): ?>
+                                                <option value="<?php echo $key; ?>"><?php echo $contentTemplate; ?></option>
+                                            <?php endforeach; ?>
+
+                                        </select>
+                                    </p>
+                                    <p>
+                                        <label for="cbp-post-type-select"><?php echo CbpUtils::translate('Post Type'); ?>:</label>
+                                        <br />
+                                        <select class="cbp-post-type-select" name="cbp-post-type-select" class="cbp-template-select">
+                                            <?php
+                                            $post_types = get_post_types(array(
+                                                'public' => true,
+                                                    ), 'names');
+                                            ?>
+                                            <?php unset($post_types['page']); ?>
+                                            <?php foreach ($post_types as $post_type): ?>
+                                                <option value="<?php echo $post_type; ?>"><?php echo $post_type; ?></option>
+                                            <?php endforeach; ?>
+
+                                        </select>
+                                    </p>
+                                    <p>
+                                        <label for="cbp-term-select"><?php echo $this->translate('Filter by Term'); ?>:</label>
+                                        <br />
+                                        <?php
+                                        $terms = array();
+                                        foreach (get_taxonomies() as $taxonomy) {
+                                            $terms = array_merge($terms, get_categories(array('taxonomy' => $taxonomy)));
+                                        }
+                                        ?>
+                                        <select class="cbp-term-select" name="cbp-term-select" class="cbp-term-select">
+                                            <option value=""><?php echo $this->translate('No Filter'); ?></option>
+                                            <?php foreach ($terms as $term): ?>
+                                                <option value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
+                                            <?php endforeach; ?>
+
+                                        </select>
+                                    </p>
+                                    <p>
+                                        <label for="cbp-layout-select"><?php echo CbpUtils::translate('Layout'); ?>:</label>
+                                        <br />
+                                        <?php $layouts = get_posts(array('post_type' => 'layouts')); ?>
+                                        <select class="cbp-layout-select" name="cbp-layout-select">
+                                            <option value=""><?php echo $this->translate('No Layout'); ?></option>
+                                            <?php foreach ($layouts as $layout): ?>
+                                                <option value="<?php echo $layout->ID; ?>"><?php echo $layout->post_title; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </p>
+
+                                </div>
+
+
+                                <div class="widget-control-actions">
+                                    <div class="alignleft">
+                                        <a class="widget-control-remove" href="#remove">Delete</a> |
+                                        <a class="widget-control-close" href="#close">Close</a>
+                                    </div>
+                                    <div class="alignright">
+                                        <input type="submit" name="savewidget" id="widget-archives-__i__-savewidget" class="button button-primary widget-control-save right" value="Save">			<span class="spinner"></span>
+                                    </div>
+                                    <br class="clear">
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--                        <div class="widget-description">
+                                                    Enter a new name and press Add button.
+                                                </div>-->
+                        <div class="widgets-chooser" style="display: block;">
+                            <ul class="widgets-chooser-sidebars">
+
+                                <li tabindex="0" class="widgets-chooser-selected" data-sidebar-id="cbp_content_templates">
+                                    <input id="cbp-template-link-name" type="text" style="width: 100%"/>
+                                </li>
+                            </ul>
+                            <div class="widgets-chooser-actions">                                
+                                <button class="button-primary"><?php echo CbpUtils::translate('Add'); ?></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br class="clear">
+            </div>
+            <br class="clear">
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+<div class="widget-liquid-right">
+    <div id="widgets-right" class="single-sidebar">
+        <div class="sidebars-column-1">
+            <div class="widgets-holder-wrap">
+                <div id="cbp_content_templates" class="widgets-sortables ui-sortable">		
+                    <div class="sidebar-name">
+                        <h3><?php echo CbpUtils::translate('Layout Links'); ?> <span class="spinner"></span></h3>
+                    </div>
+                    <div class="sidebar-description"><p class="description"></p></div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

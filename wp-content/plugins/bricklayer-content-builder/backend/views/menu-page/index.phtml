@@ -1,0 +1,170 @@
+<div class="wrap">
+    <div id="icon-options-general" class="icon32"><br></div>
+    <h2><?php echo $this->translate('Bricklayer Settings'); ?></h2>
+    <form id="<?php echo CbpWidgets::getPrefix(); ?>-options-form" action="#">
+        <table class="form-table">
+            <tbody>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Global Override Theme Header and Footer:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkbox('global_theme_override', 1); ?>
+                        <p class="description"><?php echo $this->translate('This will exclude theme header and footer html for all layouts, unless overriden in layout.'); ?></p>
+                    </td>
+                </tr>                
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Global Container Width:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->textField('global_container_width'); ?>
+                        <p class="description"><?php echo $this->translate('This will set container width for all layouts, unless overriden in layout. Set the container width in pixels. Please enter number only.'); ?></p>
+                    </td>
+                </tr>                
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Global Container Padding Top:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->textField('global_container_padding_top'); ?>
+                        <p class="description"><?php echo $this->translate('This will set container top padding for all layouts, unless overriden in layout. Set the container top padding in pixels. Please enter number only.'); ?></p>
+                    </td>
+                </tr>                
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Global Container Padding Right:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->textField('global_container_padding_right'); ?>
+                        <p class="description"><?php echo $this->translate('This will set container right padding for all layouts, unless overriden in layout. Set the container right padding in pixels. Please enter number only.'); ?></p>
+                    </td>
+                </tr>                
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Global Container Padding Bottom:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->textField('global_container_padding_bottom'); ?>
+                        <p class="description"><?php echo $this->translate('This will set container bottom padding for all layouts, unless overriden in layout. Set the container bottom padding in pixels. Please enter number only.'); ?></p>
+                    </td>
+                </tr>                
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Global Container Padding Left:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->textField('global_container_padding_left'); ?>
+                        <p class="description"><?php echo $this->translate('This will set container left padding for all layouts, unless overriden in layout. Set the container left padding in pixels. Please enter number only.'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Global Use Background Color:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkbox('global_use_background_color', 1); ?>
+                        <p class="description"><?php echo $this->translate('Check if you want to use background color.'); ?></p>
+                    </td>
+                </tr> 
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Global Background Color:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->textField('global_background_color', 'spectrum-color'); ?>
+                    </td>
+                </tr>                
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Global Background Image:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->upload('global_background_image'); ?>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Global Load Font Awesome:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkbox('global_load_font_awesome', 1); ?>
+                        <p class="description"><?php echo $this->translate('Uncheck this if you dont want to load Font Awesome (maybe a theme is loading it, so we dont want to load it twice).'); ?></p>
+                    </td>
+                </tr> 
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Use Layout Global Settings Override:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkbox('use_layout_global_settings_override', 1); ?>
+                        <p class="description"><?php echo $this->translate('Uncheck this if you dont want to override these global settings per layout.'); ?></p>
+                    </td>
+                </tr> 
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Enable Layouts and Templates:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkbox('use_content_builder_layouts_and_templates', 1); ?>
+                        <p class="description"><?php echo $this->translate('Check to enable Layouts and Templates.'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Use Bricklayer Builder With Pages:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkbox('use_content_builder_with_pages', 1); ?>
+                        <p class="description"><?php echo $this->translate('Check to use Bricklayer Builder With Pages.'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Use Bricklayer Builder With Posts:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkbox('use_content_builder_with_posts', 1); ?>
+                        <p class="description"><?php echo $this->translate('Check to use Bricklayer Builder With Posts.'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Enable Bricklayer for Custom Post Type:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkboxPostTypeMultiple('enabled_custom_post_types'); ?>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Enable Form Builder:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkbox('use_form_builder', 1); ?>
+                        <p class="description"><?php echo $this->translate('Check to enable Form Builder.'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Use Recaptcha with Forms:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkbox('recaptcha_use', 1); ?>
+                        <p class="description"><?php echo $this->translate('Check to use Recaptcha. If you enable Recaptcha you need to enter Recaptcha public and pravate keys bellow. (Only if Form Builder is enabled)'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Recaptcha Public Key:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->textField('rechaptcha_public_key'); ?>
+                        <p class="description"><?php echo $this->translate('(Only if Form Builder is enabled)'); ?></p>
+                    </td>
+                </tr> 
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Recaptcha Private Key:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->textField('rechaptcha_private_key'); ?>
+                        <p class="description"><?php echo $this->translate('(Only if Form Builder is enabled)'); ?></p>
+                    </td>
+                </tr> 
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Custom Thumbnail Sizes:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->textarea('custom_thumbnail_sizes'); ?>
+                        <p class="description"><?php echo $this->translate('Pipe separated list of custom thumbnail size names and sizes. Please use this format: <strong>custom-thumbnail-size:500x500|another-custom-thumbnail-size:320x150</strong>. No spaces allowed. Thumnail Sizes you register here will only be applied to any new image from now on. If you wish to apply them on any of the old images we recomend using <a href="http://wordpress.org/plugins/regenerate-thumbnails/">Regenerate Thumbnails Plugin</a>'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Custom CSS:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->textarea('custom_css', 10, 30, 'cbp-codemirror'); ?>
+                        <p class="description"><?php echo $this->translate('Enter any valid custom css rules. Will be included in the frontend.'); ?></p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Bricklayer Builder Skin:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->select('bricklayer_builder_skin', $this->skins); ?>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Use Scroll To Top Button:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkbox('use_scroll_to_top', 1); ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="submit">
+            <input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes">
+            <button id="<?php echo CbpWidgets::getPrefix(); ?>-options-reset" class="button" type="submit"><?php echo $this->translate('Reset to Defaults'); ?></button>
+        </p>
+    </form>
+</div>

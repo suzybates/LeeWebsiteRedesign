@@ -1,0 +1,16 @@
+/*
+ Theme Name:   Carry Hill Child
+ Theme URI:    http://example.com/cary-hill/
+ Description:  Carry Hill Child Theme
+ Author:       Aislin
+ Author URI:   http://example.com
+ Template:     carry-hill
+ Version:      1.0.0
+ Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+ Text Domain:  carry-hill
+*/
+
+@import url("../carry-hill/style.css");
+
+/* =Theme customization starts here
+-------------------------------------------------------------- */

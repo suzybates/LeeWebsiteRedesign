@@ -1,0 +1,842 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Carry Hill\n"
+"POT-Creation-Date: 2014-04-16 00:09+0100\n"
+"PO-Revision-Date: 2014-04-16 00:09+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: translate;__;_e\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: 404.php:16
+msgid "This is somewhat embarrassing, isn&rsquo;t it?"
+msgstr ""
+
+#: 404.php:17
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+
+#: activate-plugins.php:105 class-tgm-plugin-activation.php:155
+msgid "Install Required Plugins"
+msgstr ""
+
+#: activate-plugins.php:106 class-tgm-plugin-activation.php:156
+msgid "Install Plugins"
+msgstr ""
+
+#: activate-plugins.php:107 class-tgm-plugin-activation.php:157
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr ""
+
+#: activate-plugins.php:108
+msgid "Something went wrong with the plugin API."
+msgstr ""
+
+#: activate-plugins.php:119 class-tgm-plugin-activation.php:169
+msgid "Return to Required Plugins Installer"
+msgstr ""
+
+#: activate-plugins.php:120 class-tgm-plugin-activation.php:171
+#: class-tgm-plugin-activation.php:1840
+msgid "Plugin activated successfully."
+msgstr ""
+
+#: activate-plugins.php:121
+#, php-format
+msgid "All plugins installed and activated successfully. %s"
+msgstr ""
+
+#: archive-portfolio.php:62
+msgid "More Photos"
+msgstr ""
+
+#: archive.php:24
+#, php-format
+msgid "Daily Archives: %s"
+msgstr ""
+
+#: archive.php:26
+#, php-format
+msgid "Monthly Archives: %s"
+msgstr ""
+
+#: archive.php:28
+#, php-format
+msgid "Yearly Archives: %s"
+msgstr ""
+
+#: archive.php:30
+msgid "Archives"
+msgstr ""
+
+#: archive.php:51 author.php:67 category.php:25 index.php:19 search.php:18
+msgid "read more"
+msgstr ""
+
+#: author-bio.php:15
+#, php-format
+msgid "About %s"
+msgstr ""
+
+#: author-bio.php:19
+#, php-format
+msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
+msgstr ""
+
+#: author.php:21
+msgid "Author"
+msgstr ""
+
+#: author.php:46
+#, php-format
+msgid "All posts by %s"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:158
+msgid "Something went wrong."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:170
+msgid "Return to the dashboard"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:172
+msgid "The following plugin was activated successfully:"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:173
+#, php-format
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:174
+msgid "Dismiss this notice"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1085
+msgid "External Link"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1090
+msgid "Private Repository"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1093
+msgid "Pre-Packaged"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1097
+msgid "WordPress Repository"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1100
+msgid "Required"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1100
+msgid "Recommended"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1103
+msgid "Not Installed"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1105
+msgid "Installed But Not Activated"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1275
+#, php-format
+msgid ""
+"No plugins to install or activate. <a href=\"%1$s\" title=\"Return to the "
+"Dashboard\">Return to the Dashboard</a>"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1291
+msgid "Plugin"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1292
+msgid "Source"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1293
+msgid "Type"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1294
+msgid "Status"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1312
+msgid "Install"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1313
+msgid "Activate"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1823
+msgid "Install package not available."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1824
+#, php-format
+msgid "Downloading install package from <span class=\"code\">%s</span>&#8230;"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1825
+msgid "Unpacking the package&#8230;"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1826
+msgid "Installing the plugin&#8230;"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1827
+msgid "Plugin install failed."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1828
+msgid "Plugin installed successfully."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1839
+msgid "Plugin activation failed."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1949
+msgid ""
+"The installation and activation process is starting. This process may take a "
+"while on some hosts, so please be patient."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1950
+#, php-format
+msgid "%1$s installed and activated successfully."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1950 class-tgm-plugin-activation.php:1959
+msgid "Show Details"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1950 class-tgm-plugin-activation.php:1959
+msgid "Hide Details"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1951
+msgid "All installations and activations have been completed."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1952
+#, php-format
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1956
+msgid ""
+"The installation process is starting. This process may take a while on some "
+"hosts, so please be patient."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1957
+#, php-format
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1958
+#, php-format
+msgid "The installation of %1$s failed."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1959
+#, php-format
+msgid "%1$s installed successfully."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1960
+msgid "All installations have been completed."
+msgstr ""
+
+#: class-tgm-plugin-activation.php:1961
+#, php-format
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: class-tgm-plugin-activation.php:2052
+msgid "Return to the Dashboard"
+msgstr ""
+
+#: comments.php:43
+msgid "Comment navigation"
+msgstr ""
+
+#: comments.php:44
+msgid "&larr; Older Comments"
+msgstr ""
+
+#: comments.php:45
+msgid "Newer Comments &rarr;"
+msgstr ""
+
+#: comments.php:50
+msgid "Comments are closed."
+msgstr ""
+
+#: content-none.php:9 search.php:22
+msgid "Nothing Found"
+msgstr ""
+
+#: content-none.php:13
+msgid ""
+"Apologies, but no results were found. Perhaps searching will help find a "
+"related post."
+msgstr ""
+
+#: content.php:23 backend/models/ChtComments.php:59 partials/single.php:29
+msgid "Edit"
+msgstr ""
+
+#: content.php:41
+msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
+msgstr ""
+
+#: content.php:42
+msgid "Pages:"
+msgstr ""
+
+#: content.php:49
+msgid "Leave a comment"
+msgstr ""
+
+#: content.php:49
+msgid "One comment so far"
+msgstr ""
+
+#: content.php:49
+#, php-format
+msgid "View all % comments"
+msgstr ""
+
+#: page-custom_2.php:10
+#, php-format
+msgid ""
+"Posted <time class=\"updated\" datetime=\"%1$s\" pubdate>%2$s</time> by "
+"<span class=\"author\">%3$s</span>."
+msgstr ""
+
+#: page-custom_2.php:10
+msgid "F jS, Y"
+msgstr ""
+
+#: page-custom_2.php:17
+msgid "Tags:"
+msgstr ""
+
+#: page-custom_2.php:35
+msgid "Oops, Post Not Found!"
+msgstr ""
+
+#: page-custom_2.php:38
+msgid "Uh Oh. Something is missing. Try double checking things."
+msgstr ""
+
+#: page-custom_2.php:41
+msgid "This is the error message in the page-custom.php template."
+msgstr ""
+
+#: search.php:24
+msgid ""
+"Sorry, but nothing matched your search criteria. Please try again with some "
+"different keywords."
+msgstr ""
+
+#: sidebar-footer-top.php:12 sidebar.php:12
+msgid "Please activate some Widgets."
+msgstr ""
+
+#: taxonomy-portfolio_category.php:31
+msgid "All"
+msgstr ""
+
+#: backend/models/ChtComments.php:17
+msgid "Pingback:"
+msgstr ""
+
+#: backend/models/ChtComments.php:17
+msgid "(Edit)"
+msgstr ""
+
+#: backend/models/ChtComments.php:36
+msgid "Reply"
+msgstr ""
+
+#: backend/models/ChtComments.php:42
+msgid "Post author -"
+msgstr ""
+
+#: backend/models/ChtComments.php:46
+#, php-format
+msgid "%1$s at %2$s"
+msgstr ""
+
+#: backend/models/ChtComments.php:54
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: base/ChtWidgetHelper.php:45 base/ChtWidgetHelper.php:58
+#: base/ChtWidgetHelper.php:68 base/ChtWidgetHelper.php:92
+#: base/ChtWidgetHelper.php:111 base/ChtWidgetHelper.php:126
+#: base/ChtWidgetHelper.php:145 base/ChtWidgetHelper.php:161
+msgid ":"
+msgstr ""
+
+#: base/ChtWidgetHelper.php:78
+msgid "Width:"
+msgstr ""
+
+#: base/ChtWidgetHelper.php:147 base/ChtWidgetHelper.php:163
+msgid "Select page"
+msgstr ""
+
+#: init/ChtBootstrap.php:57
+msgid "Regular Sidebar"
+msgstr ""
+
+#: init/ChtBootstrap.php:59
+msgid "Widgets in this area will be shown on the right-hand side."
+msgstr ""
+
+#: init/ChtBootstrap.php:67
+msgid "Footer Top Sidebar"
+msgstr ""
+
+#: init/ChtBootstrap.php:69
+msgid "Widgets in this area will be shown abpve the footer."
+msgstr ""
+
+#: init/config.php:125
+msgid "Sticky"
+msgstr ""
+
+#: init/config.php:131 init/config.php:137
+msgid ", "
+msgstr ""
+
+#: init/config.php:144
+#, php-format
+msgid "View all posts by %s"
+msgstr ""
+
+#: init/config.php:165
+#, php-format
+msgid "Permalink to %s"
+msgstr ""
+
+#: init/config.php:202
+#, php-format
+msgid "Page %s"
+msgstr ""
+
+#: partials/page-title.php:28
+#, php-format
+msgid "Category Archives: %s"
+msgstr ""
+
+#: partials/page-title.php:33
+msgid "404 Not Found"
+msgstr ""
+
+#: partials/page-title.php:35
+msgid "Search Results"
+msgstr ""
+
+#: backend/views/page-meta/index.phtml:2
+msgid "Font Awesome Icon"
+msgstr ""
+
+#: backend/views/theme-options/tabs/additional.phtml:1
+msgid "Additional Settings"
+msgstr ""
+
+#: backend/views/theme-options/tabs/additional.phtml:5
+msgid ""
+"If you choose to use Recaptcha, please visit this link to create your "
+"Rechaptcha keys. <a target=\"_blank\" href=\"http://www.google.com/recaptcha"
+"\">Recaptcha</a>"
+msgstr ""
+
+#: backend/views/theme-options/tabs/additional.phtml:8
+msgid "Use reCaptcha"
+msgstr ""
+
+#: backend/views/theme-options/tabs/additional.phtml:18
+msgid "reCaptcha public key"
+msgstr ""
+
+#: backend/views/theme-options/tabs/additional.phtml:24
+msgid "reCaptcha private key"
+msgstr ""
+
+#: backend/views/theme-options/tabs/blog.phtml:1
+msgid "Blog Settings"
+msgstr ""
+
+#: backend/views/theme-options/tabs/blog.phtml:4
+msgid "Use Layouts With Posts"
+msgstr ""
+
+#: backend/views/theme-options/tabs/blog.phtml:8
+msgid "If this is checked a layout can be assigned to single post."
+msgstr ""
+
+#: backend/views/theme-options/tabs/blog.phtml:13
+msgid "Single Post Layout"
+msgstr ""
+
+#: backend/views/theme-options/tabs/blog.phtml:22
+msgid "Select a layout for single blog."
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:2
+msgid ""
+"If any of the fields is left blank, any visual or textual content "
+"corresponding to that field will not be displayed."
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:4
+msgid "Favicon"
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:7
+msgid "Upload favicon. (<em>16px x 16px ico format</em>)"
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:11
+msgid "Logo"
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:14
+msgid "Upload logo."
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:19
+msgid "Header"
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:23
+msgid "Enable Sticky Header Menu"
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:24
+msgid "yes"
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:26
+msgid "no"
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:30
+msgid "Footer Text"
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:33
+msgid "Footer Text on the right."
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:40
+msgid "Google Analytics"
+msgstr ""
+
+#: backend/views/theme-options/tabs/general.phtml:43
+msgid "Paste your google analytics code here."
+msgstr ""
+
+#: backend/views/theme-options/tabs/portfolio.phtml:1
+msgid "Portfolio Settings"
+msgstr ""
+
+#: backend/views/theme-options/tabs/portfolio.phtml:4
+msgid "Use Layouts With Single Portfolio Post"
+msgstr ""
+
+#: backend/views/theme-options/tabs/portfolio.phtml:8
+msgid "If this is checked a layout can be assigned to single portfolio post."
+msgstr ""
+
+#: backend/views/theme-options/tabs/portfolio.phtml:13
+msgid "Portfolio Single Post Layout"
+msgstr ""
+
+#: backend/views/theme-options/tabs/portfolio.phtml:22
+msgid "Select a layout for single portfolio post."
+msgstr ""
+
+#: backend/views/theme-options/tabs/portfolio.phtml:27
+msgid "Use Layouts With Portfolio Categories"
+msgstr ""
+
+#: backend/views/theme-options/tabs/portfolio.phtml:31
+msgid "If this is checked a layout can be assigned to portfolio category."
+msgstr ""
+
+#: backend/views/theme-options/tabs/portfolio.phtml:36
+msgid "Portfolio Category Layout"
+msgstr ""
+
+#: backend/views/theme-options/tabs/portfolio.phtml:45
+msgid "Select a layout for portfolio category."
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:11
+msgid "Colors"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:14
+msgid "Select Color Scheme"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:15
+msgid "Current color scheme"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:18
+msgid ""
+"Choose one color scheme preset below. You are free to alter the preset to "
+"your liking. Whenever you wish to return to original preset colors just "
+"click on one of the preset icons again. Beware that all colors will be reset "
+"to preset colors selected."
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:34
+msgid "Color Presets"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:42
+msgid ""
+"This color picker allows you to predifine colors which will be displayed in "
+"all other color pickers as presets."
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:52
+msgid "Header Menu"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:55
+#: backend/views/theme-options/tabs/styling.phtml:134
+#: backend/views/theme-options/tabs/styling.phtml:143
+#: backend/views/theme-options/tabs/styling.phtml:152
+#: backend/views/theme-options/tabs/styling.phtml:267
+msgid "Text Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:59
+msgid "Active Background Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:63
+msgid "Active Text Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:67
+msgid "Hover Background Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:71
+msgid "Hover Text Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:75
+msgid "Shadow Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:79
+msgid ""
+"Some of the color settings for the main manu will also be applied to other "
+"elements e.g. widget hover colors..."
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:83
+msgid "Header Menu Font Size"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:91
+msgid "Headings Font settings"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:93
+msgid "H1 Font Size"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:95
+msgid "H2 Font Size"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:97
+msgid "H3 Font Size"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:99
+msgid "H4 Font Size"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:101
+msgid "H5 Font Size"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:103
+msgid "H6 Font Size"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:105
+msgid "Headings Text Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:107
+msgid "Headings Hover Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:109
+msgid "Headings Font Family"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:111
+msgid "Subtitle Text Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:113
+msgid "Subtitle Font Family"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:127
+msgid "Slider Title Settings"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:130
+msgid "CSS Class: ch-slider-title-big"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:132
+msgid "Font Size"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:136
+#: backend/views/theme-options/tabs/styling.phtml:145
+#: backend/views/theme-options/tabs/styling.phtml:154
+msgid "Text Shadow"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:141
+msgid "CSS Class: ch-slider-title, ch-slider-title-italic"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:150
+msgid "CSS Class: ch-slider-border-title"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:157
+msgid ""
+"Please use this classes when setting layer attributes for text layer on a "
+"Layer Slider slide."
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:165
+msgid "Body Font settings"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:167
+msgid "Body Font Family"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:169
+msgid "Body Font Size"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:171
+msgid "Body Background Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:173
+msgid "Body Text Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:186
+msgid "Feature Box settings"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:189
+msgid "Icon Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:193
+msgid "Icon Hover Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:197
+msgid "Circle Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:201
+msgid "Circle Hover Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:212
+msgid "Link Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:216
+msgid "Link Hover Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:227
+msgid "Button Font Size"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:231
+msgid "Button Background Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:235
+msgid "Button Background Hover Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:239
+msgid "Button Text Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:243
+msgid "Button Text Hover Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:247
+msgid "Button Text Shadow Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:251
+msgid "Button Text Shadow Hover Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:255
+msgid "Button Border Shadow Color"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:264
+msgid "Footer"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:276
+#: backend/views/theme-options/tabs/styling.phtml:279
+msgid "Custom CSS"
+msgstr ""
+
+#: backend/views/theme-options/tabs/styling.phtml:283
+msgid "Enter custom CSS code."
+msgstr ""

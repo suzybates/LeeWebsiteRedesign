@@ -1,0 +1,48 @@
+<h4 class="option_heading"><?php echo $this->translate('Portfolio Settings'); ?></h4>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php echo $this->translate('Use Layouts With Single Portfolio Post'); ?></h5>
+        <?php echo $this->formElement->checkbox('portfolio_use_content_builder_single'); ?>
+    </div>
+    <div class="option_description">
+        <?php echo $this->translate('If this is checked a layout can be assigned to single portfolio post.'); ?>
+    </div>
+</div>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php echo $this->translate('Portfolio Single Post Layout'); ?></h5>
+        <?php $layouts  = get_posts(array('post_type' => 'layouts')); ?>
+        <?php $lyts = array(); ?>
+        <?php foreach ($layouts as $layout): ?>
+            <?php $lyts[$layout->ID] = $layout->post_title; ?>
+        <?php endforeach; ?>
+        <?php echo $this->formElement->select('portfolio_layout_single_post', $lyts, true); ?>
+    </div>
+    <div class="option_description">
+        <?php echo $this->translate('Select a layout for single portfolio post.'); ?>
+    </div>
+</div>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php echo $this->translate('Use Layouts With Portfolio Categories'); ?></h5>
+        <?php echo $this->formElement->checkbox('portfolio_use_content_builder_category'); ?>
+    </div>
+    <div class="option_description">
+        <?php echo $this->translate('If this is checked a layout can be assigned to portfolio category.'); ?>
+    </div>
+</div>
+<div class="element ui-helper-clearfix">
+    <div class="left_element">
+        <h5><?php echo $this->translate('Portfolio Category Layout'); ?></h5>
+        <?php $layouts  = get_posts(array('post_type' => 'layouts')); ?>
+        <?php $lyts = array(); ?>
+        <?php foreach ($layouts as $layout): ?>
+            <?php $lyts[$layout->ID] = $layout->post_title; ?>
+        <?php endforeach; ?>
+        <?php echo $this->formElement->select('portfolio_layout_category', $lyts, true); ?>
+    </div>
+    <div class="option_description">
+        <?php echo $this->translate('Select a layout for portfolio category.'); ?>
+    </div>
+</div>
+    
