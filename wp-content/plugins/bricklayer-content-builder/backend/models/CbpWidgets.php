@@ -249,6 +249,7 @@ if (!class_exists('CbpWidgets')):
             CbpWidgets::registerWidget('CbpWidgetImage');
             CbpWidgets::registerWidget('CbpWidgetMenu');
             CbpWidgets::registerWidget('CbpWidgetAccordion');
+            CbpWidgets::registerWidget('CbpWidgetSchedule');
             CbpWidgets::registerWidget('CbpWidgetTabs');
             CbpWidgets::registerWidget('CbpWidgetGallery');
             CbpWidgets::registerWidget('CbpWidgetMap');
@@ -261,6 +262,7 @@ if (!class_exists('CbpWidgets')):
             CbpWidgets::registerWidget('CbpWidgetWpWidget'); // this one can be unregistered with a filter
             CbpWidgets::registerWidget('CbpWidgetDivider');
             CbpWidgets::registerWidget('CbpWidgetLinkToPage');
+            CbpWidgets::registerWidget('CbpWidgetLinkToPage2');
             CbpWidgets::registerWidget('CbpWidgetButton');
             CbpWidgets::registerWidget('CbpWidgetBreadcrumbs');
             CbpWidgets::registerWidget('CbpWidgetShortcode');
@@ -278,7 +280,8 @@ if (!class_exists('CbpWidgets')):
             }
 
             CbpWidgets::registerWidget('CbpSubwidgetGalleryItem');
-            CbpWidgets::registerWidget('CbpSubwidgetAccordionItem');
+            CbpWidgets::registerWidget(' ');
+            CbpWidgets::registerWidget('CbpSubwidgetScheduleItem');
             CbpWidgets::registerWidget('CbpSubwidgetSliderItem');
             CbpWidgets::registerWidget('CbpSubwidgetTabsItem');
             CbpWidgets::registerWidget('CbpSubwidgetMetaItem');
