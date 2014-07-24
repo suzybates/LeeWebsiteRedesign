@@ -16,19 +16,38 @@ if (!class_exists('CbpWidgetSchedule')):
         public function registerFormElements($elements)
         {
             $elements['content'] = '';
+            $elements['title']   = '';
+            $elements['title_size'] = 'h2';
 
             return parent::registerFormElements($elements);
         }
 
         public function form($instance)
         {
+            CbpWidgetFormElements::text(array(
+                'name'              => $this->getIdString('title'),
+                'value'             => $instance['title'],
+                'description_title' => $this->translate('Custom Title'),
+                'description_body'  => $this->translate(''),
+            ));
+            CbpWidgetFormElements::select(array(
+                'options' => array(
+                    'h1'                => $this->translate('H1'),
+                    'h2'                => $this->translate('H2'),
+                    'h3'                => $this->translate('H3'),
+                    'h4'                => $this->translate('H4'),
+                    'h5'                => $this->translate('H5'),
+                    'h6'                => $this->translate('H6'),
+                ),
+                'name'              => $this->getIdString('title_size'),
+                'value'             => $instance['title_size'],
+                'description_title' => $this->translate('Title Size'),
+            ));
 
             parent::form($instance);
 
             CbpWidgetFormElements::subwidgetItems(array(
                 'type'         => 'cbp_schedule_item',
-                'title'                => '',
-                'title_size'           => 'h2',
                 'subwidget_id' => 'cbp_subwidget_schedule_item',
                 'value'        => $instance['content'],
             ));
@@ -38,6 +57,8 @@ if (!class_exists('CbpWidgetSchedule')):
         {
             extract(shortcode_atts(array(
                         'type'               => 'cbp_widget_schedule',
+                        'title'                => '',
+                        'title_size'           => 'h2',
                         'css_class'          => '',
                         'custom_css_classes' => '',
                         'padding'            => '',
