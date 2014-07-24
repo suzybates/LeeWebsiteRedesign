@@ -27,6 +27,8 @@ if (!class_exists('CbpWidgetSchedule')):
 
             CbpWidgetFormElements::subwidgetItems(array(
                 'type'         => 'cbp_schedule_item',
+                'title'                => '',
+                'title_size'           => 'h2',
                 'subwidget_id' => 'cbp_subwidget_schedule_item',
                 'value'        => $instance['content'],
             ));
@@ -45,7 +47,15 @@ if (!class_exists('CbpWidgetSchedule')):
             $css_class           = !empty($css_class) ? ' ' . $css_class : '';
             $custom_css_classes  = !empty($custom_css_classes) ? ' ' . $custom_css_classes : '';
             ?>
+
             <div class="<?php echo CbpWidgets::getDefaultWidgetCssClass(); ?> <?php echo $type; ?><?php echo $custom_css_classes; ?><?php echo $css_class; ?> <?php echo $padding; ?>">
+                <<?php echo $title_size; ?>>
+                	<?php if ((int) $title_link_to_post): ?>
+                    	<a href="<?php echo get_permalink($page->ID); ?>"><?php echo!empty($title) ? $title : $page->post_title; ?></a>
+                	<?php else: ?>
+                    	<<?php echo $title_size; ?>><?php echo!empty($title) ? $title : $page->post_title; ?>
+                	<?php endif; ?>
+                </<?php echo $title_size; ?>>
                 <?php foreach ($shortcodes as $shortcode): ?>
                     <?php if ($shortcode['atts']['type'] == 'cbp_schedule_item'): ?>
                         <h5 class="<?php echo $this->getPrefix() ?>-schedule-item-name">
