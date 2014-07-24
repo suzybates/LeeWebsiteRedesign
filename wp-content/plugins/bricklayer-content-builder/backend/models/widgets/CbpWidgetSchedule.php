@@ -48,11 +48,11 @@ if (!class_exists('CbpWidgetSchedule')):
             <div class="<?php echo CbpWidgets::getDefaultWidgetCssClass(); ?> <?php echo $type; ?><?php echo $custom_css_classes; ?><?php echo $css_class; ?> <?php echo $padding; ?>">
                 <?php foreach ($shortcodes as $shortcode): ?>
                     <?php if ($shortcode['atts']['type'] == 'cbp_schedule_item'): ?>
-                        <h3 class="<?php echo $this->getPrefix() ?>-schedule-item-name">
+                        <h5 class="<?php echo $this->getPrefix() ?>-schedule-item-name">
                         <?php echo $shortcode['atts']['starttime']; ?>
                         -
                         <?php echo $shortcode['atts']['endtime']; ?>
-                        <?php echo $shortcode['atts']['activity']; ?></h3>
+                        <?php echo $shortcode['atts']['activity']; ?></h5>
                         <div class="<?php echo $this->getPrefix() ?>-schedule-item-content">
                             <?php echo $shortcode['content']; ?>
                         </div>
