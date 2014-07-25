@@ -70,13 +70,7 @@ if (!class_exists('CbpWidgetSchedule')):
             ?>
 
             <div class="<?php echo CbpWidgets::getDefaultWidgetCssClass(); ?> <?php echo $type; ?><?php echo $custom_css_classes; ?><?php echo $css_class; ?> <?php echo $padding; ?>">
-                <<?php echo $title_size; ?>>
-                	<?php if ((int) $title_link_to_post): ?>
-                    	<a href="<?php echo get_permalink($page->ID); ?>"><?php echo!empty($title) ? $title : $page->post_title; ?></a>
-                	<?php else: ?>
-                    	<<?php echo $title_size; ?>><?php echo!empty($title) ? $title : $page->post_title; ?>
-                	<?php endif; ?>
-                </<?php echo $title_size; ?>>
+                
                 <?php foreach ($shortcodes as $shortcode): ?>
                     <?php if ($shortcode['atts']['type'] == 'cbp_schedule_item'): ?>
                         <h5 class="<?php echo $this->getPrefix() ?>-schedule-item-name">
@@ -89,6 +83,13 @@ if (!class_exists('CbpWidgetSchedule')):
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
+                <<?php echo $title_size; ?>>
+                	<?php if ((int) $title_link_to_post): ?>
+                    	<a href="<?php echo get_permalink($page->ID); ?>"><?php echo!empty($title) ? $title : $page->post_title; ?></a>
+                	<?php else: ?>
+                    	<<?php echo $title_size; ?>><?php echo!empty($title) ? $title : $page->post_title; ?>
+                	<?php endif; ?>
+                </<?php echo $title_size; ?>>
             </div>
             <?php
         }
