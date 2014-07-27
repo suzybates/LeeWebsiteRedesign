@@ -206,6 +206,7 @@ if (!class_exists('CbpWidgets')):
         {
             $disallowedWidgets[] = 'cbp_subwidget_gallery_item';
             $disallowedWidgets[] = 'cbp_subwidget_accordion_item';
+            $disallowedWidgets[] = 'cbp_subwidget_schedule_item';
             $disallowedWidgets[] = 'cbp_subwidget_slider_item';
             $disallowedWidgets[] = 'cbp_subwidget_tabs_item';
             $disallowedWidgets[] = 'cbp_subwidget_meta_item';
