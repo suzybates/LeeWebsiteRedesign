@@ -279,6 +279,7 @@ if (!class_exists('CbpWidgets')):
                 CbpWidgets::registerWidget('CbpWidgetPostContent');
                 CbpWidgets::registerWidget('CbpWidgetPostTitle');
                 CbpWidgets::registerWidget('CbpWidgetNewsletterTitle');
+                CbpWidgets::registerWidget('CbpWidgetNewsletterList');
             }
 
             CbpWidgets::registerWidget('CbpSubwidgetGalleryItem');
