@@ -16,13 +16,13 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', 'database_name_here');
+define('DB_NAME', 'lee');
 
 /** MySQL database username */
-define('DB_USER', 'username_here');
+define('DB_USER', 'suzy');
 
 /** MySQL database password */
-define('DB_PASSWORD', 'password_here');
+define('DB_PASSWORD', 'root');
 
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
@@ -42,14 +42,14 @@ define('DB_COLLATE', '');
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         'put your unique phrase here');
-define('SECURE_AUTH_KEY',  'put your unique phrase here');
-define('LOGGED_IN_KEY',    'put your unique phrase here');
-define('NONCE_KEY',        'put your unique phrase here');
-define('AUTH_SALT',        'put your unique phrase here');
-define('SECURE_AUTH_SALT', 'put your unique phrase here');
-define('LOGGED_IN_SALT',   'put your unique phrase here');
-define('NONCE_SALT',       'put your unique phrase here');
+define('AUTH_KEY',         'Q7C$o3dog-uMF/8{jEmcEqw+-xO!1Xx&?aAq%{Y#S(VO}~lpZ!,[leX/S[<YWTZ5');
+define('SECURE_AUTH_KEY',  'yr%K|@|WfJL_[|^.OpQ8y[cvp|P-(,#!{Ath%05`z+^wqBf#!.K,)Xaq|y-mO~3b');
+define('LOGGED_IN_KEY',    'g-ITKhbr/>qc2xygVE|(JZg6nOUyEfrJ%q.@C>y<yP.F[k1K7vvx]v@=A?ENL<fL');
+define('NONCE_KEY',        'RZO69JLRyTAgW-s$2QqYm|mj:@-?m>CvJLh_v`)n.FoXRt^5)6K$->sa+1}9J@&L');
+define('AUTH_SALT',        'PAn+fPyjAd/Y1`Eo@<EIm>/:}^hEWxGx@bH-sMV?RA *E%dkdrO?EJe{uDhwXE1A');
+define('SECURE_AUTH_SALT', '?W`]kw9LD/9HD7(P$[:[Lc3w@;W^D.,fwrQC<r~6Hi|;`V]A?p-X/.:ZP0uh(u;=');
+define('LOGGED_IN_SALT',   '$VOWHE:wK,$*Nsfu^+Dlvg+X7.m82v+lI|zN[^AkKi{_r=U*L^7FasY|)A>!Ojv_');
+define('NONCE_SALT',       '-k jD3-r*^{uf#Z*T,64}!/_/@c;7+Ie@SwrEIID[fA-*`/v*RHsF+%P6`P/3`Tb');
 
 /**#@-*/
 
@@ -59,7 +59,8 @@ define('NONCE_SALT',       'put your unique phrase here');
  * You can have multiple installations in one database if you give each a unique
  * prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = 'wp_';
+$table_prefix  = 'wp_py5y64_';
+
 
 /**
  * WordPress Localized Language, defaults to English.
@@ -88,3 +89,7 @@ if ( !defined('ABSPATH') )
 
 /** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');
+
+define('WP_MEMORY_LIMIT', '64M');
+
+
