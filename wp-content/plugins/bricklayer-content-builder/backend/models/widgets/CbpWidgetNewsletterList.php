@@ -8,7 +8,7 @@ if (!class_exists('CbpWidgetNewsletterList')):
         {
             parent::__construct(
                     /* Base ID */'cbp_widget_post_list',
-                    /* Name */ 'Blog List', array('description' => 'This is a Blog List brick.', 'icon'        => 'fa fa-list-alt fa-3x'));
+                    /* Name */ 'Newsletter List', array('description' => 'This is a Newsletter List brick.', 'icon'        => 'fa fa-list-alt fa-3x'));
         }
 
         public function registerFormElements($elements)
@@ -16,7 +16,7 @@ if (!class_exists('CbpWidgetNewsletterList')):
             $elements['title']              = '';
             $elements['title_size']         = 'h2';
             $elements['title_link_to_post'] = '1';
-
+            
             $elements['post_categories'] = '';
             $elements['post_title_size'] = 'h3';
 
@@ -287,14 +287,14 @@ if (!class_exists('CbpWidgetNewsletterList')):
             ));
         }
 
-        public function sanitize(&$attribute)
+       public function sanitize(&$attribute)
         {
             switch ($attribute['name']) {
                 case CBP_APP_PREFIX . 'title':
                 case CBP_APP_PREFIX . 'link_text':
                     $attribute['value'] = sanitize_text_field($attribute['value']);
                     break;
-                case CBP_APP_PREFIX . 'newsletters_per_page':
+                case CBP_APP_PREFIX . 'posts_per_page':
                     if (!filter_var($attribute['value'], FILTER_SANITIZE_NUMBER_INT)) {
                         $attribute['value'] = 10;
                     }
@@ -318,16 +318,16 @@ if (!class_exists('CbpWidgetNewsletterList')):
                         'css_class'            => '',
                         'title'                => '',
                         'title_size'           => 'h2',
-                        'title_link_to_newsletter'   => '1',
-                        'newsletter_categories'      => '',
-                        'newsletter_title_size'      => 'h3',
+                        'title_link_to_post'   => '1',
+                        'post_categories'      => '',
+                        'post_title_size'      => 'h3',
                         'order_by'             => 'date',
                         'order'                => 'DESC',
                         'use_pagination'       => '0',
-                        'newsletters_per_page'       => 10,
-                        'show_newsletter_date'       => '1',
-                        'show_newsletter_date_icon'  => '1',
-                        'newsletter_date_format'     => 'M j, Y',
+                        'posts_per_page'       => 10,
+                        'show_post_date'       => '1',
+                        'show_post_date_icon'  => '1',
+                        'post_date_format'     => 'M j, Y',
                         'show_comment_count'   => '1',
                         'show_comment_icon'    => '1',
                         'show_tags'            => '1',
@@ -345,11 +345,12 @@ if (!class_exists('CbpWidgetNewsletterList')):
                             ), $atts));
 
             global $paged;
-            global $newsletter;
-
-            query_newsletters(array(
-                'newsletters_per_page'    => $newsletters_per_page,
-                'category__in'      => explode(',', $newsletter_categories),
+            global $post;
+            
+             query_posts(array(
+                'post_type'			=> 'newsletter',
+                'posts_per_page'    => $posts_per_page,
+                'category__in'      => explode(',', $post_categories),
                 'paged'             => $paged,
                 'orderby'           => $order_by,
                 'order'             => $order
@@ -358,54 +359,54 @@ if (!class_exists('CbpWidgetNewsletterList')):
             $css_class          = !empty($css_class) ? ' ' . $css_class : '';
             $custom_css_classes = !empty($custom_css_classes) ? ' ' . $custom_css_classes : '';
             ?>
-            <?php if (have_newsletters()) : ?>
+            <?php if (have_posts()) : ?>
                 <div class="<?php echo CbpWidgets::getDefaultWidgetCssClass(); ?> <?php echo $type; ?><?php echo $custom_css_classes; ?><?php echo $css_class; ?> <?php echo $padding; ?>">
                     <?php if (!empty($title)): ?>
                         <<?php echo $title_size; ?>><?php echo $title; ?></<?php echo $title_size; ?>>
                     <?php endif; ?>
-                    <?php while (have_newsletters()) : the_newsletter(); ?>
-                        <div class="<?php echo $number_of_columns; ?> double-pad-right double-pad-bottom <?php echo $this->getPrefix(); ?>-widget-newsletter-list-item">
+                    <?php while (have_posts()) : the_post(); ?>
+                        <div class="<?php echo $number_of_columns; ?> double-pad-right double-pad-bottom <?php echo $this->getPrefix(); ?>-widget-post-list-item">
                             <?php if ((int) $show_featured_image): ?> 
                                 <?php $imageArgs = array('echo' => false, 'size' => $thumbnail_dimensions); ?>
                                 <?php $image = cbp_get_the_image($imageArgs); ?>
                                 <?php if (isset($image) && $image): ?>
-                                    <div class="<?php echo $this->getPrefix(); ?>-widget-newsletter-image">
+                                    <div class="<?php echo $this->getPrefix(); ?>-widget-post-image">
                                         <?php echo $image; ?>
                                     </div>
                                 <?php endif; ?>
                             <?php endif; ?>
-                            <<?php echo $newsletter_title_size; ?>>
-                            <?php if ((int) $title_link_to_newsletter): ?>
-                                <a href="<?php echo get_permalink($newsletter->ID); ?>"><?php the_title(); ?></a>
+                            <<?php echo $post_title_size; ?>>
+                            <?php if ((int) $title_link_to_post): ?>
+                                <a href="<?php echo get_permalink($post->ID); ?>"><?php the_title(); ?></a>
                             <?php else: ?>
                                 <?php the_title(); ?>
                             <?php endif; ?>
-                            </<?php echo $newsletter_title_size; ?>>
-                            <div class="<?php echo $this->getPrefix(); ?>-widget-newsletter-meta-data">
-                                <?php if ((int) $show_newsletter_date): ?>
-                                    <?php $newsletterDateIcon = (int) $show_newsletter_date_icon ? '<i class="fa fa-calendar"></i> ' : ''; ?> 
-                                    <span class="<?php echo $this->getPrefix(); ?>-widget-newsletter-meta-date">
-                                        <?php echo $newsletterDateIcon; ?><?php echo date_i18n($newsletter_date_format, strtotime($newsletter->newsletter_date)); ?>
+                            </<?php echo $post_title_size; ?>>
+                            <div class="<?php echo $this->getPrefix(); ?>-widget-post-meta-data">
+                                <?php if ((int) $show_post_date): ?>
+                                    <?php $postDateIcon = (int) $show_post_date_icon ? '<i class="fa fa-calendar"></i> ' : ''; ?> 
+                                    <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-date">
+                                        <?php echo $postDateIcon; ?><?php echo date_i18n($post_date_format, strtotime($post->post_date)); ?>
                                     </span>
                                 <?php endif; ?>
                                 <?php if ((int) $show_comment_count): ?> 
                                     <?php $commentIcon = (int) $show_comment_icon ? '<i class="fa fa-comments"></i> ' : ''; ?> 
-                                    <span class="<?php echo $this->getPrefix(); ?>-widget-newsletter-meta-comments">
-                                        <?php echo $commentIcon; ?>(<?php echo $newsletter->comment_count; ?>)
+                                    <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-comments">
+                                        <?php echo $commentIcon; ?>(<?php echo $post->comment_count; ?>)
                                     </span>
                                 <?php endif; ?>
                                 <?php if ((int) $show_tags): ?>
-                                    <?php $newslettertags = get_the_tags(); ?>
-                                    <?php if ($newslettertags) : ?>
-                                        <span class="<?php echo $this->getPrefix(); ?>-widget-newsletter-meta-tags">
+                                    <?php $posttags = get_the_tags(); ?>
+                                    <?php if ($posttags) : ?>
+                                        <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-tags">
                                             <?php $tagsIcon = (int) $show_tags_icon ? '<i class="fa fa-tags"></i> ' : ''; ?> 
                                             <?php echo $tagsIcon; ?>
                                             <?php if ((int) $tags_is_link): ?>
-                                                <?php foreach ($newslettertags as $tag) : ?>
+                                                <?php foreach ($posttags as $tag) : ?>
                                                     <a href="<?php echo get_tag_link($tag->term_id); ?>"><?php echo $tag->name; ?></a>
                                                 <?php endforeach; ?>
                                             <?php else: ?>
-                                                <?php foreach ($newslettertags as $tag) : ?>
+                                                <?php foreach ($posttags as $tag) : ?>
                                                     <a href="<?php echo get_tag_link($tag->term_id); ?>"><?php echo $tag->name; ?></a>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
@@ -414,23 +415,23 @@ if (!class_exists('CbpWidgetNewsletterList')):
                                 <?php endif; ?>
                                 <?php if ((int) $show_author): ?>
                                     <?php if ((int) $author_is_link): ?>
-                                        <span class="<?php echo $this->getPrefix(); ?>-widget-newsletter-meta-author">
-                                            <?php echo $this->translate('by'); ?> <a href="<?php echo get_author_newsletters_url(get_the_author_meta('ID')); ?>">
+                                        <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-author">
+                                            <?php echo $this->translate('by'); ?> <a href="<?php echo get_author_posts_url(get_the_author_meta('ID')); ?>">
                                                 <?php the_author_meta('display_name'); ?>
                                             </a>
                                         </span>
                                     <?php else: ?>
-                                        <span class="<?php echo $this->getPrefix(); ?>-widget-newsletter-meta-author">
+                                        <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-author">
                                             <?php echo $this->translate('by'); ?> <?php the_author_meta('display_name'); ?>
                                         </span>
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </div>
-                            <div class="<?php echo $this->getPrefix(); ?>-widget-newsletter-content">
+                            <div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
                                 <?php echo CbpUtils::trimmer(strip_shortcodes(get_the_content()), $number_of_characters); ?>
                             </div>
                             <?php if ((int) $use_button_link): ?>
-                                <div class="<?php echo $this->getPrefix(); ?>-widget-newsletter-link double-pad-top">
+                                <div class="<?php echo $this->getPrefix(); ?>-widget-post-link double-pad-top">
                                     <a class="cbp_widget_link" href="<?php echo get_permalink(); ?>"><?php echo $link_text; ?></a>
                                 </div>
                             <?php endif; ?>
