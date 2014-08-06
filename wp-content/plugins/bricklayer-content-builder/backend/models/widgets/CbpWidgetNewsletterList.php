@@ -7,7 +7,7 @@ if (!class_exists('CbpWidgetNewsletterList')):
         public function __construct()
         {
             parent::__construct(
-                    /* Base ID */'cbp_widget_post_list',
+                    /* Base ID */'cbp_widget_newsletter_list',
                     /* Name */ 'Newsletter List', array('description' => 'This is a Newsletter List brick.', 'icon'        => 'fa fa-list-alt fa-3x'));
         }
 
@@ -347,14 +347,36 @@ if (!class_exists('CbpWidgetNewsletterList')):
             global $paged;
             global $post;
             
-             query_posts(array(
-                'post_type'			=> 'newsletter',
+//			$newsletter_query = new WP_Query( array(
+//				'orderby' => 'menu_order',
+//				'order' => 'ASC',
+				
+//				'posts_per_page' => 5,
+//				'paged' => false
+//			));
+				
+				                   
+//			if ($newsletter_query->have_posts()) 
+//			{ 
+				
+				
+//				while ($newsletter_query->have_posts()) 
+//					{ 
+//					$newsletter_query->the_post(); 
+//					}
+				
+  //      	}
+        	
+        	            query_posts(array(
+                'post_type' => 'newsletter',
                 'posts_per_page'    => $posts_per_page,
-                'category__in'      => explode(',', $post_categories),
+//                'category__in'      => explode(',', $post_categories),
                 'paged'             => $paged,
                 'orderby'           => $order_by,
                 'order'             => $order
             ));
+            
+            
             $padding            = CbpWidgets::getCssClass($padding);
             $css_class          = !empty($css_class) ? ' ' . $css_class : '';
             $custom_css_classes = !empty($custom_css_classes) ? ' ' . $custom_css_classes : '';
@@ -448,3 +470,9 @@ if (!class_exists('CbpWidgetNewsletterList')):
     }
   
 endif;
+
+//    	}
+//    }
+  
+//endif;
+//?>
