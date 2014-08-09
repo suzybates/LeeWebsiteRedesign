@@ -278,10 +278,14 @@ if (!class_exists('CbpWidgets')):
                 CbpWidgets::registerWidget('CbpWidgetTheLoop');
                 CbpWidgets::registerWidget('CbpWidgetPostContent');
                 CbpWidgets::registerWidget('CbpWidgetPostTitle');
-                CbpWidgets::registerWidget('CbpWidgetNewsletterTitle');
-                CbpWidgets::registerWidget('CbpWidgetNewsletterList');
+                CbpWidgets::registerWidget('CbpWidgetEventList');
+//                CbpWidgets::registerWidget('CbpWidgetNewsletterList');
+//                CbpWidgets::registerWidget('CbpWidgetNewsletterItemList');
+
+                
             }
 
+            CbpWidgets::registerWidget('CbpWidgetSingleNewsletterItem');
             CbpWidgets::registerWidget('CbpSubwidgetGalleryItem');
             CbpWidgets::registerWidget(' ');
             CbpWidgets::registerWidget('CbpSubwidgetScheduleItem');

@@ -79,8 +79,46 @@ class CbpWidgetFormElements
 
     public static function selectPost($options)
     {
+    
         $attribs     = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
         $posts_array = get_posts(array(
+       		'post_type'      => 'newsletter_item',
+            'posts_per_page' => -1,
+            'orderby'        => 'title',
+            'order'          => 'ASC'
+                ));
+        ?>
+        <div class="row cbp_form_element_wrapper">
+            <div class="half padded border-top">
+                <?php global $post; ?>
+                <select name="<?php echo $options['name'] ?>" id="<?php echo $options['name'] ?>" <?php echo $attribs; ?>>
+
+                    <?php foreach ($posts_array as $post): ?>
+                        <option <?php echo CbpUtils::maybeSelected($post->ID == $options['value']); ?> value="<?php echo $post->ID; ?>" title="<?php echo get_the_title(); ?>"><?php echo get_the_title(); ?></option>
+
+                    <?php endforeach; ?>
+
+                </select>
+            </div>
+            <div class="half padded border-top">
+                <?php if (isset($options['description_title'])): ?>
+                    <label for="<?php echo $options['name']; ?>"><?php echo $options['description_title']; ?></label>
+                <?php endif; ?>
+                <?php if (isset($options['description_body'])): ?>
+                    <p>
+                        <?php echo $options['description_body']; ?>
+                    </p>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php
+    }
+    public static function selectNewsletterPost($options)
+    {
+    
+        $attribs     = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
+        $posts_array = get_posts(array(
+       		'post_type'      => 'newsletteritem',
             'posts_per_page' => -1,
             'orderby'        => 'title',
             'order'          => 'ASC'
@@ -178,6 +216,36 @@ class CbpWidgetFormElements
                 <select name="<?php echo $options['name']; ?>" id="<?php echo $options['name']; ?>" <?php echo $attribs; ?>>
                     <?php foreach ($taxonomies as $taxonomy): ?>
                         <option <?php echo CbpUtils::maybeSelected($taxonomy->name == $options['value']); ?> value="<?php echo $taxonomy->name; ?>" ><?php echo $taxonomy->labels->name; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="half padded border-top">
+                <?php if (isset($options['description_title'])): ?>
+                    <label for="<?php echo $options['name']; ?>"><?php echo $options['description_title']; ?></label>
+                <?php endif; ?>
+                <?php if (isset($options['description_body'])): ?>
+                    <p>
+                        <?php echo $options['description_body']; ?>
+                    </p>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php
+    }
+
+    public static function selectEventCategory($options)
+    {
+        $args = isset($options['args']) ? $options['args'] : array();
+       
+        $attribs = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
+        ?>
+        <?php echo print_r($options); ?>
+        <div class="row cbp_form_element_wrapper">
+            <div class="half padded border-top">
+                <?php $cats    = eme_get_categories(); ?>
+                <select name="<?php echo $options['name']; ?>" multiple="multiple" id="<?php echo $options['name']; ?>" <?php echo $attribs; ?>>
+                    <?php foreach ($cats as $category): ?>
+                        <option <?php echo CbpUtils::maybeSelected($category['category_id'] == $options['value']); ?> value="<?php echo $category['category_id']; ?>" ><?php echo $category['category_name']; ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
