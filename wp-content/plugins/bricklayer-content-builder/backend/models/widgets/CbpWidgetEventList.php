@@ -125,7 +125,7 @@ if (!class_exists('CbpWidgetEventList')):
                         'title_link_to_post'   => '1',
                         'start_date'           => '',
                         'end_date'             => '',
-                        'padding'              => 'double-pad-bottom'
+                        'padding'              => 'no padding'
                             ), $atts));  
                             
                 $startDateFormat = date_format(date_create($start_date), 'Y-m-d') ;
@@ -144,10 +144,8 @@ if (!class_exists('CbpWidgetEventList')):
                     <?php if (!empty($title)): ?>
                         <<?php echo $title_size; ?>><?php echo $title; ?></<?php echo $title_size; ?>>
                     <?php endif; ?>   
-
-                 	 
-    				<div> Events For <?php echo $scope; ?> in Category <?php echo $category; ?> and Not in Category <?php echo $notcategory; ?>
-    		<table>
+ 			
+    			<table>
     		       	<?php eme_get_events_list($limit, 
     		       			$scope, $order, $format, $echo, $category, 
     		       			$showperiod, $long_events, $author, $contact_person, 
@@ -155,7 +153,8 @@ if (!class_exists('CbpWidgetEventList')):
     		       			$link_showperiod, $notcategory, $show_recurrent_events_once, 
     		       			$template_id, $template_id_header, $template_id_footer); ?>
 					
-			</table>            
+				</table>  
+			</div>          
 			<?php
         }
     }
