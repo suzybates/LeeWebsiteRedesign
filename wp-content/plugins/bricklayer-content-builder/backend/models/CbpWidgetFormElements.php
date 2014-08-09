@@ -118,9 +118,9 @@ class CbpWidgetFormElements
     
         $attribs     = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
         $posts_array = get_posts(array(
-       		'post_type'      => 'newsletteritem',
+       		'post_type'      => 'newsletter_item',
             'posts_per_page' => -1,
-            'orderby'        => 'title',
+            'orderby'        => 'post_date',
             'order'          => 'ASC'
                 ));
         ?>
@@ -130,7 +130,7 @@ class CbpWidgetFormElements
                 <select name="<?php echo $options['name'] ?>" id="<?php echo $options['name'] ?>" <?php echo $attribs; ?>>
 
                     <?php foreach ($posts_array as $post): ?>
-                        <option <?php echo CbpUtils::maybeSelected($post->ID == $options['value']); ?> value="<?php echo $post->ID; ?>" title="<?php echo get_the_title(); ?>"><?php echo get_the_title(); ?></option>
+                        <option <?php echo CbpUtils::maybeSelected($post->ID == $options['value']); ?> value="<?php echo $post->ID; ?>" title="<?php echo get_the_title(); ?>"><?php echo get_the_date(); ?>-<?php echo get_the_title(); ?></option>
 
                     <?php endforeach; ?>
 
@@ -239,7 +239,6 @@ class CbpWidgetFormElements
        
         $attribs = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
         ?>
-        <?php echo print_r($options); ?>
         <div class="row cbp_form_element_wrapper">
             <div class="half padded border-top">
                 <?php $cats    = eme_get_categories(); ?>

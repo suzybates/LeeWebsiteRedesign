@@ -241,7 +241,7 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
         public function widget($atts, $content)
         {
             extract(shortcode_atts(array(
-            			'post_type' => 'newsletteritem',
+            			'post_type' => 'newsletter_item',
                         'type'                 => '',
                         'css_class'            => '',
                         'custom_css_classes'   => '',
