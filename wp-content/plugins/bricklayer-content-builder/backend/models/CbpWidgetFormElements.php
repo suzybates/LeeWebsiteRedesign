@@ -121,7 +121,7 @@ class CbpWidgetFormElements
        		'post_type'      => 'newsletter_item',
             'posts_per_page' => -1,
             'orderby'        => 'post_date',
-            'order'          => 'ASC'
+            'order'          => 'DESC'
                 ));
         ?>
         <div class="row cbp_form_element_wrapper">
