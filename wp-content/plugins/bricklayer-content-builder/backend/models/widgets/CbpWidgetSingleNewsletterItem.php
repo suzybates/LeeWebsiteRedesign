@@ -17,26 +17,26 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
             $elements['title']      = '';
             $elements['title_size'] = 'h2';
 
-            $elements['show_post_date']      = '1';
-            $elements['show_post_date_icon'] = '1';
+            $elements['show_post_date']      = '0';
+            $elements['show_post_date_icon'] = '0';
             $elements['post_date_format']    = 'M j, Y';
 
-            $elements['show_comment_count'] = '1';
-            $elements['show_comment_icon']  = '1';
+            $elements['show_comment_count'] = '0';
+            $elements['show_comment_icon']  = '0';
 
-            $elements['show_tags']      = '1';
-            $elements['tags_is_link']   = '1';
-            $elements['show_tags_icon'] = '1';
+            $elements['show_tags']      = '0';
+            $elements['tags_is_link']   = '0';
+            $elements['show_tags_icon'] = '0';
 
-            $elements['show_author']      = '1';
-            $elements['author_is_link']   = '1';
-            $elements['show_author_icon'] = '1';
+            $elements['show_author']      = '0';
+            $elements['author_is_link']   = '0';
+            $elements['show_author_icon'] = '0';
 
             $elements['show_featured_image']  = '0';
             $elements['thumbnail_dimensions'] = 'thumbnail';
 
             $elements['link_text']            = 'read more';
-            $elements['number_of_characters'] = 200;
+            $elements['number_of_characters'] = 1000;
             $elements['title_link_to_post']   = '1';
 
             return parent::registerFormElements($elements);
@@ -79,118 +79,7 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                 'value'             => $instance['title_link_to_post'],
                 'description_title' => $this->translate('Should Title Link to Post?'),
             ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_post_date'),
-                'value'             => $instance['show_post_date'],
-                'description_title' => $this->translate('Show Post Date?'),
-                'attribs'           => array('data-type' => 'triggerparent', 'data-name' => 'show_post_date')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_post_date_icon'),
-                'value'             => $instance['show_post_date_icon'],
-                'description_title' => $this->translate('Show Post Date Icon?'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_post_date', 'data-parentstate' => '1')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    'M j, Y'            => date('M j, Y'),
-                    'j M, Y'            => date('j M, Y'),
-                    'F j, Y'            => date('F j, Y'),
-                    'j F, Y'            => date('j F, Y'),
-                ),
-                'name'              => $this->getIdString('post_date_format'),
-                'value'             => $instance['post_date_format'],
-                'description_title' => $this->translate('Post Date Format'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_post_date', 'data-parentstate' => '1')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_comment_count'),
-                'value'             => $instance['show_comment_count'],
-                'description_title' => $this->translate('Show Comment Count?'),
-                'attribs'           => array('data-type' => 'triggerparent', 'data-name' => 'show_comment_count')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_comment_icon'),
-                'value'             => $instance['show_comment_icon'],
-                'description_title' => $this->translate('Show Comment Icon?'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_comment_count', 'data-parentstate' => '1')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_tags'),
-                'value'             => $instance['show_tags'],
-                'description_title' => $this->translate('Show Tags?'),
-                'attribs'           => array('data-type' => 'triggerparent', 'data-name' => 'show_tags')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('tags_is_link'),
-                'value'             => $instance['tags_is_link'],
-                'description_title' => $this->translate('Should Tags link to tags page?'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_tags', 'data-parentstate' => '1')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_tags_icon'),
-                'value'             => $instance['show_tags_icon'],
-                'description_title' => $this->translate('Show Tags Icon?'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_tags', 'data-parentstate' => '1')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_author'),
-                'value'             => $instance['show_author'],
-                'description_title' => $this->translate('Show Autor?'),
-                'attribs'           => array('data-type' => 'triggerparent', 'data-name' => 'show_author')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('author_is_link'),
-                'value'             => $instance['author_is_link'],
-                'description_title' => $this->translate('Should Author link to author page?'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_author', 'data-parentstate' => '1')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_author_icon'),
-                'value'             => $instance['show_author_icon'],
-                'description_title' => $this->translate('Show Author Icon?'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_author', 'data-parentstate' => '1')
-            ));
+           
             CbpWidgetFormElements::select(array(
                 'options' => array(
                     '1'                 => $this->translate('Yes'),
@@ -208,17 +97,6 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                 'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_featured_image', 'data-parentstate' => '1')
             ));
 
-            CbpWidgetFormElements::text(array(
-                'name'              => $this->getIdString('number_of_characters'),
-                'value'             => $instance['number_of_characters'],
-                'description_title' => $this->translate('Number Of Characters'),
-            ));
-
-            CbpWidgetFormElements::text(array(
-                'name'              => $this->getIdString('link_text'),
-                'value'             => $instance['link_text'],
-                'description_title' => $this->translate('Link Text'),
-            ));
         }
 
         public function sanitize(&$attribute)
@@ -230,7 +108,7 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                     break;
                 case CBP_APP_PREFIX . 'number_of_characters':
                     if (!filter_var($attribute['value'], FILTER_SANITIZE_NUMBER_INT)) {
-                        $attribute['value'] = 200;
+                        $attribute['value'] = 1000;
                     }
                     break;
             }
@@ -249,22 +127,10 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                         'title'                => '',
                         'title_size'           => 'h2',
                         'title_link_to_post'   => '1',
-                        'show_post_date'       => '1',
-                        'show_post_date_icon'  => '1',
-                        'post_date_format'     => 'M j, Y',
-                        'show_comment_count'   => '1',
-                        'show_comment_icon'    => '1',
-                        'show_tags'            => '1',
-                        'tags_is_link'         => '1',
-                        'show_tags_icon'       => '1',
-                        'show_author'          => '1',
-                        'author_is_link'       => '1',
-                        'show_author_icon'     => '1',
                         'show_featured_image'  => '0',
                         'thumbnail_dimensions' => 'thumbnail',
-                        'number_of_characters' => 200,
-                        'link_text'            => 'read more',
-                        'padding'              => 'double-pad-bottom'
+                        'padding'              => 'no-padding',
+                        'display_description'  => ''
                             ), $atts));
                             
 			$args = array(
@@ -275,6 +141,10 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
             $css_class          = !empty($css_class) ? ' ' . $css_class : '';
             $custom_css_classes = !empty($custom_css_classes) ? ' ' . $custom_css_classes : '';
             $padding            = CbpWidgets::getCssClass($padding);
+            
+            if (empty($display_description)) {
+            	$display_description =  $post_id;
+            }
             ?>
             <div class="<?php echo CbpWidgets::getDefaultWidgetCssClass(); ?> <?php echo $type; ?><?php echo $custom_css_classes; ?><?php echo $css_class; ?> <?php echo $padding; ?>">
                 <<?php echo $title_size; ?>>
@@ -341,10 +211,7 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                     <?php endif; ?>
                 </div>
                 <div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
-                    <?php echo CbpUtils::trimmer(strip_shortcodes($post->post_content), $number_of_characters); ?>
-                </div>
-                <div class="<?php echo $this->getPrefix(); ?>-widget-post-link double-pad-top">
-                    <a class="cbp_widget_link" href="<?php echo get_permalink($post->ID); ?>"><?php echo $link_text; ?></a>
+                    <?php echo $post->post_content; ?>
                 </div>
             </div>
 
