@@ -26,9 +26,9 @@ $contact_email = do_shortcode('[pods]{@contact_email}[/pods]');
             <?php /* The loop */ ?>
             <?php while (have_posts()) : the_post(); ?>
             	<h3> On the Newsletter: </h3>
-            	<h4><?php get_template_part('partials/page-title'); ?></h4>
+            	<h4><?php get_title(); ?></h4>
 	            	<div><?php echo $newsletter_longer_description ?></div>
-	            <?php if ((int) $show_on_home): ?>
+	            <?php if ($show_on_home): ?>
             		<h3> On the Home Page</h3>
 	            		<div><?php echo $home_page_short_description  ?></div>   
 	            		<div>From <?php echo $from_date  ?> to <?php echo $to_date ?></div>
