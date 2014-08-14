@@ -8,9 +8,11 @@
 get_header();
 get_template_part('header-bottom');
 
-$pub_date  = do_shortcode('[pods]{@newsletter_date}[/pods]');
-$from_date = mysql2date("Y-m-d",do_shortcode('[pods]{@events_from_date}[/pods]'));
-$to_date   = mysql2date("Y-m-d",do_shortcode('[pods]{@events_to_date}[/pods]'));
+$volunteer_spot  = do_shortcode('[pods]{@volunteer_spot_link}[/pods]');
+$description  = do_shortcode('[pods]{@short_description}[/pods]');
+$newsletter_item = do_shortcode('[pods]{@show_on_newsletter_item}[pods]');
+$from_date = mysql2date("Y-m-d",do_shortcode('[pods]{@from_date}[/pods]'));
+$to_date   = mysql2date("Y-m-d",do_shortcode('[pods]{@to_date}[/pods]'));
 
 
 ?>
@@ -22,7 +24,9 @@ $to_date   = mysql2date("Y-m-d",do_shortcode('[pods]{@events_to_date}[/pods]'));
             <?php /* The loop */ ?>
             <?php while (have_posts()) : the_post(); ?>
                 <?php get_template_part('content', get_post_format()); ?>
-                <?php // twentythirteen_post_nav(); ?>
+                <div><?php echo $volunteer_spot ?></div>
+                <div><?php echo $newsletter_item ?></div>
+                <div><?php echo $description ?></div>
                 <?php comments_template(); ?>
             <?php endwhile; ?>
         </div>
@@ -33,3 +37,4 @@ $to_date   = mysql2date("Y-m-d",do_shortcode('[pods]{@events_to_date}[/pods]'));
 </div>
 <?php get_template_part('footer-top'); ?>
 <?php get_footer(); ?>
+
