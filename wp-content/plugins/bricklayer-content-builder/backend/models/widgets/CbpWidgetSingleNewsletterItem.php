@@ -141,6 +141,8 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
             $css_class          = !empty($css_class) ? ' ' . $css_class : '';
             $custom_css_classes = !empty($custom_css_classes) ? ' ' . $custom_css_classes : '';
             $padding            = CbpWidgets::getCssClass($padding);
+            $newsletter_longer_description = do_shortcode('[pods]{@newsletter_longer_description}[/pods]');
+
             
             if (empty($display_description)) {
             	$display_description =  $post_id;
@@ -211,7 +213,10 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                     <?php endif; ?>
                 </div>
                 <div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
+                
                     <?php echo $post->post_content; ?>
+                    <?php echo $newsletter_longer_description ?>
+
                 </div>
             </div>
 

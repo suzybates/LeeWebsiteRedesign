@@ -267,6 +267,7 @@ if (!class_exists('CbpWidgets')):
             CbpWidgets::registerWidget('CbpWidgetButton');
             CbpWidgets::registerWidget('CbpWidgetBreadcrumbs');
             CbpWidgets::registerWidget('CbpWidgetShortcode');
+           // CbpWidgets::registerWidget('CbpWidgetAISDMenu');
 
             if (CbpUtils::getOption('use_content_builder_layouts_and_templates')) {
                 CbpWidgets::registerWidget('CbpWidgetFeaturedImage');
