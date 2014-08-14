@@ -165,13 +165,11 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                             <?php echo $image; ?>
                         </div>
                     <?php endif; ?>
-
                 <?php endif; ?>
+                <div><?php echo $newsletter_longer_description ?></div>
                 <div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
-                
                     <?php echo $post->post_content; ?>
-                    <div><?php echo $newsletter_longer_description ?></div>
-
+                    
                 </div>
             </div>
 
