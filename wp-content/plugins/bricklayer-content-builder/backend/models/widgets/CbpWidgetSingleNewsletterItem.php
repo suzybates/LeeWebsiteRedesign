@@ -15,7 +15,7 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
         {
             $elements['post_id']    = null;
             $elements['title']      = '';
-            $elements['title_size'] = 'h2';
+            $elements['title_size'] = 'h4';
 
             $elements['show_post_date']      = '0';
             $elements['show_post_date_icon'] = '0';
@@ -125,7 +125,7 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                         'custom_css_classes'   => '',
                         'post_id'              => 1,
                         'title'                => '',
-                        'title_size'           => 'h2',
+                        'title_size'           => 'h4',
                         'title_link_to_post'   => '1',
                         'show_featured_image'  => '0',
                         'thumbnail_dimensions' => 'thumbnail',
@@ -167,55 +167,10 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                     <?php endif; ?>
 
                 <?php endif; ?>
-                <div class="<?php echo $this->getPrefix(); ?>-widget-post-meta-data">
-                    <?php if ((int) $show_post_date): ?> 
-                        <?php $postDateIcon = (int) $show_post_date_icon ? '<i class="fa fa-calendar"></i> ' : ''; ?> 
-                        <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-date">
-                            <?php echo $postDateIcon; ?><?php echo date_i18n($post_date_format, strtotime($post->post_date)); ?>
-                        </span>
-                    <?php endif; ?>
-                    <?php if ((int) $show_comment_count): ?> 
-                        <?php $commentIcon = (int) $show_comment_icon ? '<i class="fa fa-comments"></i> ' : ''; ?> 
-                        <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-comments">
-                            <?php echo $commentIcon; ?>(<?php echo $post->comment_count; ?>)
-                        </span>
-                    <?php endif; ?>
-                    <?php if ((int) $show_tags): ?>
-                        <?php $posttags = get_the_tags(); ?>
-                        <?php if ($posttags) : ?>
-                            <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-tags">
-                                <?php $tagsIcon = (int) $show_tags_icon ? '<i class="fa fa-tags"></i> ' : ''; ?> 
-                                <?php echo $tagsIcon; ?>
-                                <?php if ((int) $tags_is_link): ?>
-                                    <?php foreach ($posttags as $tag) : ?>
-                                        <a href="<?php echo get_tag_link($tag->term_id); ?>"><?php echo $tag->name; ?></a>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <?php foreach ($posttags as $tag) : ?>
-                                        <?php echo $tag->name; ?>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </span>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                    <?php if ((int) $show_author): ?>
-                        <?php if ((int) $author_is_link): ?>
-                            <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-author">
-                                <?php echo $this->translate('by'); ?> <a href="<?php echo get_author_posts_url(get_the_author_meta('ID')); ?>">
-                                    <?php the_author_meta('display_name'); ?>
-                                </a>
-                            </span>
-                        <?php else: ?>
-                            <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-author">
-                                <?php echo $this->translate('by'); ?> <?php the_author_meta('display_name'); ?>
-                            </span>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </div>
                 <div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
                 
                     <?php echo $post->post_content; ?>
-                    <?php echo $newsletter_longer_description ?>
+                    <div><?php echo $newsletter_longer_description ?></div>
 
                 </div>
             </div>
