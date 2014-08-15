@@ -575,7 +575,7 @@ h6.ch-slider-title-big { font-size: 15px; }
 .ch-sticky-header .chp_widget_logo img { height: 40px !important; width: auto; -webkit-transition-property: height; -moz-transition-property: height; -o-transition-property: height; transition-property: height; -webkit-transition-duration: 0.5s; -moz-transition-duration: 0.5s; -o-transition-duration: 0.5s; transition-duration: 0.5s; -webkit-transition-timing-function: ease; -moz-transition-timing-function: ease; -o-transition-timing-function: ease; transition-timing-function: ease; }
 .ch-sticky-header .sf-menu.ch-menu-main { margin-bottom: 0; }
 .ch-sticky-header .sf-menu.ch-menu-main { padding-top: 0; }
-.ch-sticky-header .cbp_widget_box { padding: 10px; }
+
 
 .ch-slide-in { transform-origin: center center; z-index: 500; }
 

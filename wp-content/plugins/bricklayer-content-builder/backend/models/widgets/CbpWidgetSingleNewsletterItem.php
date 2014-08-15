@@ -144,7 +144,9 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
             $custom_css_classes = !empty($custom_css_classes) ? ' ' . $custom_css_classes : '';
             $padding            = CbpWidgets::getCssClass($padding);
             $newsletter_description = pods_field ( $pod, $id, 'newsletter_longer_description', true );  
-            
+            $pod_id = pods($pod, $id);
+			$volunteer_item = $pod_id->field('related_volunteer_spot');
+
             
             if (empty($display_description)) {
             	$display_description =  $post_id;
@@ -173,6 +175,17 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                     <?php //echo $post->post_content; ?>
                     
                 </div>
+                <?php //var_dump($volunteer_item); ?>
+                <?php if (!empty($volunteer_item)): ?>
+				<?php foreach ($volunteer_item as $vol) { ?>
+					<?php $vol_id = $vol["ID"]; ?>
+					<?php $volunteer_spot_link = get_post_meta( $vol_id, 'volunteer_spot_link', true ); ?>
+					<?php $volunteer_spot_title = get_the_title($vol_id); ?>
+					<div>Volunteer: <?php echo $volunteer_spot_title; ?>- <a href="<?php echo $volunteer_spot_link;?>"><?php echo $volunteer_spot_link; ?></div>
+				
+				<?php } ?>
+			<?php endif; ?>
+
             </div>
 
             <?php

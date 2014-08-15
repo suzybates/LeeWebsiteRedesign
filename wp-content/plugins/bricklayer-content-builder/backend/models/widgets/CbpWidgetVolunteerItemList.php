@@ -1,14 +1,14 @@
 <?php
-if (!class_exists('CbpWidgetPostList')):
+if (!class_exists('CbpWidgetNewsletterItemList')):
 
-    class CbpWidgetPostList extends CbpWidget
+    class CbpWidgetNewsletterItemList extends CbpWidget
     {
 
         public function __construct()
         {
             parent::__construct(
-                    /* Base ID */'cbp_widget_post_list',
-                    /* Name */ 'Blog List', array('description' => 'This is a Blog List brick.', 'icon'        => 'fa fa-list-alt fa-3x'));
+                    /* Base ID */'cbp_widget_newsletter_item_list',
+                    /* Name */ 'Newsletter Item List', array('description' => 'This is a Newsletter Item List brick.', 'icon'        => 'fa fa-list-alt fa-3x'));
         }
 
         public function registerFormElements($elements)
@@ -16,7 +16,7 @@ if (!class_exists('CbpWidgetPostList')):
             $elements['title']              = '';
             $elements['title_size']         = 'h2';
             $elements['title_link_to_post'] = '1';
-
+            
             $elements['post_categories'] = '';
             $elements['post_title_size'] = 'h3';
 
@@ -48,6 +48,9 @@ if (!class_exists('CbpWidgetPostList')):
 
             $elements['use_button_link'] = '1';
             $elements['link_text']       = 'read more';
+            
+            $elements['limit_by_newsletter_item_date'] = '1';
+            
 
             return parent::registerFormElements($elements);
         }
@@ -81,12 +84,7 @@ if (!class_exists('CbpWidgetPostList')):
                 ),
                 'name'              => $this->getIdString('title_link_to_post'),
                 'value'             => $instance['title_link_to_post'],
-                'description_title' => $this->translate('Should Title Link to Post?'),
-            ));
-            CbpWidgetFormElements::selectCategories(array(
-                'name'              => $this->getIdString('post_categories'),
-                'value'             => explode(',', $instance['post_categories']),
-                'description_title' => $this->translate('Select Post Categories'),
+                'description_title' => $this->translate('Should Title Link to Newsletter?'),
             ));
             CbpWidgetFormElements::select(array(
                 'options' => array(
@@ -99,7 +97,7 @@ if (!class_exists('CbpWidgetPostList')):
                 ),
                 'name'              => $this->getIdString('post_title_size'),
                 'value'             => $instance['post_title_size'],
-                'description_title' => $this->translate('Post Title Size'),
+                'description_title' => $this->translate('Newsletter Title Size'),
             ));
             CbpWidgetFormElements::select(array(
                 'options' => array(
@@ -131,7 +129,7 @@ if (!class_exists('CbpWidgetPostList')):
             CbpWidgetFormElements::text(array(
                 'name'              => $this->getIdString('posts_per_page'),
                 'value'             => $instance['posts_per_page'],
-                'description_title' => $this->translate('Posts Per Page'),
+                'description_title' => $this->translate('Newsletters Per Page'),
                 'description_body'  => $this->translate('Enter number.'),
             ));
             CbpWidgetFormElements::select(array(
@@ -141,7 +139,7 @@ if (!class_exists('CbpWidgetPostList')):
                 ),
                 'name'              => $this->getIdString('show_post_date'),
                 'value'             => $instance['show_post_date'],
-                'description_title' => $this->translate('Show Post Date?'),
+                'description_title' => $this->translate('Show Newsletter Date?'),
                 'attribs'           => array('data-type' => 'triggerparent', 'data-name' => 'show_post_date')
             ));
             CbpWidgetFormElements::select(array(
@@ -151,7 +149,7 @@ if (!class_exists('CbpWidgetPostList')):
                 ),
                 'name'              => $this->getIdString('show_post_date_icon'),
                 'value'             => $instance['show_post_date_icon'],
-                'description_title' => $this->translate('Show Post Date Icon?'),
+                'description_title' => $this->translate('Show Newsletter Date Icon?'),
                 'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_post_date', 'data-parentstate' => '1')
             ));
             CbpWidgetFormElements::select(array(
@@ -163,8 +161,8 @@ if (!class_exists('CbpWidgetPostList')):
                 ),
                 'name'              => $this->getIdString('post_date_format'),
                 'value'             => $instance['post_date_format'],
-                'description_title' => $this->translate('Post Date Format'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_post_date', 'data-parentstate' => '1')
+                'description_title' => $this->translate('Newsletter Date Format'),
+                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_newsletter_date', 'data-parentstate' => '1')
             ));
             CbpWidgetFormElements::select(array(
                 'options' => array(
@@ -223,7 +221,7 @@ if (!class_exists('CbpWidgetPostList')):
                 ),
                 'name'              => $this->getIdString('show_author'),
                 'value'             => $instance['show_author'],
-                'description_title' => $this->translate('Show Autor?'),
+                'description_title' => $this->translate('Show Author?'),
                 'attribs'           => array('data-type' => 'triggerparent', 'data-name' => 'show_author')
             ));
             CbpWidgetFormElements::select(array(
@@ -285,9 +283,18 @@ if (!class_exists('CbpWidgetPostList')):
                 'description_title' => $this->translate('Link Text'),
                 'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'use_button_link', 'data-parentstate' => '1')
             ));
+             CbpWidgetFormElements::select(array(
+                'options' => array(
+                    '1'                 => $this->translate('Yes'),
+                    '0'                 => $this->translate('No'),
+                ),
+                'name'              => $this->getIdString('limit_by_newsletter_item_date'),
+                'value'             => $instance['limit_by_newsletter_item_date'],
+                'description_title' => $this->translate('Limit by Newsletter Item Date?'),
+            ));
         }
 
-        public function sanitize(&$attribute)
+       public function sanitize(&$attribute)
         {
             switch ($attribute['name']) {
                 case CBP_APP_PREFIX . 'title':
@@ -342,18 +349,26 @@ if (!class_exists('CbpWidgetPostList')):
                         'use_button_link'      => '1',
                         'link_text'            => 'read more',
                         'padding'              => '',
+                        'limit_by_newsletter_item_date' => '1',
                             ), $atts));
 
             global $paged;
             global $post;
-
-            query_posts(array(
+            
+	        query_posts(array(
+                'post_type' => 'newsletter_item',
                 'posts_per_page'    => $posts_per_page,
-                'category__in'      => explode(',', $post_categories),
+//56                'category__in'      => explode(',', $post_categories),
                 'paged'             => $paged,
                 'orderby'           => $order_by,
                 'order'             => $order
             ));
+            
+             $post               = get_post($post_id);
+            $pod                = 'newsletter_item';
+            
+            $newsletter_description = pods_field ( $pod, $id, 'newsletter_longer_description', true );  
+            
             $padding            = CbpWidgets::getCssClass($padding);
             $css_class          = !empty($css_class) ? ' ' . $css_class : '';
             $custom_css_classes = !empty($custom_css_classes) ? ' ' . $custom_css_classes : '';
@@ -364,73 +379,88 @@ if (!class_exists('CbpWidgetPostList')):
                         <<?php echo $title_size; ?>><?php echo $title; ?></<?php echo $title_size; ?>>
                     <?php endif; ?>
                     <?php while (have_posts()) : the_post(); ?>
-                        <div class="<?php echo $number_of_columns; ?> double-pad-right double-pad-bottom <?php echo $this->getPrefix(); ?>-widget-post-list-item">
-                            <?php if ((int) $show_featured_image): ?> 
-                                <?php $imageArgs = array('echo' => false, 'size' => $thumbnail_dimensions); ?>
-                                <?php $image = cbp_get_the_image($imageArgs); ?>
-                                <?php if (isset($image) && $image): ?>
-                                    <div class="<?php echo $this->getPrefix(); ?>-widget-post-image">
-                                        <?php echo $image; ?>
-                                    </div>
-                                <?php endif; ?>
-                            <?php endif; ?>
-                            <<?php echo $post_title_size; ?>>
-                            <?php if ((int) $title_link_to_post): ?>
-                                <a href="<?php echo get_permalink($post->ID); ?>"><?php the_title(); ?></a>
-                            <?php else: ?>
-                                <?php the_title(); ?>
-                            <?php endif; ?>
-                            </<?php echo $post_title_size; ?>>
-                            <div class="<?php echo $this->getPrefix(); ?>-widget-post-meta-data">
-                                <?php if ((int) $show_post_date): ?>
-                                    <?php $postDateIcon = (int) $show_post_date_icon ? '<i class="fa fa-calendar"></i> ' : ''; ?> 
-                                    <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-date">
-                                        <?php echo $postDateIcon; ?><?php echo date_i18n($post_date_format, strtotime($post->post_date)); ?>
-                                    </span>
-                                <?php endif; ?>
-                                <?php if ((int) $show_comment_count): ?> 
-                                    <?php $commentIcon = (int) $show_comment_icon ? '<i class="fa fa-comments"></i> ' : ''; ?> 
-                                    <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-comments">
-                                        <?php echo $commentIcon; ?>(<?php echo $post->comment_count; ?>)
-                                    </span>
-                                <?php endif; ?>
-                                <?php if ((int) $show_tags): ?>
-                                    <?php $posttags = get_the_tags(); ?>
-                                    <?php if ($posttags) : ?>
-                                        <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-tags">
-                                            <?php $tagsIcon = (int) $show_tags_icon ? '<i class="fa fa-tags"></i> ' : ''; ?> 
-                                            <?php echo $tagsIcon; ?>
-                                            <?php if ((int) $tags_is_link): ?>
-                                                <?php foreach ($posttags as $tag) : ?>
-                                                    <a href="<?php echo get_tag_link($tag->term_id); ?>"><?php echo $tag->name; ?></a>
-                                                <?php endforeach; ?>
-                                            <?php else: ?>
-                                                <?php foreach ($posttags as $tag) : ?>
-                                                    <a href="<?php echo get_tag_link($tag->term_id); ?>"><?php echo $tag->name; ?></a>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </span>
-                                    <?php endif; ?>
-                                <?php endif; ?>
-                                <?php if ((int) $show_author): ?>
-                                    <?php if ((int) $author_is_link): ?>
-                                        <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-author">
-                                            <?php echo $this->translate('by'); ?> <a href="<?php echo get_author_posts_url(get_the_author_meta('ID')); ?>">
-                                                <?php the_author_meta('display_name'); ?>
-                                            </a>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-author">
-                                            <?php echo $this->translate('by'); ?> <?php the_author_meta('display_name'); ?>
-                                        </span>
-                                    <?php endif; ?>
-                                <?php endif; ?>
-                            </div>
-                            <div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
-                                <?php echo CbpUtils::trimmer(strip_shortcodes(get_the_content()), $number_of_characters); ?>
-                            </div>
-                           
-                        </div>
+                    
+						<?php 
+							$show_on_home_page = pods_field ($pod,  $post->ID, 'show_on_home_page', true );
+							if ($show_on_home_page): 
+								$start_date = pods_field ($pod,  $post->ID, 'start_post_date_on_home_page', true );
+								$end_date = pods_field ($pod,  $post->ID, 'end_post_date_on_home_page', true );
+							
+						    	if ($start_date <= current_time( 'mysql' ) AND $end_date >= current_time( 'mysql' )): ?>
+						
+									<div class="<?php echo $number_of_columns; ?> double-pad-right double-pad-bottom <?php echo $this->getPrefix(); ?>-widget-post-list-item">
+										<?php if ((int) $show_featured_image): ?> 
+											<?php $imageArgs = array('echo' => false, 'size' => $thumbnail_dimensions); ?>
+											<?php $image = cbp_get_the_image($imageArgs); ?>
+											<?php if (isset($image) && $image): ?>
+												<div class="<?php echo $this->getPrefix(); ?>-widget-post-image">
+													<?php echo $image; ?>
+												</div>
+											<?php endif; ?>
+										<?php endif; ?>
+										<<?php echo $post_title_size; ?>>
+										<?php if ((int) $title_link_to_post): ?>
+											<a href="<?php echo get_permalink($post->ID); ?>"><?php the_title(); ?></a>
+										<?php else: ?>
+											<?php the_title(); ?>
+										<?php endif; ?>
+										</<?php echo $post_title_size; ?>>
+										<div class="<?php echo $this->getPrefix(); ?>-widget-post-meta-data">
+											<?php if ((int) $show_post_date): ?>
+												<?php $postDateIcon = (int) $show_post_date_icon ? '<i class="fa fa-calendar"></i> ' : ''; ?> 
+												<span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-date">
+													<?php echo $postDateIcon; ?><?php echo date_i18n($post_date_format, strtotime($post->post_date)); ?>
+												</span>
+											<?php endif; ?>
+											<?php if ((int) $show_comment_count): ?> 
+												<?php $commentIcon = (int) $show_comment_icon ? '<i class="fa fa-comments"></i> ' : ''; ?> 
+												<span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-comments">
+													<?php echo $commentIcon; ?>(<?php echo $post->comment_count; ?>)
+												</span>
+											<?php endif; ?>
+											<?php if ((int) $show_tags): ?>
+												<?php $posttags = get_the_tags(); ?>
+												<?php if ($posttags) : ?>
+													<span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-tags">
+														<?php $tagsIcon = (int) $show_tags_icon ? '<i class="fa fa-tags"></i> ' : ''; ?> 
+														<?php echo $tagsIcon; ?>
+														<?php if ((int) $tags_is_link): ?>
+															<?php foreach ($posttags as $tag) : ?>
+																<a href="<?php echo get_tag_link($tag->term_id); ?>"><?php echo $tag->name; ?></a>
+															<?php endforeach; ?>
+														<?php else: ?>
+															<?php foreach ($posttags as $tag) : ?>
+																<a href="<?php echo get_tag_link($tag->term_id); ?>"><?php echo $tag->name; ?></a>
+															<?php endforeach; ?>
+														<?php endif; ?>
+													</span>
+												<?php endif; ?>
+											<?php endif; ?>
+											<?php if ((int) $show_author): ?>
+												<?php if ((int) $author_is_link): ?>
+													<span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-author">
+														<?php echo $this->translate('by'); ?> <a href="<?php echo get_author_posts_url(get_the_author_meta('ID')); ?>">
+															<?php the_author_meta('display_name'); ?>
+														</a>
+													</span>
+												<?php else: ?>
+													<span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-author">
+														<?php echo $this->translate('by'); ?> <?php the_author_meta('display_name'); ?>
+													</span>
+												<?php endif; ?>
+											<?php endif; ?>
+										</div>
+										<div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
+											<?php echo CbpUtils::trimmer(pods_field($pod, $post->ID, 'home_page_short_description', true), $number_of_characters); ?>
+										</div>
+										<?php if ((int) $use_button_link): ?>
+											<div class="<?php echo $this->getPrefix(); ?>-widget-post-link double-pad-top">
+												<a class="cbp_widget_link" href="<?php echo get_permalink(); ?>"><?php echo $link_text; ?></a>
+											</div>
+										<?php endif; ?>
+									</div>
+							<?php endif; ?>
+                        <?php endif; ?>
                     <?php endwhile; ?>
                 </div>
             <?php endif; ?>

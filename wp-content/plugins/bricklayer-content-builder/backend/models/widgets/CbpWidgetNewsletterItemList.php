@@ -372,6 +372,7 @@ if (!class_exists('CbpWidgetNewsletterItemList')):
             $padding            = CbpWidgets::getCssClass($padding);
             $css_class          = !empty($css_class) ? ' ' . $css_class : '';
             $custom_css_classes = !empty($custom_css_classes) ? ' ' . $custom_css_classes : '';
+            
             ?>
             <?php if (have_posts()) : ?>
                 <div class="<?php echo CbpWidgets::getDefaultWidgetCssClass(); ?> <?php echo $type; ?><?php echo $custom_css_classes; ?><?php echo $css_class; ?> <?php echo $padding; ?>">
@@ -381,6 +382,8 @@ if (!class_exists('CbpWidgetNewsletterItemList')):
                     <?php while (have_posts()) : the_post(); ?>
                     
 						<?php 
+							$pod_id = pods($pod, $post->ID);
+							$volunteer_item = $pod_id->field('related_volunteer_spot');
 							$show_on_home_page = pods_field ($pod,  $post->ID, 'show_on_home_page', true );
 							if ($show_on_home_page): 
 								$start_date = pods_field ($pod,  $post->ID, 'start_post_date_on_home_page', true );
@@ -457,6 +460,16 @@ if (!class_exists('CbpWidgetNewsletterItemList')):
 											<div class="<?php echo $this->getPrefix(); ?>-widget-post-link double-pad-top">
 												<a class="cbp_widget_link" href="<?php echo get_permalink(); ?>"><?php echo $link_text; ?></a>
 											</div>
+										<?php endif; ?>
+										
+										<?php if (!empty($volunteer_item)): ?>
+											<?php foreach ($volunteer_item as $vol) { ?>
+												<?php $vol_id = $vol["ID"]; ?>
+												<?php $volunteer_spot_link = get_post_meta( $vol_id, 'volunteer_spot_link', true ); ?>
+												<?php $volunteer_spot_title = get_the_title($vol_id); ?>
+												<div>Volunteer: <?php echo $volunteer_spot_title; ?>- <a href="<?php echo $volunteer_spot_link;?>"><?php echo $volunteer_spot_link; ?></div>
+			
+											<?php } ?>
 										<?php endif; ?>
 									</div>
 							<?php endif; ?>
