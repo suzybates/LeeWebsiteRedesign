@@ -8,7 +8,7 @@ if (!class_exists('CbpWidgetLinkToPage2')):
         {
             parent::__construct(
                     /* Base ID */'cbp_widget_link_to_page',
-                    /* Name */ 'Link to Page2', array('description' => 'This is a Link to Page2 brick.', 'icon'        => 'fa fa-list-alt fa-3x'));
+                    /* Name */ 'Link to Page', array('description' => 'This is a Link to Page brick.', 'icon'        => 'fa fa-list-alt fa-3x'));
         }
 
         public function registerFormElements($elements)

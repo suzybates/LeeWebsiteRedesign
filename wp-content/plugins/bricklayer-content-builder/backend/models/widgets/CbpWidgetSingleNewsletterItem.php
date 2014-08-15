@@ -8,7 +8,7 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
         {
             parent::__construct(
                     /* Base ID */'cbp_widget_single_newsletter_item',
-                    /* Name */ 'Newsletter Item', array('description' => 'This is a Single Newsletter Item brick.', 'icon'        => 'fa fa-list-alt fa-3x'));
+                    /* Name */ 'Newsletter Item Post', array('description' => 'This is a Single Newsletter Item brick.', 'icon'        => 'fa fa-list-alt fa-3x'));
         }
 
         public function registerFormElements($elements)
@@ -138,11 +138,13 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                         'numberposts' => $number_of_posts,
                     );
             $post               = get_post($post_id);
+            $pod                = 'newsletter_item';
+            $id                 = $post->ID;
             $css_class          = !empty($css_class) ? ' ' . $css_class : '';
             $custom_css_classes = !empty($custom_css_classes) ? ' ' . $custom_css_classes : '';
             $padding            = CbpWidgets::getCssClass($padding);
-            $newsletter_longer_description = do_shortcode('[pods]{@newsletter_longer_description}[/pods]');
-
+            $newsletter_description = pods_field ( $pod, $id, 'newsletter_longer_description', true );  
+            
             
             if (empty($display_description)) {
             	$display_description =  $post_id;
@@ -166,9 +168,9 @@ if (!class_exists('CbpWidgetSingleNewsletterItem')):
                         </div>
                     <?php endif; ?>
                 <?php endif; ?>
-                <div><?php echo $newsletter_longer_description ?></div>
+                <div><?php echo $newsletter_description ?></div>
                 <div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
-                    <?php echo $post->post_content; ?>
+                    <?php //echo $post->post_content; ?>
                     
                 </div>
             </div>
