@@ -84,7 +84,7 @@ if (!class_exists('CbpWidgetNewsletterItemList')):
                 ),
                 'name'              => $this->getIdString('title_link_to_post'),
                 'value'             => $instance['title_link_to_post'],
-                'description_title' => $this->translate('Should Title Link to Newsletter?'),
+                'description_title' => $this->translate('Should Title Link to Newsletter Item?'),
             ));
             CbpWidgetFormElements::select(array(
                 'options' => array(
@@ -97,7 +97,7 @@ if (!class_exists('CbpWidgetNewsletterItemList')):
                 ),
                 'name'              => $this->getIdString('post_title_size'),
                 'value'             => $instance['post_title_size'],
-                'description_title' => $this->translate('Newsletter Title Size'),
+                'description_title' => $this->translate('Newsletter Item Title Size'),
             ));
             CbpWidgetFormElements::select(array(
                 'options' => array(
@@ -385,6 +385,8 @@ if (!class_exists('CbpWidgetNewsletterItemList')):
 							$pod_id = pods($pod, $post->ID);
 							$volunteer_item = $pod_id->field('related_volunteer_spot');
 							$show_on_home_page = pods_field ($pod,  $post->ID, 'show_on_home_page', true );
+							$home_page_short_description = pods_field ($pod,  $post->ID, 'home_page_short_description', true);
+
 							if ($show_on_home_page): 
 								$start_date = pods_field ($pod,  $post->ID, 'start_post_date_on_home_page', true );
 								$end_date = pods_field ($pod,  $post->ID, 'end_post_date_on_home_page', true );
@@ -454,7 +456,7 @@ if (!class_exists('CbpWidgetNewsletterItemList')):
 											<?php endif; ?>
 										</div>
 										<div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
-											<?php echo CbpUtils::trimmer(pods_field($pod, $post->ID, 'home_page_short_description', true), $number_of_characters); ?>
+											<?php echo $home_page_short_description ?>
 										</div>
 										<?php if ((int) $use_button_link): ?>
 											<div class="<?php echo $this->getPrefix(); ?>-widget-post-link double-pad-top">

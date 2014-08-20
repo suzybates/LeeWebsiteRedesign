@@ -1,0 +1,364 @@
+08-04-2014 @ 14:37:15 - Generating payment form for order #797. Notify URL: http://www.leeelementarytest.com/wc-api/WC_Gateway_Paypal/
+08-04-2014 @ 14:38:32 - Checking IPN response is valid via https://www.sandbox.paypal.com/cgi-bin/webscr...
+08-04-2014 @ 14:38:32 - IPN Request: Array
+(
+    [body] => Array
+        (
+            [cmd] => _notify-validate
+            [mc_gross] => 10.00
+            [invoice] => LEE-797
+            [protection_eligibility] => Ineligible
+            [item_number1] => 
+            [payer_id] => QUMCEWB99G6PS
+            [tax] => 0.00
+            [payment_date] => 12:38:24 Aug 04, 2014 PDT
+            [payment_status] => Completed
+            [charset] => windows-1252
+            [mc_shipping] => 0.00
+            [mc_handling] => 0.00
+            [first_name] => Lee
+            [mc_fee] => 0.59
+            [notify_version] => 3.8
+            [custom] => a:2:{i:0;i:797;i:1;s:22:"wc_order_53dfe0ebcbce8";}
+            [payer_status] => verified
+            [business] => leepaypaladmin@yahoo.com
+            [num_cart_items] => 1
+            [mc_handling1] => 0.00
+            [verify_sign] => AH4ibV7AGjZvAFy8VOj.vSJydh3oAwlQQajA30VhNcDmlfK3Ck8GYt9N
+            [payer_email] => leeparent@yahoo.com
+            [mc_shipping1] => 0.00
+            [tax1] => 0.00
+            [txn_id] => 5R0715752Y075190J
+            [payment_type] => instant
+            [last_name] => Parent
+            [item_name1] => Lee Elementary T-Shirt ( color: Gray, Size: Medium )
+            [receiver_email] => leepaypaladmin@yahoo.com
+            [payment_fee] => 0.59
+            [quantity1] => 1
+            [receiver_id] => SHWB4TBPGXTHU
+            [txn_type] => cart
+            [mc_gross_1] => 10.00
+            [mc_currency] => USD
+            [residence_country] => US
+            [test_ipn] => 1
+            [transaction_subject] => a:2:{i:0;i:797;i:1;s:22:"wc_order_53dfe0ebcbce8";}
+            [payment_gross] => 10.00
+            [ipn_track_id] => cac9dd7db822a
+        )
+
+    [sslverify] => 
+    [timeout] => 60
+    [httpversion] => 1.1
+    [compress] => 
+    [decompress] => 
+    [user-agent] => WooCommerce/2.1.12
+)
+
+08-04-2014 @ 14:38:33 - IPN Response: Array
+(
+    [headers] => Array
+        (
+            [date] => Mon, 04 Aug 2014 19:38:33 GMT
+            [server] => Apache
+            [x-frame-options] => SAMEORIGIN
+            [set-cookie] => Array
+                (
+                    [0] => c9MWDuvPtT9GIMyPc3jwol1VSlO=jqf3s7nYlt-ACtpsqP2miiAJl4LDS0X6gdH96YHIL4tZqIEdAHiojE2JbXiyhYVaSa7wfIVheeeLGwbQe2LJ3qXON5j1E1jgPUY78Zi206wgmYFzQ6G_ZEIW4p5TWhfgWHKzCJnNCCfi_rCkVfaLOM2sNS_ONaxLU3nmPE_lhHbGLoQDqzowBv-Ku9hrGZGMtXmef3h0sbO708njAFZE6p13QxDgKHkoFQ6AarZdzcTpZNvkEsyF_H5OVlrTnFOR3U8nGI2oqjCYOIdNB26khqIu8pY_5WUSqE2cRkccOgGOXW5h7CxZAujGXT_DhyBfeHAE2BDg5i1FdVvz-Qym2p8VWuS_aHt6EHlic9dPPbp1cLtV-GUl_R44xUK711WqH0ETK6BcBIgsXe64CQefk9eovOQZPmHB1bNwRb8FaYgV8TUNGa3_pV9kF5O; domain=.paypal.com; path=/; Secure; HttpOnly
+                    [1] => cookie_check=yes; expires=Thu, 01-Aug-2024 19:38:33 GMT; domain=.paypal.com; path=/; Secure; HttpOnly
+                    [2] => navcmd=_notify-validate; domain=.paypal.com; path=/; Secure; HttpOnly
+                    [3] => navlns=0.0; expires=Wed, 03-Aug-2016 19:38:33 GMT; domain=.paypal.com; path=/; Secure; HttpOnly
+                    [4] => Apache=10.72.109.11.1407181113317820; path=/; expires=Wed, 27-Jul-44 19:38:33 GMT
+                    [5] => X-PP-SILOVER=name%3DSANDBOX3.WEB.1%26silo_version%3D880%26app%3Dslingshot%26TIME%3D971104083; domain=.paypal.com; path=/; Secure; HttpOnly
+                    [6] => X-PP-SILOVER=; Expires=Thu, 01 Jan 1970 00:00:01 GMT
+                    [7] => Apache=10.72.128.11.1407181113303417; path=/; expires=Wed, 27-Jul-44 19:38:33 GMT
+                )
+
+            [connection] => close
+            [vary] => Accept-Encoding
+            [strict-transport-security] => max-age=14400
+            [transfer-encoding] => chunked
+            [content-type] => text/html; charset=UTF-8
+        )
+
+    [body] => VERIFIED
+    [response] => Array
+        (
+            [code] => 200
+            [message] => OK
+        )
+
+    [cookies] => Array
+        (
+            [0] => WP_Http_Cookie Object
+                (
+                    [name] => c9MWDuvPtT9GIMyPc3jwol1VSlO
+                    [value] => jqf3s7nYlt-ACtpsqP2miiAJl4LDS0X6gdH96YHIL4tZqIEdAHiojE2JbXiyhYVaSa7wfIVheeeLGwbQe2LJ3qXON5j1E1jgPUY78Zi206wgmYFzQ6G_ZEIW4p5TWhfgWHKzCJnNCCfi_rCkVfaLOM2sNS_ONaxLU3nmPE_lhHbGLoQDqzowBv-Ku9hrGZGMtXmef3h0sbO708njAFZE6p13QxDgKHkoFQ6AarZdzcTpZNvkEsyF_H5OVlrTnFOR3U8nGI2oqjCYOIdNB26khqIu8pY_5WUSqE2cRkccOgGOXW5h7CxZAujGXT_DhyBfeHAE2BDg5i1FdVvz-Qym2p8VWuS_aHt6EHlic9dPPbp1cLtV-GUl_R44xUK711WqH0ETK6BcBIgsXe64CQefk9eovOQZPmHB1bNwRb8FaYgV8TUNGa3_pV9kF5O
+                    [expires] => 
+                    [path] => /
+                    [domain] => .paypal.com
+                    [secure] => 
+                    [httponly] => 
+                )
+
+            [1] => WP_Http_Cookie Object
+                (
+                    [name] => cookie_check
+                    [value] => yes
+                    [expires] => 1722541113
+                    [path] => /
+                    [domain] => .paypal.com
+                    [secure] => 
+                    [httponly] => 
+                )
+
+            [2] => WP_Http_Cookie Object
+                (
+                    [name] => navcmd
+                    [value] => _notify-validate
+                    [expires] => 
+                    [path] => /
+                    [domain] => .paypal.com
+                    [secure] => 
+                    [httponly] => 
+                )
+
+            [3] => WP_Http_Cookie Object
+                (
+                    [name] => navlns
+                    [value] => 0.0
+                    [expires] => 1470253113
+                    [path] => /
+                    [domain] => .paypal.com
+                    [secure] => 
+                    [httponly] => 
+                )
+
+            [4] => WP_Http_Cookie Object
+                (
+                    [name] => Apache
+                    [value] => 10.72.109.11.1407181113317820
+                    [expires] => 2353261113
+                    [path] => /
+                    [domain] => www.sandbox.paypal.com
+                )
+
+            [5] => WP_Http_Cookie Object
+                (
+                    [name] => X-PP-SILOVER
+                    [value] => name=SANDBOX3.WEB.1&silo_version=880&app=slingshot&TIME=971104083
+                    [expires] => 
+                    [path] => /
+                    [domain] => .paypal.com
+                    [secure] => 
+                    [httponly] => 
+                )
+
+            [6] => WP_Http_Cookie Object
+                (
+                    [name] => X-PP-SILOVER
+                    [value] => 
+                    [expires] => 1
+                    [path] => /cgi-bin/
+                    [domain] => www.sandbox.paypal.com
+                )
+
+            [7] => WP_Http_Cookie Object
+                (
+                    [name] => Apache
+                    [value] => 10.72.128.11.1407181113303417
+                    [expires] => 2353261113
+                    [path] => /
+                    [domain] => www.sandbox.paypal.com
+                )
+
+        )
+
+    [filename] => 
+)
+
+08-04-2014 @ 14:38:33 - Received valid response from PayPal
+08-04-2014 @ 14:38:33 - Found order #797
+08-04-2014 @ 14:38:33 - Payment status: completed
+08-04-2014 @ 14:38:34 - Payment complete.
+08-04-2014 @ 14:50:42 - Generating payment form for order #798. Notify URL: http://www.leeelementarytest.com/wc-api/WC_Gateway_Paypal/
+08-04-2014 @ 14:52:30 - Checking IPN response is valid via https://www.sandbox.paypal.com/cgi-bin/webscr...
+08-04-2014 @ 14:52:30 - IPN Request: Array
+(
+    [body] => Array
+        (
+            [cmd] => _notify-validate
+            [mc_gross] => 10.00
+            [invoice] => LEE-798
+            [protection_eligibility] => Ineligible
+            [item_number1] => 
+            [payer_id] => LRRTPXQTL3BMQ
+            [tax] => 0.00
+            [payment_date] => 12:52:24 Aug 04, 2014 PDT
+            [payment_status] => Completed
+            [charset] => windows-1252
+            [mc_shipping] => 0.00
+            [mc_handling] => 0.00
+            [first_name] => Lee
+            [mc_fee] => 0.59
+            [notify_version] => 3.8
+            [custom] => a:2:{i:0;i:798;i:1;s:22:"wc_order_53dfe41276962";}
+            [payer_status] => verified
+            [business] => leepaypaladmin@yahoo.com
+            [num_cart_items] => 1
+            [mc_handling1] => 0.00
+            [verify_sign] => ArFZ5DF1pEd4euI2jpvbEwe5Q4BiAX99H1yh8EgKh9f.AiJBiM8TNCGf
+            [payer_email] => leeparent2@gmail.com
+            [mc_shipping1] => 0.00
+            [tax1] => 0.00
+            [txn_id] => 9H362304BN6680135
+            [payment_type] => instant
+            [last_name] => Parent Two
+            [item_name1] => Lee Elementary T-Shirt ( color: White, Size: Large )
+            [receiver_email] => leepaypaladmin@yahoo.com
+            [payment_fee] => 0.59
+            [quantity1] => 1
+            [receiver_id] => SHWB4TBPGXTHU
+            [txn_type] => cart
+            [mc_gross_1] => 10.00
+            [mc_currency] => USD
+            [residence_country] => US
+            [test_ipn] => 1
+            [transaction_subject] => a:2:{i:0;i:798;i:1;s:22:"wc_order_53dfe41276962";}
+            [payment_gross] => 10.00
+            [ipn_track_id] => d3621bb8ae91f
+        )
+
+    [sslverify] => 
+    [timeout] => 60
+    [httpversion] => 1.1
+    [compress] => 
+    [decompress] => 
+    [user-agent] => WooCommerce/2.1.12
+)
+
+08-04-2014 @ 14:52:31 - IPN Response: Array
+(
+    [headers] => Array
+        (
+            [date] => Mon, 04 Aug 2014 19:52:30 GMT
+            [server] => Apache
+            [x-frame-options] => SAMEORIGIN
+            [set-cookie] => Array
+                (
+                    [0] => c9MWDuvPtT9GIMyPc3jwol1VSlO=R6e5dL0id0FMbyzPi8A94rD8XkcQgu4kJOt8LCb0G1303HIohgdLAX9ij_9iBH4Cmq7tsYRUXs0dJOt35MlDfxkP-tE3T3fg1WqcjGVDKPvRQES4mTTyhOZHPA784ENVFbLI_Nx54Ua0-_SudrKDGXJjPWhXFg0fVlUTJPPkx97w_BslwNG_5G_ntgA-Onn9_tCbvh2eeYpOenm2jJyLMO9rpsRTN1iMWGcE9ihw9thaK_9q7NL0tNMMPAGiaIJ0POAYtHGe-Ck8o6TWyUBsdxk29n9RV4o7JBfdg-NFDH8fVxsiJ2UpCe2EwR1CvbLG9sawU48d364WxSOgRmMWIvpPn-N8nVoisHvS3Oqj0uoaRZGsovX-VG1k9s4yZPScKbcMTFxsRtn0moOgPNFsNVGPAiNdXeuSoOKaAuSxNIeCzFf-YFnXEjT7yUW; domain=.paypal.com; path=/; Secure; HttpOnly
+                    [1] => cookie_check=yes; expires=Thu, 01-Aug-2024 19:52:31 GMT; domain=.paypal.com; path=/; Secure; HttpOnly
+                    [2] => navcmd=_notify-validate; domain=.paypal.com; path=/; Secure; HttpOnly
+                    [3] => navlns=0.0; expires=Wed, 03-Aug-2016 19:52:31 GMT; domain=.paypal.com; path=/; Secure; HttpOnly
+                    [4] => Apache=10.72.109.11.1407181950788572; path=/; expires=Wed, 27-Jul-44 19:52:30 GMT
+                    [5] => X-PP-SILOVER=name%3DSANDBOX3.WEB.1%26silo_version%3D880%26app%3Dslingshot%26TIME%3D2128928595; domain=.paypal.com; path=/; Secure; HttpOnly
+                    [6] => X-PP-SILOVER=; Expires=Thu, 01 Jan 1970 00:00:01 GMT
+                    [7] => Apache=10.72.128.11.1407181950773721; path=/; expires=Wed, 27-Jul-44 19:52:30 GMT
+                )
+
+            [connection] => close
+            [vary] => Accept-Encoding
+            [strict-transport-security] => max-age=14400
+            [transfer-encoding] => chunked
+            [content-type] => text/html; charset=UTF-8
+        )
+
+    [body] => VERIFIED
+    [response] => Array
+        (
+            [code] => 200
+            [message] => OK
+        )
+
+    [cookies] => Array
+        (
+            [0] => WP_Http_Cookie Object
+                (
+                    [name] => c9MWDuvPtT9GIMyPc3jwol1VSlO
+                    [value] => R6e5dL0id0FMbyzPi8A94rD8XkcQgu4kJOt8LCb0G1303HIohgdLAX9ij_9iBH4Cmq7tsYRUXs0dJOt35MlDfxkP-tE3T3fg1WqcjGVDKPvRQES4mTTyhOZHPA784ENVFbLI_Nx54Ua0-_SudrKDGXJjPWhXFg0fVlUTJPPkx97w_BslwNG_5G_ntgA-Onn9_tCbvh2eeYpOenm2jJyLMO9rpsRTN1iMWGcE9ihw9thaK_9q7NL0tNMMPAGiaIJ0POAYtHGe-Ck8o6TWyUBsdxk29n9RV4o7JBfdg-NFDH8fVxsiJ2UpCe2EwR1CvbLG9sawU48d364WxSOgRmMWIvpPn-N8nVoisHvS3Oqj0uoaRZGsovX-VG1k9s4yZPScKbcMTFxsRtn0moOgPNFsNVGPAiNdXeuSoOKaAuSxNIeCzFf-YFnXEjT7yUW
+                    [expires] => 
+                    [path] => /
+                    [domain] => .paypal.com
+                    [secure] => 
+                    [httponly] => 
+                )
+
+            [1] => WP_Http_Cookie Object
+                (
+                    [name] => cookie_check
+                    [value] => yes
+                    [expires] => 1722541951
+                    [path] => /
+                    [domain] => .paypal.com
+                    [secure] => 
+                    [httponly] => 
+                )
+
+            [2] => WP_Http_Cookie Object
+                (
+                    [name] => navcmd
+                    [value] => _notify-validate
+                    [expires] => 
+                    [path] => /
+                    [domain] => .paypal.com
+                    [secure] => 
+                    [httponly] => 
+                )
+
+            [3] => WP_Http_Cookie Object
+                (
+                    [name] => navlns
+                    [value] => 0.0
+                    [expires] => 1470253951
+                    [path] => /
+                    [domain] => .paypal.com
+                    [secure] => 
+                    [httponly] => 
+                )
+
+            [4] => WP_Http_Cookie Object
+                (
+                    [name] => Apache
+                    [value] => 10.72.109.11.1407181950788572
+                    [expires] => 2353261950
+                    [path] => /
+                    [domain] => www.sandbox.paypal.com
+                )
+
+            [5] => WP_Http_Cookie Object
+                (
+                    [name] => X-PP-SILOVER
+                    [value] => name=SANDBOX3.WEB.1&silo_version=880&app=slingshot&TIME=2128928595
+                    [expires] => 
+                    [path] => /
+                    [domain] => .paypal.com
+                    [secure] => 
+                    [httponly] => 
+                )
+
+            [6] => WP_Http_Cookie Object
+                (
+                    [name] => X-PP-SILOVER
+                    [value] => 
+                    [expires] => 1
+                    [path] => /cgi-bin/
+                    [domain] => www.sandbox.paypal.com
+                )
+
+            [7] => WP_Http_Cookie Object
+                (
+                    [name] => Apache
+                    [value] => 10.72.128.11.1407181950773721
+                    [expires] => 2353261950
+                    [path] => /
+                    [domain] => www.sandbox.paypal.com
+                )
+
+        )
+
+    [filename] => 
+)
+
+08-04-2014 @ 14:52:31 - Received valid response from PayPal
+08-04-2014 @ 14:52:31 - Found order #798
+08-04-2014 @ 14:52:31 - Payment status: completed
+08-04-2014 @ 14:52:31 - Payment complete.

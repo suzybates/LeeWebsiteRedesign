@@ -446,7 +446,7 @@ button:active, input[type="submit"]:active, input[type="button"]:active, input[t
 .ch-post-list-featured-image-left-compact .cbp-widget-post-list-item h1, .ch-post-list-featured-image-left-compact .cbp-widget-post-list-item h2, .ch-post-list-featured-image-left-compact .cbp-widget-post-list-item h3, .ch-post-list-featured-image-left-compact .cbp-widget-post-list-item h4, .ch-post-list-featured-image-left-compact .cbp-widget-post-list-item h5, .ch-post-list-featured-image-left-compact .cbp-widget-post-list-item h6 { margin-bottom: 6px; }
 .ch-post-list-featured-image-left-compact .cbp-widget-post-list-item .cbp-widget-post-image { padding-right: 16px; }
 
-.sf-menu.ch-menu-main { padding-top: 17px; }
+.sf-menu.ch-menu-main { padding-top: 20px; }
 .sf-menu.ch-menu-main a { color: #f7f6f4; padding: 3px 14px; font-size: 18px; font-family: arvoregular, serif; }
 .sf-menu.ch-menu-main ul li { background: #f0ebdf; -webkit-box-shadow: 4px 4px 3px #389aa0; -moz-box-shadow: 4px 4px 3px #389aa0; box-shadow: 4px 4px 3px #389aa0; -webkit-border-radius: 2px 2px; -moz-border-radius: 2px / 2px; border-radius: 2px / 2px; }
 .sf-menu.ch-menu-main ul li a { padding: 6px 14px; font-size: 15px; }
