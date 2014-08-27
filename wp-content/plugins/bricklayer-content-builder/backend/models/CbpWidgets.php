@@ -272,6 +272,7 @@ if (!class_exists('CbpWidgets')):
             CbpWidgets::registerWidget('CbpWidgetEventList');
             CbpWidgets::registerWidget('CbpWidgetSingleNewsletterItem');
             CbpWidgets::registerWidget('CbpWidgetNewsletterItemList');
+            CbpWidgets::registerWidget('CbpWidgetNewsletterList');
 
             if (CbpUtils::getOption('use_content_builder_layouts_and_templates')) {
                 CbpWidgets::registerWidget('CbpWidgetFeaturedImage');
