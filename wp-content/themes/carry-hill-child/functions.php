@@ -57,3 +57,10 @@ function aisd_menu_query($connectorGuid, $input, $userGuid, $apiKey, $additional
   return json_decode($result);
 }
 
+function my_post_types($types) {
+	$types[] = 'newsletter_item';
+	$types[] = 'volunteer_item';
+	return $types;
+}
+
+add_filter('s2_post_types', 'my_post_types');
