@@ -57,7 +57,7 @@ get_template_part('header-bottom');
 								<?php $volunteer_item = $news_item_id->field('related_volunteer_spot'); ?>
 							
 								<h4> <a href="<?php echo $news_link;?>"><?php echo $news_title; ?></a></h4>
-								<div><?php echo $newsletter_description; ?></div>
+								<?php echo $newsletter_description; ?>
 
 								<?php if (!empty($volunteer_item)): ?>
 									<?php foreach ($volunteer_item as $vol) { ?>
