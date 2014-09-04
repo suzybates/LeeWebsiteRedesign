@@ -64,3 +64,5 @@ function my_post_types($types) {
 }
 
 add_filter('s2_post_types', 'my_post_types');
+
+
