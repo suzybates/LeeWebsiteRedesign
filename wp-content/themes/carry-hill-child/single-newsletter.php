@@ -51,9 +51,10 @@ get_template_part('header-bottom');
 								<?php $news_id = $news["ID"]; ?>
 								<?php $news_link = get_permalink($news_id); ?>
 								<?php $news_title = get_the_title($news_id); ?>
-								<?php $newsletter_description = pods_field ('newsletter_item', $news_id, 'newsletter_longer_description', true);  ?>
+								
 							
 								<?php $news_item_id = pods('newsletter_item', $news_id); ?>
+								<?php $newsletter_description = $news_item_id->display( 'newsletter_longer_description');  ?>
 								<?php $volunteer_item = $news_item_id->field('related_volunteer_spot'); ?>
 							
 								<h4> <a href="<?php echo $news_link;?>"><?php echo $news_title; ?></a></h4>
