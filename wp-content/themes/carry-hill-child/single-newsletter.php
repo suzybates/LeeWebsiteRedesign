@@ -26,7 +26,9 @@ get_template_part('header-bottom');
 				<?php get_template_part('partials/page-title'); ?>
 				<div class="cbp-container">
 					<div class="whole double-padded">
-						<?php $pod_id = pods($pod, $post->ID); ?>
+						<center><h1> Roadrunner Rundown </h1>
+						<img class="alignnone size-medium wp-image-1328" src="http://www.lee-elementary.org/wp-content/uploads/lee-roadrunner-300x120.png" alt="lee roadrunner" width="300" height="120">
+						</center><?php $pod_id = pods($pod, $post->ID); ?>
 						<?php $approved_for_publication = $pod_id->field('approved_for_publication'); ?>
 						<?php if ($approved_for_publication <> 'Approved'): ?>
 							<div> Status: <?php echo $approved_for_publication; ?></div>
