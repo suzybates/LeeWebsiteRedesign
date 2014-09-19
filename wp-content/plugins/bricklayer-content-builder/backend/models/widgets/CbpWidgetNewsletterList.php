@@ -262,74 +262,54 @@ if (!class_exists('CbpWidgetNewsletterList')):
 
             global $paged;
             global $post;
+            $params = array(
+    			'limit' => $posts_per_page, 
+    			// Be sure to sanitize ANY strings going here
+    			'where'=>"approved_for_publication.meta_value = 'Approved'" ,
+    			'paged'             => $paged,
+                'orderby'           => $order_by,
+                'order'             => $order
+			);
             
-            query_posts(array(
+            $mypod = pods('newsletter', $params);
+            
+            //echo $mypod->display('post_date');
+            
+            /*query_posts(array(
                 'post_type' => 'newsletter',
                 //'posts_per_page'    => $posts_per_page,
                 'paged'             => $paged,
                 'orderby'           => $order_by,
                 'order'             => $order
             ));
-            
+			*/            
             
             $padding            = CbpWidgets::getCssClass($padding);
             $css_class          = !empty($css_class) ? ' ' . $css_class : '';
             $custom_css_classes = !empty($custom_css_classes) ? ' ' . $custom_css_classes : '';
             
             ?>
-            <?php if (have_posts()) : ?>
+            
                 <div class="<?php echo CbpWidgets::getDefaultWidgetCssClass(); ?> <?php echo $type; ?><?php echo $custom_css_classes; ?><?php echo $css_class; ?> <?php echo $padding; ?>">
                     <?php if (!empty($title)): ?>
                         <<?php echo $title_size; ?>><?php echo $title; ?></<?php echo $title_size; ?>>
                     <?php endif; ?>
-                    <?php while (have_posts()) : the_post(); ?>
+                    <?php while ($mypod->fetch() ) : ?>
                         <div class="<?php echo $number_of_columns; ?> double-pad-right double-pad-bottom <?php echo $this->getPrefix(); ?>-widget-post-list-item">
-                            <?php $pod_id = pods('newsletter', $this->ID); ?>
-                            <?php //var_dump( $pod_id) ?>
-                            <?php $approved = pods_field ( 'newsletter', $post->ID, 'approved_for_publication', true ); ?>
-                            <?php //echo $approved ?>
-                            <?php if ($approved == "Approved"): ?>
-								<?php if ((int) $show_featured_image): ?> 
-									<?php $imageArgs = array('echo' => false, 'size' => $thumbnail_dimensions); ?>
-									<?php $image = cbp_get_the_image($imageArgs); ?>
-									<?php if (isset($image) && $image): ?>
-										<div class="<?php echo $this->getPrefix(); ?>-widget-post-image">
-											<?php echo $image; ?>
-										</div>
-									<?php endif; ?>
-								<?php endif; ?>
-								<<?php echo $post_title_size; ?>>
-								<?php if ((int) $title_link_to_post): ?>
-									<a href="<?php echo get_permalink($post->ID); ?>"><?php the_title(); ?></a>
-								<?php else: ?>
-									<?php the_title(); ?>
-								<?php endif; ?>
-								</<?php echo $post_title_size; ?>>
-								<div class="<?php echo $this->getPrefix(); ?>-widget-post-meta-data">
-									<?php if ((int) $show_post_date): ?>
-										<?php $postDateIcon = (int) $show_post_date_icon ? '<i class="fa fa-calendar"></i> ' : ''; ?> 
-										<span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-date">
-											<?php echo $postDateIcon; ?><?php echo date_i18n($post_date_format, strtotime($post->post_date)); ?>
-										</span>
-									<?php endif; ?>
-								</div>
-								<div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
-									<?php echo CbpUtils::trimmer(strip_shortcodes(get_the_content()), $number_of_characters); ?>
-								</div>
-								<?php if ((int) $use_button_link): ?>
-									<div class="<?php echo $this->getPrefix(); ?>-widget-post-link double-pad-top">
-										<a class="cbp_widget_link" href="<?php echo get_permalink(); ?>"><?php echo $link_text; ?></a>
-									</div>
-								<?php endif; ?>
-							<?php endif; ?>
+                            <?php //var_dump( $mypod) ?>
+                            <<?php echo $post_title_size; ?>>
+                            	<a href="<?php echo $mypod->display('permalink'); ?>">
+                            	<?php echo $mypod->display('post_title'); ?></a>
+                            </<?php echo $post_title_size; ?>>
                         </div>
+                    <?php //endwhile; ?>
                     <?php endwhile; ?>
                 </div>
-            <?php endif; ?>
-            <?php wp_reset_query(); ?>
-            <?php if ((int) $use_pagination): ?> 
-                <?php CbpUtils::pagination(); ?>
-            <?php endif; ?>
+            
+            <?php //wp_reset_query(); ?>
+            <?php //if ((int) $use_pagination): ?> 
+                <?php //CbpUtils::pagination(); ?>
+            <?php //endif; ?>
             <?php
         }
     }
