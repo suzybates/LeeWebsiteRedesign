@@ -265,7 +265,7 @@ if (!class_exists('CbpWidgetNewsletterList')):
             
             query_posts(array(
                 'post_type' => 'newsletter',
-                'posts_per_page'    => $posts_per_page,
+                //'posts_per_page'    => $posts_per_page,
                 'paged'             => $paged,
                 'orderby'           => $order_by,
                 'order'             => $order
