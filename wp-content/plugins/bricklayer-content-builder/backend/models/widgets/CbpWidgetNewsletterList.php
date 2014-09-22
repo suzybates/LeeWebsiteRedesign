@@ -89,6 +89,7 @@ if (!class_exists('CbpWidgetNewsletterList')):
                 'options' => array(
                     'date'              => $this->translate('Date'),
                     'title'             => $this->translate('Title'),
+                    'title'             => $this->translate('Title'),
                 ),
                 'name'              => $this->getIdString('order_by'),
                 'value'             => $instance['order_by'],
@@ -118,54 +119,8 @@ if (!class_exists('CbpWidgetNewsletterList')):
                 'description_title' => $this->translate('Newsletters Per Page'),
                 'description_body'  => $this->translate('Enter number.'),
             ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_post_date'),
-                'value'             => $instance['show_post_date'],
-                'description_title' => $this->translate('Show Newsletter Date?'),
-                'attribs'           => array('data-type' => 'triggerparent', 'data-name' => 'show_post_date')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_post_date_icon'),
-                'value'             => $instance['show_post_date_icon'],
-                'description_title' => $this->translate('Show Newsletter Date Icon?'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_post_date', 'data-parentstate' => '1')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    'M j, Y'            => date('M j, Y'),
-                    'j M, Y'            => date('j M, Y'),
-                    'F j, Y'            => date('F j, Y'),
-                    'j F, Y'            => date('j F, Y'),
-                ),
-                'name'              => $this->getIdString('post_date_format'),
-                'value'             => $instance['post_date_format'],
-                'description_title' => $this->translate('Newsletter Date Format'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_newsletter_date', 'data-parentstate' => '1')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_featured_image'),
-                'value'             => $instance['show_featured_image'],
-                'description_title' => $this->translate('Show Featured Image?'),
-                'attribs'           => array('data-type' => 'triggerparent', 'data-name' => 'show_featured_image')
-            ));
-            CbpWidgetFormElements::selectRegiseredImageSizes(array(
-                'name'              => $this->getIdString('thumbnail_dimensions'),
-                'value'             => $instance['thumbnail_dimensions'],
-                'description_title' => $this->translate('Featured Image Dimensions'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_featured_image', 'data-parentstate' => '1')
-            ));
+            
+            
             CbpWidgetFormElements::select(array(
                 'options' => array(
                     'one whole'         => 1,
@@ -199,15 +154,7 @@ if (!class_exists('CbpWidgetNewsletterList')):
                 'description_title' => $this->translate('Link Text'),
                 'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'use_button_link', 'data-parentstate' => '1')
             ));
-            CbpWidgetFormElements::text(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No'),
-                ),
-                'name'              => $this->getIdString('limit_by_newsletter_item_dates'),
-                'value'             => $instance['limit_by_newsletter_item_dates'],
-                'description_title' => $this->translate('Limit by the Newsletter Item Date'),
-            ));
+            
         }
 
        public function sanitize(&$attribute)
@@ -243,15 +190,10 @@ if (!class_exists('CbpWidgetNewsletterList')):
                         'title_size'           => 'h2',
                         'title_link_to_post'   => '1',
                         'post_title_size'      => 'h3',
-                        'order_by'             => 'date',
+                        'order_by'             => 'newsletter_date',
                         'order'                => 'DESC',
                         'use_pagination'       => '0',
                         'posts_per_page'       => 10,
-                        'show_post_date'       => '1',
-                        'show_post_date_icon'  => '1',
-                        'post_date_format'     => 'M j, Y',
-                        'show_featured_image'  => '1',
-                        'thumbnail_dimensions' => 'thumbnail',
                         'number_of_columns'    => 'one whole',
                         'number_of_characters' => 200,
                         'use_button_link'      => '1',
@@ -267,10 +209,9 @@ if (!class_exists('CbpWidgetNewsletterList')):
     			// Be sure to sanitize ANY strings going here
     			'where'=>"approved_for_publication.meta_value = 'Approved'" ,
     			'paged'             => $paged,
-                'orderby'           => $order_by,
-                'order'             => $order
+                'orderby'           => 'newsletter_date '. $order
 			);
-            
+           
             $mypod = pods('newsletter', $params);
             
             //echo $mypod->display('post_date');
