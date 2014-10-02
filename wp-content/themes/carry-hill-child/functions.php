@@ -65,4 +65,5 @@ function my_post_types($types) {
 
 add_filter('s2_post_types', 'my_post_types');
 
-
+//display 16 products per page
+add_filter( 'loop_shop_per_page', create_function( '$cols', 'return 16;' ), 20 );
