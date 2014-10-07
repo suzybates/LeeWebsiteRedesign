@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Events Made Easy
-Version: 1.5.0
+Version: 1.5.5
 Plugin URI: http://www.e-dynamics.be/wordpress
-Description: Description: Manage and display events. Includes recurring events; locations; widgets; Google maps; RSVP; ICAL and RSS feeds; Paypal, 2Checkout and Google Checkout. <a href="admin.php?page=eme-options">Settings</a> | <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=SMGDS4GLCYWNG&lc=BE&item_name=To%20support%20development%20of%20EME&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted">Donate</a>
+Description: Manage and display events. Includes recurring events; locations; widgets; Google maps; RSVP; ICAL and RSS feeds; Paypal, 2Checkout and Google Checkout. <a href="admin.php?page=eme-options">Settings</a> | <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=SMGDS4GLCYWNG&lc=BE&item_name=To%20support%20development%20of%20EME&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted">Donate</a>
 Author: Franky Van Liedekerke
 Author URI: http://www.e-dynamics.be/
 */
@@ -105,7 +105,7 @@ function eme_client_clock_callback() {
 // Setting constants
 define('EME_DB_VERSION', 64);
 define('EME_PLUGIN_URL', plugins_url('',plugin_basename(__FILE__)).'/'); //PLUGIN URL
-define('EME_PLUGIN_DIR', ABSPATH.PLUGINDIR.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__))); //PLUGIN DIRECTORY
+define('EME_PLUGIN_DIR', ABSPATH.PLUGINDIR.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)).'/'); //PLUGIN DIRECTORY
 define('EVENTS_TBNAME','eme_events');
 define('RECURRENCE_TBNAME','eme_recurrence');
 define('LOCATIONS_TBNAME','eme_locations');
@@ -117,7 +117,6 @@ define('FORMFIELDS_TBNAME', 'eme_formfields');
 define('FIELDTYPES_TBNAME', 'eme_fieldtypes');
 define('ANSWERS_TBNAME', 'eme_answers');
 define('PAYMENTS_TBNAME', 'eme_payments');
-define('DEFAULT_EVENT_PAGE_NAME', 'Events');
 define('MIN_CAPABILITY', 'edit_posts');   // Minimum user level to edit own events
 define('AUTHOR_CAPABILITY', 'publish_posts');   // Minimum user level to put an event in public/private state
 define('EDIT_CAPABILITY', 'edit_others_posts'); // Minimum user level to edit any event
@@ -140,23 +139,23 @@ define('DEFAULT_CAP_CLEANUP','activate_plugins');
 define('DEFAULT_CAP_SETTINGS','activate_plugins');
 define('DEFAULT_CAP_SEND_MAILS','edit_posts');
 define('DEFAULT_CAP_SEND_OTHER_MAILS','edit_others_posts');
-define('DEFAULT_EVENT_LIST_ITEM_FORMAT', '<li>#j #M #Y - #H:#i<br /> #_LINKEDNAME<br />#_TOWN </li>');
-define('DEFAULT_SINGLE_EVENT_FORMAT', '<p>#j #M #Y - #H:#i</p><p>#_TOWN</p><p>#_NOTES</p><p>#_ADDBOOKINGFORM</p><p>#_MAP</p>'); 
+define('DEFAULT_EVENT_LIST_ITEM_FORMAT', '<li>#_STARTDATE - #_STARTTIME<br /> #_LINKEDNAME<br />#_TOWN </li>');
+define('DEFAULT_SINGLE_EVENT_FORMAT', '<p>#_STARTDATE - #_STARTTIME</p><p>#_TOWN</p><p>#_NOTES</p><p>#_ADDBOOKINGFORM</p><p>#_MAP</p>'); 
 define('DEFAULT_EVENTS_PAGE_TITLE',__('Events','eme') ) ;
 define('DEFAULT_EVENT_PAGE_TITLE_FORMAT', '#_EVENTNAME'); 
 define('DEFAULT_EVENT_HTML_TITLE_FORMAT', '#_EVENTNAME'); 
 define('DEFAULT_ICAL_DESCRIPTION_FORMAT',"#_NOTES");
-define('DEFAULT_RSS_DESCRIPTION_FORMAT',"#j #M #y - #H:#i <br /> #_NOTES <br />#_LOCATIONNAME <br />#_ADDRESS <br />#_TOWN");
+define('DEFAULT_RSS_DESCRIPTION_FORMAT',"#_STARTDATE - #_STARTTIME <br /> #_NOTES <br />#_LOCATIONNAME <br />#_ADDRESS <br />#_TOWN");
 define('DEFAULT_RSS_TITLE_FORMAT',"#_EVENTNAME");
 define('DEFAULT_ICAL_TITLE_FORMAT',"#_EVENTNAME");
 define('DEFAULT_MAP_TEXT_FORMAT', '<strong>#_LOCATIONNAME</strong><p>#_ADDRESS</p><p>#_TOWN</p>');
-define('DEFAULT_WIDGET_EVENT_LIST_ITEM_FORMAT','<li>#_LINKEDNAME<ul><li>#j #M #y</li><li>#_TOWN</li></ul></li>');
+define('DEFAULT_WIDGET_EVENT_LIST_ITEM_FORMAT','<li>#_LINKEDNAME<ul><li>#_STARTDATE</li><li>#_TOWN</li></ul></li>');
 define('DEFAULT_NO_EVENTS_MESSAGE', __('No events', 'eme'));
 define('DEFAULT_SINGLE_LOCATION_FORMAT', '<p>#_ADDRESS</p><p>#_TOWN</p>#_DESCRIPTION #_MAP'); 
 define('DEFAULT_LOCATION_PAGE_TITLE_FORMAT', '#_LOCATIONNAME'); 
 define('DEFAULT_LOCATION_HTML_TITLE_FORMAT', '#_LOCATIONNAME'); 
 define('DEFAULT_LOCATION_BALLOON_FORMAT', "<strong>#_LOCATIONNAME</strong><br />#_ADDRESS - #_TOWN<br /><a href='#_LOCATIONPAGEURL'>Details</a>");
-define('DEFAULT_LOCATION_EVENT_LIST_ITEM_FORMAT', "<li>#_EVENTNAME - #j #M #Y - #H:#i</li>");
+define('DEFAULT_LOCATION_EVENT_LIST_ITEM_FORMAT', "<li>#_EVENTNAME - #_STARTDATE - #_STARTTIME</li>");
 define('DEFAULT_LOCATION_NO_EVENTS_MESSAGE', __('<li>No events in this location</li>', 'eme'));
 define('DEFAULT_FULL_CALENDAR_EVENT_FORMAT', '<li>#_LINKEDNAME</li>');
 define('DEFAULT_SMALL_CALENDAR_EVENT_TITLE_FORMAT', "#_EVENTNAME" );
@@ -973,10 +972,12 @@ function eme_create_payments_table($charset,$collate) {
 function eme_create_events_page() {
    global $wpdb;
    $postarr = array(
-      'post_status'=> 'publish',
-      'post_title' => DEFAULT_EVENT_PAGE_NAME,
-      'post_name'  => wp_strip_all_tags(__('events','eme')),
-      'post_type'  => 'page',
+      'post_title'     => wp_strip_all_tags(__('Events','eme')),
+      'post_content'   => __("This page is used by Events Made Easy. Don't change it, don't use it in your menu's, don't delete it. Just make sure the EME setting called 'Events page' points to this page. EME uses this page to render any and all events, locations, bookings, maps, ... anything. If you do want to delete this page, create a new one EME can use and update the EME setting 'Events page' accordingly.",'eme'),
+      'post_type'      => 'page',
+      'post_status'    => 'publish',
+      'comment_status' => 'closed',
+      'ping_status'    => 'closed'
    );
    if ($int_post_id = wp_insert_post($postarr)) {
       update_option('eme_events_page', $int_post_id);
@@ -1345,6 +1346,17 @@ function eme_replace_placeholders($format, $event="", $target="html", $do_shortc
          $field_id = intval($matches[2])-1;
          if (eme_is_multi($event['event_seats'])) {
             $seats=eme_get_booked_multiseats($event['event_id']);
+            if (array_key_exists($field_id,$seats))
+               $replacement = $seats[$field_id];
+         }
+
+      } elseif ($event && preg_match('/#_(PENDINGSPACES|PENDINGSEATS)$/', $result)) {
+         $replacement = eme_get_pending_seats($event['event_id']);
+
+      } elseif (preg_match('/#_(PENDINGSPACES|PENDINGSEATS)\{(\d+)\}/', $result, $matches)) {
+         $field_id = intval($matches[2])-1;
+         if (eme_is_multi($event['event_seats'])) {
+            $seats=eme_get_pending_multiseats($event['event_id']);
             if (array_key_exists($field_id,$seats))
                $replacement = $seats[$field_id];
          }
