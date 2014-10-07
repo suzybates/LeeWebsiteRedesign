@@ -3,8 +3,8 @@ Contributors: whiletrue
 Donate link: http://www.whiletrue.it/
 Tags: twitter, twitter sidebar, sidebar, social sidebar, widget, plugin, post, posts, links, twitter widget, twitter feed, simple twitter, twitter api 1.1, api 1.1, oauth, twitter oauth, favorite
 Requires at least: 2.9+
-Tested up to: 3.9.1
-Stable tag: 2.5.4
+Tested up to: 4.0
+Stable tag: 2.5.5
 
 Shows the latest tweets from a Twitter account in a sidebar widget.
 
@@ -177,6 +177,9 @@ This is the complete option list. The boolean options can be set writing "true" 
 2. Options available in the Settings menu 
 
 == Changelog ==
+
+= 2.5.5 =
+* Fixed: Hashtag recognition with foreign characters
 
 = 2.5.4 =
 * Added: Option to show the account's Favorites feed instead of the usual tweets timeline
