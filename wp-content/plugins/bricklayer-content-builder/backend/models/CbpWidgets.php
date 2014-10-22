@@ -262,22 +262,29 @@ if (!class_exists('CbpWidgets')):
             CbpWidgets::registerWidget('CbpWidgetWpSidebar');
             CbpWidgets::registerWidget('CbpWidgetWpWidget'); // this one can be unregistered with a filter
             CbpWidgets::registerWidget('CbpWidgetDivider');
-            CbpWidgets::registerWidget('CbpWidgetLinkToPage');
+//            CbpWidgets::registerWidget('CbpWidgetLinkToPage');
             CbpWidgets::registerWidget('CbpWidgetLinkToPage2');
             CbpWidgets::registerWidget('CbpWidgetButton');
             CbpWidgets::registerWidget('CbpWidgetBreadcrumbs');
             CbpWidgets::registerWidget('CbpWidgetShortcode');
 
+//            CbpWidgets::registerWidget('CbpWidgetAISDMenu');
+            CbpWidgets::registerWidget('CbpWidgetEventList');
+            CbpWidgets::registerWidget('CbpWidgetSingleNewsletterItem');
+            CbpWidgets::registerWidget('CbpWidgetNewsletterItemList');
+            CbpWidgets::registerWidget('CbpWidgetNewsletterList');
+
             if (CbpUtils::getOption('use_content_builder_layouts_and_templates')) {
                 CbpWidgets::registerWidget('CbpWidgetFeaturedImage');
-                CbpWidgets::registerWidget('CbpWidgetComments');
+//                CbpWidgets::registerWidget('CbpWidgetComments');
                 CbpWidgets::registerWidget('CbpWidgetMeta');
-                CbpWidgets::registerWidget('CbpWidgetTemplate');
+//                CbpWidgets::registerWidget('CbpWidgetTemplate');
 //                CbpWidgets::registerWidget('CbpWidgetCategory');
 //                CbpWidgets::registerWidget('CbpWidgetPost');
-                CbpWidgets::registerWidget('CbpWidgetTheLoop');
+//                CbpWidgets::registerWidget('CbpWidgetTheLoop');
                 CbpWidgets::registerWidget('CbpWidgetPostContent');
                 CbpWidgets::registerWidget('CbpWidgetPostTitle');
+                
             }
 
             CbpWidgets::registerWidget('CbpSubwidgetGalleryItem');

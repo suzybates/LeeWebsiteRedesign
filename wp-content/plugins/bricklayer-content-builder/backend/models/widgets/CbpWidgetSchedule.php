@@ -71,25 +71,25 @@ if (!class_exists('CbpWidgetSchedule')):
 
             <div class="<?php echo CbpWidgets::getDefaultWidgetCssClass(); ?> <?php echo $type; ?><?php echo $custom_css_classes; ?><?php echo $css_class; ?> <?php echo $padding; ?>">
                 
+                	<?php if ((int) $title_link_to_post): ?>
+                    	<<?php echo $title_size; ?>><a href="<?php echo get_permalink($page->ID); ?>"><?php echo!empty($title) ? $title : $page->post_title; ?></a></<?php echo $title_size; ?>>
+                	<?php else: ?>
+                    	<<?php echo $title_size; ?>><?php echo !empty($title) ? $title : $page->post_title; ?></<?php echo $title_size; ?>>
+                	<?php endif; ?>
+                
+                
                 <?php foreach ($shortcodes as $shortcode): ?>
                     <?php if ($shortcode['atts']['type'] == 'cbp_schedule_item'): ?>
-                        <h5 class="<?php echo $this->getPrefix() ?>-schedule-item-name">
-                        <?php echo $shortcode['atts']['starttime']; ?>
-                        -
-                        <?php echo $shortcode['atts']['endtime']; ?>
-                        <?php echo $shortcode['atts']['activity']; ?></h5>
-                        <div class="<?php echo $this->getPrefix() ?>-schedule-item-content">
-                            <?php echo $shortcode['content']; ?>
-                        </div>
+                    	<h5>
+							<span margin-bottom: 4px;><?php echo $shortcode['atts']['starttime']; ?> - <?php echo $shortcode['atts']['endtime']; ?></span>
+							<span margin-left: 20px;><?php echo $shortcode['atts']['activity']; ?> </span>
+						</h5>
+						<?php $schedule_content=$shortcode['content']; ?>
+						<?php if (!empty($schedule_content)) : ?>
+							<div margin-left: 15px;><?php echo $schedule_content ?></div>
+						<?php endif; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
-                <<?php echo $title_size; ?>>
-                	<?php if ((int) $title_link_to_post): ?>
-                    	<a href="<?php echo get_permalink($page->ID); ?>"><?php echo!empty($title) ? $title : $page->post_title; ?></a>
-                	<?php else: ?>
-                    	<<?php echo $title_size; ?>><?php echo!empty($title) ? $title : $page->post_title; ?>
-                	<?php endif; ?>
-                </<?php echo $title_size; ?>>
             </div>
             <?php
         }
