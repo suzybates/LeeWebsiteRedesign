@@ -397,10 +397,10 @@ class ChpWidgetPostList extends CbpWidget
                 <?php endwhile; ?>
             </div>
         <?php endif; ?>
-        <?php wp_reset_query(); ?>
-        <?php if ((int) $use_pagination): ?> 
+        <?php if ((int) $use_pagination): ?>
             <?php CbpUtils::pagination(); ?>
         <?php endif; ?>
+        <?php wp_reset_query(); ?>
         <?php
     }
 

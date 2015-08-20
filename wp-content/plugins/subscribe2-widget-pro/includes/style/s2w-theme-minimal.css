@@ -1,0 +1,68 @@
+/*--------------------------------
+S2W Minimal Themes
+------------------------------------*/
+
+.s2w-minimal-light-style {
+	padding: 15px;
+	position: relative;
+	background: #FFFFFF;
+	border-radius: 4px;
+	color: #7E7975;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.s2w-minimal-light-style label, .s2w-minimal-dark-style label {
+	text-transform: uppercase;
+	font-size: 11px;
+	margin: 0 0 5px;
+	display: block;
+}
+
+[id*='subscribe2_widget'].s2w-minimal-light-style .s2w-widget-title, [id*='subscribe2_widget'].s2w-minimal-dark-style .s2w-widget-title {
+	font-size: 15px;
+	font-weight: bold;
+	color: #757575;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #EBE6E2;
+	text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+	margin: 0 0 15px;
+	line-height: 1.4em;
+}
+
+[id*='subscribe2_widget'].s2w-minimal-light-style .s2w-btn, [id*='subscribe2_widget'].s2w-minimal-dark-style .s2w-btn {
+	background-image: none;
+	width: 100%;
+	margin: 4px 0 0;
+	text-shadow: none;
+}
+
+input.s2w-input-field {
+	width: 100%;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box; /* Firefox, other Gecko */
+	box-sizing: border-box; /* Opera/IE 8+ */
+	margin: 0 0 5px;
+}
+
+/* Dark */
+
+.s2w-minimal-dark-style {
+	padding: 15px;
+	position: relative;
+	background: #333;
+	border-radius: 4px;
+	color: #CCC;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2), 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.s2w-minimal-dark-style label {
+	color: #CCC;
+}
+
+[id*='subscribe2_widget'].s2w-minimal-dark-style .s2w-widget-title, [id*='subscribe2_widget'].s2w-shadow-dark-style .s2w-widget-title, [id*='subscribe2_widget'].s2w-inset-dark-style .s2w-widget-title {
+	color: #FFFFFF;
+	border-bottom: 1px solid #1F1F1F;
+	text-shadow: 0 2px 0 rgba(14, 14, 14, 0.8);
+	box-shadow: 0 1px 0 rgba(92, 92, 92, 0.8);
+}

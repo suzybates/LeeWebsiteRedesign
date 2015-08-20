@@ -7,6 +7,32 @@
 class CbpWidgetFormElements
 {
 
+    public static function init()
+    {
+        $ajax = new CbpAjax();
+        $ajax->setAjaxCallback(array(__CLASS__, 'cbpGetCategoriesAjax'));
+        $ajax->run();
+    }
+
+    public static function cbpGetCategoriesAjax()
+    {
+        $taxonomy = isset($_POST['taxonomy']) ? $_POST['taxonomy'] : false;
+        $categories = false;
+        
+        if ($taxonomy) {
+            
+            $args = array(
+                'taxonomy'     => $taxonomy,
+            );
+
+            $categories = get_categories($args);
+        }
+        
+        echo json_encode($categories);
+        
+        die();
+    }
+    
     public static function text($options)
     {
         $attribs = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
@@ -79,14 +105,19 @@ class CbpWidgetFormElements
 
     public static function selectPost($options)
     {
-    
-        $attribs     = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
-        $posts_array = get_posts(array(
-       		'post_type'      => 'newsletter_item',
+        $attribs = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
+
+        $args = array(
             'posts_per_page' => -1,
             'orderby'        => 'title',
             'order'          => 'ASC'
-                ));
+        );
+
+        if (isset($options['post_type'])) {
+            $args['post_type'] = $options['post_type'];
+        }
+
+        $posts_array = get_posts($args);
         ?>
         <div class="row cbp_form_element_wrapper">
             <div class="half padded border-top">
@@ -95,42 +126,6 @@ class CbpWidgetFormElements
 
                     <?php foreach ($posts_array as $post): ?>
                         <option <?php echo CbpUtils::maybeSelected($post->ID == $options['value']); ?> value="<?php echo $post->ID; ?>" title="<?php echo get_the_title(); ?>"><?php echo get_the_title(); ?></option>
-
-                    <?php endforeach; ?>
-
-                </select>
-            </div>
-            <div class="half padded border-top">
-                <?php if (isset($options['description_title'])): ?>
-                    <label for="<?php echo $options['name']; ?>"><?php echo $options['description_title']; ?></label>
-                <?php endif; ?>
-                <?php if (isset($options['description_body'])): ?>
-                    <p>
-                        <?php echo $options['description_body']; ?>
-                    </p>
-                <?php endif; ?>
-            </div>
-        </div>
-        <?php
-    }
-    public static function selectNewsletterPost($options)
-    {
-    
-        $attribs     = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
-        $posts_array = get_posts(array(
-       		'post_type'      => 'newsletter_item',
-            'posts_per_page' => -1,
-            'orderby'        => 'post_date',
-            'order'          => 'DESC'
-                ));
-        ?>
-        <div class="row cbp_form_element_wrapper">
-            <div class="half padded border-top">
-                <?php global $post; ?>
-                <select name="<?php echo $options['name'] ?>" id="<?php echo $options['name'] ?>" <?php echo $attribs; ?>>
-
-                    <?php foreach ($posts_array as $post): ?>
-                        <option <?php echo CbpUtils::maybeSelected($post->ID == $options['value']); ?> value="<?php echo $post->ID; ?>" title="<?php echo get_the_title(); ?>"><?php echo get_the_date(); ?>-<?php echo get_the_title(); ?></option>
 
                     <?php endforeach; ?>
 
@@ -203,16 +198,15 @@ class CbpWidgetFormElements
         </div>
         <?php
     }
-    
+
     public static function selectTaxonomy($options)
     {
-        $args = isset($options['args']) ? $options['args'] : array();
-        $taxonomies        = get_taxonomies($args, 'objects');
-        $attribs = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
+        $args       = isset($options['args']) ? $options['args'] : array();
+        $taxonomies = get_taxonomies($args, 'objects');
+        $attribs    = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
         ?>
         <div class="row cbp_form_element_wrapper">
             <div class="half padded border-top">
-                <?php $cats    = get_categories(); ?>
                 <select name="<?php echo $options['name']; ?>" id="<?php echo $options['name']; ?>" <?php echo $attribs; ?>>
                     <?php foreach ($taxonomies as $taxonomy): ?>
                         <option <?php echo CbpUtils::maybeSelected($taxonomy->name == $options['value']); ?> value="<?php echo $taxonomy->name; ?>" ><?php echo $taxonomy->labels->name; ?></option>
@@ -232,20 +226,29 @@ class CbpWidgetFormElements
         </div>
         <?php
     }
-
-    public static function selectEventCategory($options)
+    
+    public static function filterTaxonomy($options)
     {
-        $args = isset($options['args']) ? $options['args'] : array();
-       
-        $attribs = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
+        $taxonomyNamespace = CbpWidgets::getPrefix() . '_taxonomy_namespace';
+        $categoryId        = CbpWidgets::getPrefix() . '_category_id';
+        $args              = isset($options['args']) ? $options['args'] : array();
+        $taxonomies        = get_taxonomies($args, 'objects');
+        $cats              = get_categories(array('taxonomy' => 'cause_category'));
+        $attribs           = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
         ?>
         <div class="row cbp_form_element_wrapper">
             <div class="half padded border-top">
-                <?php $cats    = eme_get_categories(); ?>
-                <select name="<?php echo $options['name']; ?>" multiple="multiple" id="<?php echo $options['name']; ?>" <?php echo $attribs; ?>>
-                    <?php foreach ($cats as $category): ?>
-                        <option <?php echo CbpUtils::maybeSelected($category['category_id'] == $options['value']); ?> value="<?php echo $category['category_id']; ?>" ><?php echo $category['category_name']; ?></option>
+<!--                <input type="text" id="--><?php //echo $taxonomyNamespace; ?><!--" name="--><?php //echo $taxonomyNamespace; ?><!--">-->
+<!--                <input type="text" id="--><?php //echo $categoryNamespace; ?><!--" name="--><?php //echo $categoryNamespace; ?><!--">-->
+                <select id="<?php echo $taxonomyNamespace; ?>" name="<?php echo $taxonomyNamespace; ?>" <?php echo $attribs; ?>>
+                    <?php foreach ($taxonomies as $taxonomy): ?>
+                        <option <?php echo CbpUtils::maybeSelected($taxonomy->name == $options['values'][$taxonomyNamespace]); ?> value="<?php echo $taxonomy->name; ?>" ><?php echo $taxonomy->labels->name; ?></option>
                     <?php endforeach; ?>
+                </select>
+                <select  id="<?php echo $categoryId; ?>" name="<?php echo $categoryId; ?>" <?php echo $attribs; ?>>
+<!--                    --><?php //foreach ($cats as $cat): ?>
+<!--                        <option --><?php //echo CbpUtils::maybeSelected($cat->name == $options['values'][$categoryNamespace]); ?><!-- value="--><?php //echo $cat->name; ?><!--" >--><?php //echo $cat->name; ?><!--</option>-->
+<!--                    --><?php //endforeach; ?>
                 </select>
             </div>
             <div class="half padded border-top">
@@ -259,18 +262,68 @@ class CbpWidgetFormElements
                 <?php endif; ?>
             </div>
         </div>
+        <script type="text/javascript">
+            //<![CDATA[
+            jQuery(document).ready(function($)
+            {
+
+                var $taxonomySelect = $('#<?php echo $taxonomyNamespace; ?>');
+                var $categorySelect = $('#<?php echo $categoryId; ?>');
+
+                getCategories($taxonomySelect.val());
+
+                $taxonomySelect.on('change', function(){
+                    var $this = $(this);
+                    getCategories($this.val());
+                });
+
+                function getCategories(taxonomyNamespace) {
+
+                    $.ajax({
+                        url: ajaxurl,
+                        type: 'POST',
+                        data: {
+                            action: 'cbpGetCategoriesAjax',
+                            taxonomy: taxonomyNamespace
+                        },
+                        dataType: 'json',
+                        beforeSend: function() {
+                            $('body').append('<div id="cbp-form-loader"></div>')
+                        }
+                    }).done(function(response) {
+                        $('#cbp-form-loader').remove();
+                        if (response) {
+
+                            var optionsMarkup = '';
+                            _.each(response, function (category) {
+
+                                console.log(category);
+                                var selected = category.term_id === '<?php echo $options['values'][$categoryId]; ?>' ? 'selected="selected"' : '';
+                                optionsMarkup += '<option value="' + category.term_id + '" ' + selected + '>'+category.name+'</option>';
+                            });
+                            $categorySelect.html(optionsMarkup);
+
+                        }
+                    }).fail(function() {
+                        alert("error");
+                    });
+                }
+
+            });
+            //]]>   
+        </script>
         <?php
     }
-    
+
     public static function selectTemplate($options)
     {
-        $attribs = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
-        $templates = get_posts(array('post_type' => 'templates', 'posts_per_page' => -1,'orderby' => 'title','order' => 'ASC'));
+        $attribs   = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
+        $templates = get_posts(array('post_type' => 'templates', 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC'));
         ?>
 
         <div class="row cbp_form_element_wrapper">
             <div class="half padded border-top">
-                <?php $cats    = get_categories(); ?>
+                <?php $cats      = get_categories(); ?>
                 <select name="<?php echo $options['name']; ?>" id="<?php echo $options['name']; ?>" <?php echo $attribs; ?>>
                     <?php foreach ($templates as $template): ?>
                         <option <?php echo CbpUtils::maybeSelected($template->ID == $options['value']); ?> value="<?php echo $template->ID; ?>" ><?php echo $template->post_title; ?></option>
@@ -338,11 +391,11 @@ class CbpWidgetFormElements
         <script type="text/javascript">
             //<![CDATA[
             jQuery(document).ready(function($)
-            {     
-                                                                                                                                                                                                                                                                                                                                                                                                
+            {
+
                 $('#<?php echo $options['name']; ?>').spectrum('destroy').spectrum({
                     preferredFormat: "<?php echo $alpha ? 'rgb' : 'hex'; ?>",
-                    color: "<?php echo $value; ?>",    
+                    color: "<?php echo $value; ?>",
                     showPalette: true,
                     showInput: true,
                     showAlpha: <?php echo $alpha ? 'true' : 'false'; ?>,
@@ -355,6 +408,66 @@ class CbpWidgetFormElements
                 });
 
                 $("#<?php echo $options['name']; ?>").spectrum("set", "<?php echo $value; ?>");
+
+            });
+            //]]>   
+        </script>
+
+        <?php
+    }
+
+    public static function slider($options)
+    {
+        $attribs = isset($options['attribs']) && is_array($options['attribs']) ? self::setAttribs($options['attribs']) : '';
+
+        $min   = isset($options['min']) && $options['min'] ? (int) $options['min'] : 1;
+        $max   = isset($options['max']) && $options['max'] ? (int) $options['max'] : 10;
+        $step  = isset($options['step']) && $options['step'] ? (int) $options['step'] : 1;
+        $value = isset($options['value']) && $options['value'] ? $options['value'] : 2;
+        ?>
+        <div class="row cbp_form_element_wrapper">
+            <div class="half padded border-top">
+                <div id="<?php echo $options['name']; ?>-slider" style="background-color: #8484EC"></div>
+                <br>
+                <input type="text" name="<?php echo $options['name']; ?>" id="<?php echo $options['name']; ?>" <?php echo $attribs; ?>/>
+            </div>
+            <div class="half padded border-top">
+                <?php if (isset($options['description_title'])): ?>
+                    <label for="<?php echo $options['name']; ?>"><?php echo $options['description_title']; ?></label>
+                <?php endif; ?>
+                <?php if (isset($options['description_body'])): ?>
+                    <p>
+                        <?php echo $options['description_body']; ?>
+                    </p>
+                <?php endif; ?>
+            </div>
+        </div>
+
+
+        <script type="text/javascript">
+            //<![CDATA[
+            jQuery(document).ready(function($)
+            {
+
+                $("#<?php echo $options['name']; ?>-slider").noUiSlider({
+                    start: [<?php echo (int) $value; ?>],
+                    step: <?php echo $step; ?>,
+                    connect: 'lower',
+                    range: {
+                        'min': [<?php echo $min; ?>],
+                        'max': [<?php echo $max; ?>]
+                    },
+                    serialization: {
+                        lower: [
+                            $.Link({
+                                target: $('#<?php echo $options['name']; ?>')
+                            })
+                        ],
+                        format: {
+                            decimals: 0
+                        }
+                    }
+                });
 
             });
             //]]>   
@@ -395,8 +508,8 @@ class CbpWidgetFormElements
             </div>
         </div>
         <script type="text/javascript">
-            (function($){
-                cbp_content_builder.data.execScript = function () {
+            (function($) {
+                cbp_content_builder.data.execScript = function() {
 
                     var $formfield = null;
                     var $imgContainer, attachment;
@@ -406,39 +519,39 @@ class CbpWidgetFormElements
 
                         var $parent = $(this).parent();
 
-                        $formfield    = $('#<?php echo $options['name']; ?>');
+                        $formfield = $('#<?php echo $options['name']; ?>');
                         $imgContainer = $('#<?php echo $id . '-img-container-element'; ?>');
 
                         // New 3.5 media uploader
-                        if(wp && wp.media) {
-                                                                                                
-                                                                                                
+                        if (wp && wp.media) {
+
+
                             // Media Library params
                             var frame = wp.media({
-                                title : 'Pick an imag',
-                                multiple : false,
-                                library : { type : 'image'},
-                                button : { text : 'Insert' }
+                                title: 'Pick an imag',
+                                multiple: false,
+                                library: {type: 'image'},
+                                button: {text: 'Insert'}
                             });
-                                                                                                
-                                                                                                
+
+
                             // Runs on select
-                            frame.on('select',function() {
-                                                                                                                                
+                            frame.on('select', function() {
+
                                 // Get the attachment details
                                 attachment = frame.state().get('selection').first().toJSON();
-                                                                                                                                
+
                                 // Set image URL
-                                $formfield.val( attachment['url'] );
-                                $imgContainer.html('<img src="'+attachment['url']+'">');
-                                                                                                
+                                $formfield.val(attachment['url']);
+                                $imgContainer.html('<img src="' + attachment['url'] + '">');
+
                             });
-                                                                                                
+
                             // Open ML
                             frame.open();
-                                                                                                
+
                         } else {
-                                                                                                                                        
+
                             tb_show('', 'media-upload.php?type=image&TB_iframe=true');
                             window.original_send_to_editor = window.send_to_editor;
                             window.send_to_editor = function(html) {
@@ -446,7 +559,7 @@ class CbpWidgetFormElements
                                 var imgurl;
 
                                 if ($formfield) {
-                                    imgurl = $('img',html).attr('src');
+                                    imgurl = $('img', html).attr('src');
                                     $formfield.val(imgurl);
                                     $imgContainer.html(html);
                                     tb_remove();
@@ -510,29 +623,29 @@ class CbpWidgetFormElements
             </div>
         </div>
         <script type="text/javascript">
-            (function($){
-                cbp_content_builder.data.execScript = function () {
+            (function($) {
+                cbp_content_builder.data.execScript = function() {
 
                     var $imgContainer, attachment;
-                    var $uploadButton          = $('#<?php echo $id . '-upload-button'; ?>');
-                    var $removeButton          = $('#<?php echo $id . '-remove-button'; ?>');
+                    var $uploadButton = $('#<?php echo $id . '-upload-button'; ?>');
+                    var $removeButton = $('#<?php echo $id . '-remove-button'; ?>');
                     var $thumbDimensionsSelect = $('#<?php echo $options['name']; ?>-thumb-dimensions');
-                    var $formfield             = $('#<?php echo $options['name']; ?>');
-                    var $formfieldHidden       = $('#<?php echo $options['name']; ?>-hidden');
-                    var $imgContainer          = $('#<?php echo $id . '-img-container-element'; ?>');
+                    var $formfield = $('#<?php echo $options['name']; ?>');
+                    var $formfieldHidden = $('#<?php echo $options['name']; ?>-hidden');
+                    var $imgContainer = $('#<?php echo $id . '-img-container-element'; ?>');
 
                     (function init() {
 
-                        var parts              = $formfieldHidden.val().split('|');
-                        var attachmentId       = parts[0];
-                        var fullUrl            = parts[1];
-                        var thumbUrl           = parts[2];
+                        var parts = $formfieldHidden.val().split('|');
+                        var attachmentId = parts[0];
+                        var fullUrl = parts[1];
+                        var thumbUrl = parts[2];
                         var thumbRegisteredKey = parts[3] || false;
-        
+
                         // prior to v1.2
-                        var isLegacy     = thumbRegisteredKey ? false : true;
-                        
-                                                
+                        var isLegacy = thumbRegisteredKey ? false : true;
+
+
                         if (attachmentId) {
 
                             $.ajax({
@@ -549,7 +662,7 @@ class CbpWidgetFormElements
                             }).done(function(response) {
                                 $('#cbp-form-loader').remove();
                                 if (response) {
-                                            
+
                                     attachment = response;
                                     if (thumbUrl) {
                                         setValues(attachment, thumbUrl, thumbRegisteredKey);
@@ -559,22 +672,22 @@ class CbpWidgetFormElements
                                     }
                                 }
                             }).fail(function() {
-                                alert( "error" );
+                                alert("error");
                             });
-                                            
+
                         }
-                                                
+
                     })();
-                                            
-                    $thumbDimensionsSelect.on('change', function () {
+
+                    $thumbDimensionsSelect.on('change', function() {
                         var selectVal = $(this).val();
-                        var parts     = selectVal.split('|');
-                        
+                        var parts = selectVal.split('|');
+
                         // check if is prior v1.2
                         var imgUrl = parts[0] || false;
-                        var key    = parts[1] || false;
+                        var key = parts[1] || false;
                         var isLegacy = !key;
-                        
+
                         if (isLegacy) {
                             setValues(attachment, selectVal);
                         } else {
@@ -582,10 +695,10 @@ class CbpWidgetFormElements
                             setValues(attachment, imgUrl, key);
                         }
                     });
-                    
+
                     $removeButton.on('click', function(e) {
                         e.preventDefault();
-                        
+
                         if (confirm('This action will remove the image!')) {
                             reset();
                         }
@@ -594,107 +707,107 @@ class CbpWidgetFormElements
                     $uploadButton.on('click', function(e) {
                         e.preventDefault();
 
-//                        var $parent = $(this).parent();
+        //                        var $parent = $(this).parent();
 
                         // New 3.5 media uploader
-                        if(wp && wp.media) {
-                                                                                                
+                        if (wp && wp.media) {
+
                             // Media Library params
                             var frame = wp.media({
-                                title : 'Pick an image',
-                                multiple : false,
-                                library : { type : 'image'},
-                                button : { text : 'Insert' }
+                                title: 'Pick an image',
+                                multiple: false,
+                                library: {type: 'image'},
+                                button: {text: 'Insert'}
                             });
-                                                                                                
+
                             // Runs on select
-                            frame.on('select',function() {
-                                                                                                                                
+                            frame.on('select', function() {
+
                                 // Get the attachment details
                                 attachment = frame.state().get('selection').first().toJSON();
-                                                                                             
+
                                 setValues(attachment, attachment.url, 'full');
-                                                                                             
+
                                 // Set image URL
                                 $formfield.val(attachment.url);
                                 //                                $imgContainer.html('<img src="'+attachment['url']+'">');
-                                                                                                
+
                             });
-                                                                                                
+
                             // Open ML
                             frame.open();
-                                                                                                
-//                        } else {
-//                                                                                                                                        
-//                            tb_show('', 'media-upload.php?type=image&TB_iframe=true');
-//                            window.original_send_to_editor = window.send_to_editor;
-//                            window.send_to_editor = function(html) {
-//
-//                                var imgurl;
-//
-//                                if ($formfield) {
-//                                    imgurl = $('img',html).attr('src');
-//                                    $formfield.val(imgurl);
-//                                    $imgContainer.html(html);
-//                                    tb_remove();
-//                                }
-//                                else {
-//                                    window.original_send_to_editor(html);
-//                                }
-//                                $formfield = null;
-//                            }
+
+        //                        } else {
+        //                                                                                                                                        
+        //                            tb_show('', 'media-upload.php?type=image&TB_iframe=true');
+        //                            window.original_send_to_editor = window.send_to_editor;
+        //                            window.send_to_editor = function(html) {
+        //
+        //                                var imgurl;
+        //
+        //                                if ($formfield) {
+        //                                    imgurl = $('img',html).attr('src');
+        //                                    $formfield.val(imgurl);
+        //                                    $imgContainer.html(html);
+        //                                    tb_remove();
+        //                                }
+        //                                else {
+        //                                    window.original_send_to_editor(html);
+        //                                }
+        //                                $formfield = null;
+        //                            }
                         } // endif
 
                     }); // end on click
-                          
+
                     function reset() {
                         $formfieldHidden.val('');
                         $formfield.val('');
                         $imgContainer.html('');
                         $thumbDimensionsSelect.html('');
                     }
-                          
+
                     function setValues(attachment, imgUrl, key) {
-                                                
+
                         var key = key || false;
-                        
+
                         if (attachment && attachment.id) { // is attachment object
                             $thumbDimensionsSelect.html(getOptionsHtml(attachment.sizes, imgUrl, key)); // select it if it matches "full""
                             var preSelectedimgUrl = $thumbDimensionsSelect.val();
-                            
-                            var parts     = preSelectedimgUrl.split('|');
+
+                            var parts = preSelectedimgUrl.split('|');
                             // check if is prior v1.2
                             var imgUrl = parts[0] || false;
-                            var key    = parts[1] || false;
+                            var key = parts[1] || false;
                             var isLegacy = !key;
-                            
+
                             var key = isLegacy ? '|' + key : '';
                             var concatData = attachment.id + '|' + attachment.url + '|' + preSelectedimgUrl + key;
-                                                
+
                             $formfieldHidden.val(concatData);
-                            
+
                             if (isLegacy) {
                                 $imgContainer.html('<img src="' + preSelectedimgUrl + '">');
                             } else {
                                 $imgContainer.html('<img src="' + imgUrl + '">');
                             }
                         } else if (typeof attachment === 'string') { // is string id
-                                                    
+
                         }
-                                                
+
                     }
-                                            
+
                     function getOptionsHtml(attachmentSizesObj, imgUrl, registeredKey) {
                         var markup = '';
                         var imgUrl = imgUrl || '';
                         var name = '';
-                        
-                        $.each(attachmentSizesObj, function (key, obj) {
+
+                        $.each(attachmentSizesObj, function(key, obj) {
                             name = key + ' - ' + obj.width + 'x' + obj.height;
-                            
+
                             if (registeredKey) {
                                 markup += optionMarkup(name, obj.url + '|' + key, key === registeredKey);
-                            // is prior v1.2
+                                // is prior v1.2
                             } else {
                                 markup += optionMarkup(name, obj.url, obj.url === imgUrl);
                             }
@@ -738,7 +851,7 @@ class CbpWidgetFormElements
                     <div class="row padded">
                         <i id="<?php echo $options['name']; ?>-display-icon" class="fa <?php echo $options['value']; ?> fa-3x"></i>
                     </div>
-                    <input type="text" name="<?php echo $options['name']; ?>" id="<?php echo $options['name']; ?>" value="<?php echo $options['value']; ?>"/>
+                    <input type="text" name="<?php echo $options['name']; ?>" id="<?php echo $options['name']; ?>" value="<?php echo $options['value']; ?>" <?php echo $attribs; ?>/>
 
                 </div>
                 <div class="half padded border-top">
@@ -765,21 +878,21 @@ class CbpWidgetFormElements
             </div>
         </div>
         <script>
-            (function($){
-                                                                                                                                                                                                                                
-                $('.cbp-font-awesome-icon-select li').on('click', function () {
-                                                                                                                                                                                                                            
-                    var $this              = $(this);
-                    var name               = $this.data('name');
+            (function($) {
+
+                $('.cbp-font-awesome-icon-select li').on('click', function() {
+
+                    var $this = $(this);
+                    var name = $this.data('name');
                     var $selectedIconInput = $('#<?php echo $options['name']; ?>');
-                    var $displayIcon       = $('#<?php echo $options['name']; ?>-display-icon');
-                                                                                                                                                                                                                                    
+                    var $displayIcon = $('#<?php echo $options['name']; ?>-display-icon');
+
                     $this.addClass('cbp-icon-selected').siblings().removeClass('cbp-icon-selected');
-                    $selectedIconInput.val(name); 
+                    $selectedIconInput.val(name);
                     $displayIcon.attr('class', '').addClass('fa ' + name + ' fa-3x');
-                                                                                                                                                                                                                                    
+
                 });
-                                                                                                                                                                                                                                
+
             })(jQuery);
         </script>
         <?php
@@ -844,12 +957,12 @@ class CbpWidgetFormElements
         <!--**************************************************-->
         <script type="text/template" id="create_item_template">
             <div class="row cbp_form_element_wrapper">
-                <div class="half padded border-top">
-                    <input type="text" id="new-item-name" data-type="<?php echo isset($options['type']) ? $options['type'] : ''; ?>"/>
-                </div>
-                <div class="half padded border-top">
-                    <button id="add-item" class="button"><?php echo CbpTranslate::translateString('Add New Item') ?></button> 
-                </div>
+            <div class="half padded border-top">
+            <input type="text" id="new-item-name" data-type="<?php echo isset($options['type']) ? $options['type'] : ''; ?>"/>
+            </div>
+            <div class="half padded border-top">
+            <button id="add-item" class="button"><?php echo CbpTranslate::translateString('Add New Item') ?></button> 
+            </div>
             </div>
         </script>
         <!--**************************************************-->
@@ -894,4 +1007,5 @@ class CbpWidgetFormElements
 
         return $out;
     }
+
 }

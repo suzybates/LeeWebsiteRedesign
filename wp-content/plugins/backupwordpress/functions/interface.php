@@ -4,23 +4,16 @@
  * Displays a row in the manage backups table
  *
  * @param string                 $file
- * @param HMBKP_Scheduled_Backup $schedule
+ * @param HM\BackUpWordPress\Scheduled_Backup $schedule
  */
-function hmbkp_get_backup_row( $file, HMBKP_Scheduled_Backup $schedule ) {
+function hmbkp_get_backup_row( $file, HM\BackUpWordPress\Scheduled_Backup $schedule ) {
 
 	$encoded_file = urlencode( base64_encode( $file ) );
 	$offset       = get_option( 'gmt_offset' ) * 3600;
 
-	if ( is_multisite() ) {
-		$delete_action_url = network_admin_url( 'settings.php?page=' . HMBKP_PLUGIN_SLUG . '&amp;hmbkp_delete_backup=' . $encoded_file . '&amp;hmbkp_schedule_id=' . $schedule->get_id() );
-		$download_action_url = network_admin_url( 'settings.php?page=' . HMBKP_PLUGIN_SLUG . '&amp;hmbkp_download_backup=' . $encoded_file . '&amp;hmbkp_schedule_id=' . $schedule->get_id() );
-	} else {
-		$delete_action_url =  admin_url( 'tools.php?page=' . HMBKP_PLUGIN_SLUG . '&amp;hmbkp_delete_backup=' . $encoded_file . '&amp;hmbkp_schedule_id=' . $schedule->get_id() );
-		$download_action_url =  admin_url( 'tools.php?page=' . HMBKP_PLUGIN_SLUG . '&amp;hmbkp_download_backup=' . $encoded_file . '&amp;hmbkp_schedule_id=' . $schedule->get_id() );
-	}
 	?>
 
-	<tr class="hmbkp_manage_backups_row<?php if ( file_exists( hmbkp_path() . '/.backup_complete' ) ) : ?> completed<?php unlink( hmbkp_path() . '/.backup_complete' ); endif; ?>">
+	<tr class="hmbkp_manage_backups_row">
 
 		<th scope="row">
 			<?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' - ' . get_option( 'time_format' ), @filemtime( $file ) + $offset ) ); ?>
@@ -35,10 +28,10 @@ function hmbkp_get_backup_row( $file, HMBKP_Scheduled_Backup $schedule ) {
 		<td>
 
 			<?php if (  hmbkp_is_path_accessible( hmbkp_path() )  ) : ?>
-			<a href="<?php echo wp_nonce_url( $download_action_url, 'hmbkp-download_backup' ); ?>"><?php _e( 'Download', 'hmbkp' ); ?></a> |
+				<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'hmbkp_backup_archive' => $encoded_file, 'hmbkp_schedule_id' => $schedule->get_id(), 'action' => 'hmbkp_request_download_backup' ), admin_url( 'admin-post.php' ) ), 'hmbkp_download_backup', 'hmbkp_download_backup_nonce' ) ); ?>" class="download-action"><?php _e( 'Download', 'backupwordpress' ); ?></a> |
 			<?php endif; ?>
 
-			<a href="<?php echo wp_nonce_url( $delete_action_url, 'hmbkp-delete_backup' ); ?>" class="delete-action"><?php _e( 'Delete', 'hmbkp' ); ?></a>
+			<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'hmbkp_backup_archive' => $encoded_file, 'hmbkp_schedule_id' => $schedule->get_id(), 'action' => 'hmbkp_request_delete_backup' ), admin_url( 'admin-post.php' ) ), 'hmbkp_delete_backup', 'hmbkp_delete_backup_nonce' ) ); ?>" class="delete-action"><?php _e( 'Delete', 'backupwordpress' ); ?></a>
 
 		</td>
 
@@ -54,92 +47,123 @@ function hmbkp_get_backup_row( $file, HMBKP_Scheduled_Backup $schedule ) {
  */
 function hmbkp_admin_notices() {
 
-	// If the backups directory doesn't exist and can't be automatically created
-	if ( ! is_dir( hmbkp_path() ) ) :
+	$current_screen = get_current_screen();
 
-		function hmbkp_path_exists_warning() {
-			$php_user  = exec( 'whoami' );
-			$php_group = reset( explode( ' ', exec( 'groups' ) ) );
-			echo '<div id="hmbkp-warning" class="updated fade"><p><strong>' . __( 'BackUpWordPress is almost ready.', 'hmbkp' ) . '</strong> ' . sprintf( __( 'The backups directory can\'t be created because your %1$s directory isn\'t writable, run %2$s or %3$s or create the folder yourself.', 'hmbkp' ), '<code>wp-content</code>', '<code>chown ' . esc_html( $php_user ) . ':' . esc_html( $php_group ) . ' ' . esc_html( dirname( hmbkp_path() ) ) . '</code>', '<code>chmod 777 ' . esc_html( dirname( hmbkp_path() ) ) . '</code>' ) . '</p></div>';
-		}
+	if ( ! isset( $current_screen ) || HMBKP_ADMIN_PAGE !== $current_screen->id ) {
+		return;
+	}
 
-		add_action( 'admin_notices', 'hmbkp_path_exists_warning' );
+	$notices = HM\BackUpWordPress\Notices::get_instance()->get_notices();
 
-	endif;
+	if ( empty( $notices ) ) {
+		return;
+	}
 
-	// If the backups directory exists but isn't writable
-	if ( is_dir( hmbkp_path() ) && ! wp_is_writable( hmbkp_path() ) ) :
+	ob_start(); ?>
 
-		function hmbkp_writable_path_warning() {
-			$php_user  = exec( 'whoami' );
-			$php_group = reset( explode( ' ', exec( 'groups' ) ) );
-			echo '<div id="hmbkp-warning" class="updated fade"><p><strong>' . __( 'BackUpWordPress is almost ready.', 'hmbkp' ) . '</strong> ' . sprintf( __( 'Your backups directory isn\'t writable, run %1$s or %2$s or set the permissions yourself.', 'hmbkp' ), '<code>chown -R ' . esc_html( $php_user ) . ':' . esc_html( $php_group ) . ' ' . esc_html( hmbkp_path() ) . '</code>', '<code>chmod -R 777 ' . esc_html( hmbkp_path() ) . '</code>' ) . '</p></div>';
-		}
+	<?php if ( ! empty( $notices['backup_errors'] ) ) : ?>
 
-		add_action( 'admin_notices', 'hmbkp_writable_path_warning' );
+		<div id="hmbkp-warning" class="error fade">
+			<p>
+				<strong><?php _e( 'BackUpWordPress detected issues with your last backup.', 'backupwordpress' ); ?></strong>
+				<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'action' => 'hmbkp_dismiss_error' ), admin_url( 'admin-post.php' ) ), 'hmbkp_dismiss_error', 'hmbkp_dismiss_error_nonce' ) ); ?>" style="float: right;" class="button">
+					<?php _e( 'Dismiss', 'backupwordpress' ); ?>
+				</a>
+			</p>
 
-	endif;
+			<ul>
+				<?php foreach ( $notices['backup_errors'] as $notice ) : ?>
+					<li><pre><?php echo esc_html( $notice ); ?></pre></li>
+				<?php endforeach; ?>
+			</ul>
 
-	// If safe mode is active
-	if ( HM_Backup::is_safe_mode_active() ) :
+		</div>
 
-		function hmbkp_safe_mode_warning() {
-			echo '<div id="hmbkp-warning" class="updated fade"><p><strong>' . __( 'BackUpWordPress has detected a problem.', 'hmbkp' ) . '</strong> ' . sprintf( __( '%1$s is running in %2$s, please contact your host and ask them to disable it. BackUpWordPress may not work correctly whilst %3$s is on.', 'hmbkp' ), '<code>PHP</code>', sprintf( '<a href="%1$s">%2$s</a>', __( 'http://php.net/manual/en/features.safe-mode.php', 'hmbkp' ), __( 'Safe Mode', 'hmbkp' ) ), '<code>' . __( 'Safe Mode', 'hmbkp' ) . '</code>' ) . '</p></div>';
-		}
+	<?php endif; ?>
 
-		add_action( 'admin_notices', 'hmbkp_safe_mode_warning' );
+	<?php if ( ! empty( $notices['server_config'] ) ) : ?>
 
-	endif;
+		<div id="hmbkp-warning" class="error fade">
 
-	// If a custom backups directory is defined and it doesn't exist and can't be created
-	if ( defined( 'HMBKP_PATH' ) && HMBKP_PATH && ! is_dir( HMBKP_PATH ) ) :
+			<ul>
+				<?php foreach ( $notices['server_config'] as $notice ) : ?>
+					<li><?php echo wp_kses_data( $notice ); ?></li>
+				<?php endforeach; ?>
+			</ul>
 
-		function hmbkp_custom_path_exists_warning() {
-			echo '<div id="hmbkp-warning" class="updated fade"><p><strong>' . __( 'BackUpWordPress has detected a problem.', 'hmbkp' ) . '</strong> ' . sprintf( __( 'Your custom backups directory %1$s doesn\'t exist and can\'t be created, your backups will be saved to %2$s instead.', 'hmbkp' ), '<code>' . esc_html( HMBKP_PATH ) . '</code>', '<code>' . esc_html( hmbkp_path() ) . '</code>' ) . '</p></div>';
-		}
+		</div>
 
-		add_action( 'admin_notices', 'hmbkp_custom_path_exists_warning' );
+	<?php endif; ?>
 
-	endif;
-
-	// If a custom backups directory is defined and exists but isn't writable
-	if ( defined( 'HMBKP_PATH' ) && HMBKP_PATH && is_dir( HMBKP_PATH ) && ! wp_is_writable( HMBKP_PATH ) ) :
-
-		function hmbkp_custom_path_writable_notice() {
-			echo '<div id="hmbkp-warning" class="updated fade"><p><strong>' . __( 'BackUpWordPress has detected a problem.', 'hmbkp' ) . '</strong> ' . sprintf( __( 'Your custom backups directory %1$s isn\'t writable, new backups will be saved to %2$s instead.', 'hmbkp' ), '<code>' . esc_html( HMBKP_PATH ) . '</code>', '<code>' . esc_html( hmbkp_path() ) . '</code>' ) . '</p></div>';
-		}
-
-		add_action( 'admin_notices', 'hmbkp_custom_path_writable_notice' );
-
-	endif;
-
-	// If there are any errors reported in the backup
-	if ( hmbkp_backup_errors_message() ) :
-
-		function hmbkp_backup_errors_notice() {
-			echo '<div id="hmbkp-warning" class="updated fade"><p><strong>' . __( 'BackUpWordPress detected issues with your last backup.', 'hmbkp' ) . '</strong><a href="' . esc_url( add_query_arg( 'action', 'hmbkp_dismiss_error' ) ) . '" style="float: right;" class="button">Dismiss</a></p>' . hmbkp_backup_errors_message() . '</div>';
-		}
-
-		add_action( 'admin_notices', 'hmbkp_backup_errors_notice' );
-
-	endif;
-
-	$test_backup = new HMBKP_Scheduled_Backup( 'test_backup' );
-
-	if ( ! is_readable( $test_backup->get_root() ) ) :
-
-		function hmbkp_backup_root_unreadable_notice() {
-			$test_backup = new HMBKP_Scheduled_Backup( 'test_backup' );
-			echo '<div id="hmbkp-warning" class="updated fade"><p><strong>' . __( 'BackUpWordPress has detected a problem.', 'hmbkp' ) . '</strong>' . sprintf( __( 'Your backup root path %s isn\'t readable.', 'hmbkp' ), '<code>' . $test_backup->get_root() . '</code>' ) . '</p></div>';
-		}
-
-		add_action( 'admin_notices', 'hmbkp_backup_root_unreadable_notice' );
-
-	endif;
+	<?php echo ob_get_clean();
 
 }
+add_action( 'admin_notices', 'hmbkp_admin_notices' );
+add_action( 'network_admin_notices', 'hmbkp_admin_notices' );
 
-add_action( 'admin_head', 'hmbkp_admin_notices' );
+function hmbkp_set_server_config_notices() {
+
+	$notices = HM\BackUpWordPress\Notices::get_instance();
+
+	$messages = array();
+
+	if ( ! HM\BackUpWordPress\Backup::is_shell_exec_available() ) {
+		$php_user  = '<PHP USER>';
+		$php_group = '<PHP GROUP>';
+	} else {
+		$php_user  = shell_exec( 'whoami' );
+		$groups = explode( ' ', shell_exec( 'groups' ) );
+		$php_group = reset( $groups );
+	}
+
+	if ( ! is_dir( hmbkp_path() ) ) {
+		$messages[] = sprintf( __( 'The backups directory can\'t be created because your %1$s directory isn\'t writable, run %2$s or %3$s or create the folder yourself.', 'backupwordpress' ), '<code>' . esc_html( dirname( hmbkp_path() ) ) . '</code>', '<code>chown ' . esc_html( $php_user ) . ':' . esc_html( $php_group ) . ' ' . esc_html( dirname( hmbkp_path() ) ) . '</code>', '<code>chmod 777 ' . esc_html( dirname( hmbkp_path() ) ) . '</code>' );
+	}
+
+	if ( is_dir( hmbkp_path() ) && ! wp_is_writable( hmbkp_path() ) ) {
+		$messages[] = sprintf( __( 'Your backups directory isn\'t writable, run %1$s or %2$s or set the permissions yourself.', 'backupwordpress' ), '<code>chown -R ' . esc_html( $php_user ) . ':' . esc_html( $php_group ) . ' ' . esc_html( hmbkp_path() ) . '</code>', '<code>chmod -R 777 ' . esc_html( hmbkp_path() ) . '</code>' );
+	}
+
+	if ( HM\BackUpWordPress\Backup::is_safe_mode_active() ) {
+		$messages[] = sprintf( __( '%1$s is running in %2$s, please contact your host and ask them to disable it. BackUpWordPress may not work correctly whilst %3$s is on.', 'backupwordpress' ), '<code>PHP</code>', sprintf( '<a href="%1$s">%2$s</a>', __( 'http://php.net/manual/en/features.safe-mode.php', 'backupwordpress' ), __( 'Safe Mode', 'backupwordpress' ) ), '<code>' . __( 'Safe Mode', 'backupwordpress' ) . '</code>' );
+	}
+
+	if ( defined( 'HMBKP_PATH' ) && HMBKP_PATH ) {
+
+		// Suppress open_basedir warning https://bugs.php.net/bug.php?id=53041
+		if ( ! @file_exists( HMBKP_PATH ) ) {
+
+			$messages[] = sprintf( __( 'Your custom path does not exist', 'backupwordpress' ) );
+
+		} elseif ( hmbkp_is_restricted_custom_path() ) {
+
+			$messages[] = sprintf( __( 'Your custom path is unreachable due to a restriction set in your PHP configuration (open_basedir)', 'backupwordpress' ) );
+
+		} else {
+
+			if ( ! @is_dir( HMBKP_PATH ) ) {
+				$messages[] = sprintf( __( 'Your custom backups directory %1$s doesn\'t exist and can\'t be created, your backups will be saved to %2$s instead.', 'backupwordpress' ), '<code>' . esc_html( HMBKP_PATH ) . '</code>', '<code>' . esc_html( hmbkp_path() ) . '</code>' );
+			}
+
+			if ( @is_dir( HMBKP_PATH ) && ! wp_is_writable( HMBKP_PATH ) ) {
+				$messages[] = sprintf( __( 'Your custom backups directory %1$s isn\'t writable, new backups will be saved to %2$s instead.', 'backupwordpress' ), '<code>' . esc_html( HMBKP_PATH ) . '</code>', '<code>' . esc_html( hmbkp_path() ) . '</code>' );
+
+			}
+		}
+	}
+
+	$test_backup = new HM\BackUpWordPress\Backup();
+
+	if ( ! is_readable( $test_backup->get_root() ) ) {
+		$messages[] = sprintf( __( 'Your site root path %s isn\'t readable.', 'backupwordpress' ), '<code>' . $test_backup->get_root() . '</code>' );
+	}
+
+	if ( count( $messages ) > 0 ) {
+		$notices->set_notices( 'server_config', $messages, false );
+	}
+
+}
+add_action( 'admin_init', 'hmbkp_set_server_config_notices' );
 
 /**
  * Hook in an change the plugin description when BackUpWordPress is activated
@@ -149,13 +173,11 @@ add_action( 'admin_head', 'hmbkp_admin_notices' );
  */
 function hmbkp_plugin_row( $plugins ) {
 
-	if ( is_multisite() )
-		$settings_url = network_admin_url( 'settings.php?page=' . HMBKP_PLUGIN_SLUG );
-	else
-		$settings_url = admin_url( 'tools.php?page=' . HMBKP_PLUGIN_SLUG );
+	$menu = is_multisite() ? 'Settings' : 'Tools';
 
-	if ( isset( $plugins[HMBKP_PLUGIN_SLUG . '/backupwordpress.php'] ) )
-		$plugins[HMBKP_PLUGIN_SLUG . '/backupwordpress.php']['Description'] = str_replace( 'Once activated you\'ll find me under <strong>Tools &rarr; Backups</strong>', 'Find me under <strong><a href="' . esc_url( $settings_url ) . '">Tools &rarr; Backups</a></strong>', $plugins[HMBKP_PLUGIN_SLUG . '/backupwordpress.php']['Description'] );
+	if ( isset( $plugins[HMBKP_PLUGIN_SLUG . '/backupwordpress.php'] ) ) {
+		$plugins[HMBKP_PLUGIN_SLUG . '/backupwordpress.php']['Description'] = str_replace( 'Once activated you\'ll find me under <strong>' . $menu . ' &rarr; Backups</strong>', 'Find me under <strong><a href="' . esc_url( hmbkp_get_settings_url() ) . '">' . $menu . ' &rarr; Backups</a></strong>', $plugins[HMBKP_PLUGIN_SLUG . '/backupwordpress.php']['Description'] );
+	}
 
 	return $plugins;
 
@@ -185,91 +207,32 @@ function hmbkp_backup_errors_message() {
 }
 
 /**
- * Display a html list of files
- *
- * @param HMBKP_Scheduled_Backup $schedule
- * @param mixed                  $excludes    (default: null)
- * @param string                 $file_method (default: 'get_included_files')
- * @return void
- */
-function hmbkp_file_list( HMBKP_Scheduled_Backup $schedule, $excludes = null, $file_method = 'get_included_files' ) {
-
-	if ( ! is_null( $excludes ) )
-		$schedule->set_excludes( $excludes );
-
-	$exclude_string = $schedule->exclude_string( 'regex' ); ?>
-
-	<ul class="hmbkp_file_list code">
-
-		<?php foreach ( $schedule->get_files() as $file ) :
-
-			if ( ! is_null( $excludes ) && strpos( $file, str_ireplace( $schedule->get_root(), '', $schedule->get_path() ) ) !== false )
-				continue;
-
-			// Skip dot files, they should only exist on versions of PHP between 5.2.11 -> 5.3
-			if ( method_exists( $file, 'isDot' ) && $file->isDot() )
-				continue;
-
-			// Show only unreadable files
-			if ( $file_method === 'get_unreadable_files' && @realpath( $file->getPathname() ) && $file->isReadable() )
-				continue;
-
-			// Skip unreadable files
-			elseif ( $file_method !== 'get_unreadable_files' && ( ! @realpath( $file->getPathname() ) || ! $file->isReadable() ) )
-				continue;
-
-			// Show only included files
-			if ( $file_method === 'get_included_files' )
-				if ( $exclude_string && preg_match( '(' . $exclude_string . ')', str_ireplace( trailingslashit( $schedule->get_root() ), '', HM_Backup::conform_dir( $file->getPathname() ) ) ) )
-					continue;
-
-			// Show only excluded files
-			if ( $file_method === 'get_excluded_files' )
-				if ( ! $exclude_string || ! preg_match( '(' . $exclude_string . ')', str_ireplace( trailingslashit( $schedule->get_root() ), '', HM_Backup::conform_dir( $file->getPathname() ) ) ) )
-					continue;
-
-			if ( @realpath( $file->getPathname() ) && ! $file->isReadable() && $file->isDir() ) {
-				?>
-
-				<li title="<?php echo esc_attr( HM_Backup::conform_dir( trailingslashit( $file->getPathName() ) ) ); ?>"><?php echo esc_html( ltrim( trailingslashit( str_ireplace( HM_Backup::conform_dir( trailingslashit( $schedule->get_root() ) ), '', HM_Backup::conform_dir( $file->getPathName() ) ) ), '/' ) ); ?></li>
-
-			<?php } else { ?>
-
-				<li title="<?php echo esc_attr( HM_Backup::conform_dir( $file->getPathName() ) ); ?>"><?php echo esc_html( ltrim( str_ireplace( HM_Backup::conform_dir( trailingslashit( $schedule->get_root() ) ), '', HM_Backup::conform_dir( $file->getPathName() ) ), '/' ) ); ?></li>
-
-			<?php }
-
-		endforeach; ?>
-
-	</ul>
-
-<?php
-}
-
-
-/**
  * Get the human readable backup type in.
  *
  * @access public
  * @param string                 $type
- * @param HMBKP_Scheduled_Backup $schedule (default: null)
+ * @param HM\BackUpWordPress\Scheduled_Backup $schedule (default: null)
  * @return string
  */
-function hmbkp_human_get_type( $type, HMBKP_Scheduled_Backup $schedule = null ) {
+function hmbkp_human_get_type( $type, HM\BackUpWordPress\Scheduled_Backup $schedule = null ) {
 
-	if ( strpos( $type, 'complete' ) !== false )
-		return __( 'Database and Files', 'hmbkp' );
+	if ( strpos( $type, 'complete' ) !== false ) {
+		return __( 'Database and Files', 'backupwordpress' );
+	}
 
-	if ( strpos( $type, 'file' ) !== false )
-		return __( 'Files', 'hmbkp' );
+	if ( strpos( $type, 'file' ) !== false ) {
+		return __( 'Files', 'backupwordpress' );
+	}
 
-	if ( strpos( $type, 'database' ) !== false )
-		return __( 'Database', 'hmbkp' );
+	if ( strpos( $type, 'database' ) !== false ) {
+		return __( 'Database', 'backupwordpress' );
+	}
 
-	if ( ! is_null( $schedule ) )
+	if ( ! is_null( $schedule ) ) {
 		return hmbkp_human_get_type( $schedule->get_type() );
+	}
 
-	return __( 'Legacy', 'hmbkp' );
+	return __( 'Legacy', 'backupwordpress' );
 
 }
 
@@ -277,44 +240,27 @@ function hmbkp_human_get_type( $type, HMBKP_Scheduled_Backup $schedule = null ) 
  * Display the row of actions for a schedule
  *
  * @access public
- * @param HMBKP_Scheduled_Backup $schedule
+ * @param HM\BackUpWordPress\Scheduled_Backup $schedule
  * @return void
  */
-function hmbkp_schedule_actions( HMBKP_Scheduled_Backup $schedule ) {
+function hmbkp_schedule_status( HM\BackUpWordPress\Scheduled_Backup $schedule, $echo = true ) {
 
-	if ( is_multisite() )
-		$settings_url = network_admin_url( 'settings.php?page=' . HMBKP_PLUGIN_SLUG );
-	else
-		$settings_url = admin_url( 'tools.php?page=' . HMBKP_PLUGIN_SLUG );
-
-	// Start output buffering
 	ob_start(); ?>
 
-	<span class="hmbkp-status"<?php if ( $schedule->get_status() ) { ?> title="<?php printf( __( 'Started %s ago', 'hmbkp' ), human_time_diff( $schedule->get_schedule_running_start_time() ) ); ?>"<?php } ?>>
-		<?php echo $schedule->get_status() ? wp_kses_data( $schedule->get_status() ) : __( 'Starting Backup', 'hmbkp' ); ?>
-		<a href="<?php echo esc_url( add_query_arg( array( 'action' => 'hmbkp_cancel', 'hmbkp_schedule_id' => $schedule->get_id() ), $settings_url ) ); ?>"><?php _e( 'cancel', 'hmbkp' ); ?></a>
+	<span class="hmbkp-status"<?php if ( $schedule->get_status() ) { ?> title="<?php printf( __( 'Started %s ago', 'backupwordpress' ), human_time_diff( $schedule->get_schedule_running_start_time() ) ); ?>"<?php } ?>>
+		<?php echo $schedule->get_status() ? wp_kses_data( $schedule->get_status() ) : __( 'Starting Backup', 'backupwordpress' ); ?>
+		<a href="<?php echo hmbkp_admin_action_url( 'request_cancel_backup', array( 'hmbkp_schedule_id' => $schedule->get_id() ) ); ?>"><?php _e( 'cancel', 'backupwordpress' ); ?></a>
 	</span>
 
-	<div class="hmbkp-schedule-actions row-actions">
+	<?php $output = ob_get_clean();
 
-		<a class="colorbox" href="<?php echo esc_url( add_query_arg( array( 'action' => 'hmbkp_edit_schedule_load', 'hmbkp_schedule_id' => $schedule->get_id() ), is_multisite() ? admin_url( 'admin-ajax.php' ) : network_admin_url( 'admin-ajax.php' ) ) ); ?>"><?php _e( 'Settings', 'hmbkp' ); ?></a> |
+	if ( ! $echo ) {
+		return $output;
+	}
 
-	<?php if ( $schedule->get_type() !== 'database' ) { ?>
-		<a class="colorbox" href="<?php echo esc_url( add_query_arg( array( 'action' => 'hmbkp_edit_schedule_excludes_load', 'hmbkp_schedule_id' => $schedule->get_id() ), is_multisite() ? admin_url( 'admin-ajax.php' ) : network_admin_url( 'admin-ajax.php' ) ) ); ?>"><?php _e( 'Excludes', 'hmbkp' ); ?></a>  |
-	<?php } ?>
+	echo $output;
 
-		<?php // capture output
-		$output = ob_get_clean();
-		echo apply_filters( 'hmbkp_schedule_actions_menu', $output, $schedule ); ?>
-
-		<a class="hmbkp-run" href="<?php echo esc_url( add_query_arg( array( 'action' => 'hmbkp_run_schedule', 'hmbkp_schedule_id' => $schedule->get_id() ), is_multisite() ? admin_url( 'admin-ajax.php' ) : network_admin_url( 'admin-ajax.php' ) ) ); ?>"><?php _e( 'Run now', 'hmbkp' ); ?></a>  |
-
-		<a class="delete-action" href="<?php echo wp_nonce_url( add_query_arg( array( 'action' => 'hmbkp_delete_schedule', 'hmbkp_schedule_id' => $schedule->get_id() ), $settings_url ), 'hmbkp-delete_schedule' ); ?>"><?php _e( 'Delete', 'hmbkp' ); ?></a>
-
-	</div>
-
-<?php }
-
+}
 
 /**
  * Load the backup errors file
@@ -323,8 +269,9 @@ function hmbkp_schedule_actions( HMBKP_Scheduled_Backup $schedule ) {
  */
 function hmbkp_backup_errors() {
 
-	if ( ! file_exists( hmbkp_path() . '/.backup_errors' ) )
+	if ( ! file_exists( hmbkp_path() . '/.backup_errors' ) ) {
 		return '';
+	}
 
 	return file_get_contents( hmbkp_path() . '/.backup_errors' );
 
@@ -337,9 +284,132 @@ function hmbkp_backup_errors() {
  */
 function hmbkp_backup_warnings() {
 
-	if ( ! file_exists( hmbkp_path() . '/.backup_warnings' ) )
+	if ( ! file_exists( hmbkp_path() . '/.backup_warnings' ) ) {
 		return '';
+	}
 
 	return file_get_contents( hmbkp_path() . '/.backup_warnings' );
 
+}
+
+function hmbkp_backups_number( $schedule ) {
+
+	$number = count( $schedule->get_backups() );
+
+	if ( 0 === $number ) {
+		$output = sprintf( __( 'No backups completed', 'backupwordpress' ) );
+	} else {
+		$output = sprintf( _nx( 'One backup completed', '%1$s backups completed', $number, 'backups count', 'backupwordpress' ), number_format_i18n( $number ) );
+	}
+
+	echo apply_filters( 'hmbkp_backups_number', $output, $number );
+}
+
+function hmbkp_translated_schedule_title( $slug, $title ) {
+
+	$titles = array(
+		'complete-hourly'      => esc_html__( 'Complete Hourly', 'backupwordpress' ),
+		'file-hourly'          => esc_html__( 'File Hourly', 'backupwordpress' ),
+		'database-hourly'      => esc_html__( 'Database Hourly', 'backupwordpress' ),
+		'complete-twicedaily'  => esc_html__( 'Complete Twicedaily', 'backupwordpress' ),
+		'file-twicedaily'      => esc_html__( 'File Twicedaily', 'backupwordpress' ),
+		'database-twicedaily'  => esc_html__( 'Database Twicedaily', 'backupwordpress' ),
+		'complete-daily'       => esc_html__( 'Complete Daily', 'backupwordpress' ),
+		'file-daily'           => esc_html__( 'File Daily', 'backupwordpress' ),
+		'database-daily'       => esc_html__( 'Database Daily', 'backupwordpress' ),
+		'complete-weekly'      => esc_html__( 'Complete Weekly', 'backupwordpress' ),
+		'file-weekly'          => esc_html__( 'File Weekly', 'backupwordpress' ),
+		'database-weekly'      => esc_html__( 'Database Weekly', 'backupwordpress' ),
+		'complete-fortnightly' => esc_html__( 'Complete Biweekly', 'backupwordpress' ),
+		'file-fortnightly'     => esc_html__( 'File Biweekly', 'backupwordpress' ),
+		'database-fortnightly' => esc_html__( 'Database Biweekly', 'backupwordpress' ),
+		'complete-monthly'     => esc_html__( 'Complete Monthly', 'backupwordpress' ),
+		'file-monthly'         => esc_html__( 'File Monthly', 'backupwordpress' ),
+		'database-monthly'     => esc_html__( 'Database Monthly', 'backupwordpress' ),
+		'complete-manually'    => esc_html__( 'Complete Manually', 'backupwordpress' ),
+		'file-manually'        => esc_html__( 'File Manually', 'backupwordpress' ),
+		'database-manually'    => esc_html__( 'Database Manually', 'backupwordpress' )
+	);
+
+	if ( isset( $titles[ $slug ] ) ) {
+		return $titles[ $slug ];
+	}
+
+	return $title;
+
+}
+
+function hmbkp_get_settings_url() {
+
+	$url = is_multisite() ? self_admin_url( 'settings.php?page=' . HMBKP_PLUGIN_SLUG ) : self_admin_url( 'tools.php?page=' . HMBKP_PLUGIN_SLUG );
+
+	HM\BackUpWordPress\schedules::get_instance()->refresh_schedules();
+
+	if ( ! empty( $_REQUEST['hmbkp_schedule_id'] ) && HM\BackUpWordPress\schedules::get_instance()->get_schedule( sanitize_text_field( $_REQUEST['hmbkp_schedule_id'] ) ) ) {
+		$url = add_query_arg( 'hmbkp_schedule_id', sanitize_text_field( $_REQUEST['hmbkp_schedule_id'] ), $url );
+	}
+
+	return $url;
+
+}
+
+/**
+ * Add an error message to the array of messages.
+ *
+ * @param $error_message
+ */
+function hmbkp_add_settings_error( $error_message ){
+
+	$hmbkp_settings_errors = get_transient( 'hmbkp_settings_errors' );
+
+	// If it doesnt exist, create.
+	if ( ! $hmbkp_settings_errors ) {
+		set_transient( 'hmbkp_settings_errors', (array) $error_message );
+	} else {
+		set_transient( 'hmbkp_settings_errors', array_unique( array_merge( $hmbkp_settings_errors, (array) $error_message ) ) );
+	}
+
+}
+
+/**
+ * Fetch the form submission errors for display.
+ *
+ * @return mixed
+ */
+function hmbkp_get_settings_errors() {
+	return get_transient( 'hmbkp_settings_errors' );
+}
+
+/**
+ * Clear all error messages.
+ *
+ * @return bool
+ */
+function hmbkp_clear_settings_errors(){
+	return delete_transient( 'hmbkp_settings_errors' );
+}
+
+function hmbkp_is_restricted_custom_path() {
+
+	$open_basedir = @ini_get( 'open_basedir' );
+
+	if ( 0 === strlen( $open_basedir ) ) {
+		return false;
+	}
+
+	$open_basedir_paths = array_map( 'trim', explode( ':', $open_basedir ) );
+
+	// Is backups path in the open_basedir allowed paths?
+	if ( in_array( HMBKP_PATH, $open_basedir_paths ) ) {
+		return false;
+	}
+
+	// Is backups path a subdirectory of one of the allowed paths?
+	foreach ( $open_basedir_paths as $path ) {
+		if ( 0 === strpos( HMBKP_PATH, $path ) ) {
+			return false;
+		}
+	}
+
+	return true;
 }

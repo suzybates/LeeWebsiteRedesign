@@ -4,8 +4,8 @@ Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=JWZVF
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 License: GPLv3
 Requires at least: 3.4
-Tested up to: 3.9.1
-Stable tag: 2.1.46
+Tested up to: 4.1.1
+Stable tag: 2.1.55
 
 Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
 
@@ -48,6 +48,65 @@ Pro [extensions](http://presspermit.com/extensions) are [available](http://press
 Initial production release
 
 == Changelog ==
+
+= 2.1.55 - 17 Mar 2015 =
+* Fixed : Permission Groups management screen failed with fatal error / white screen on WP 3.9.x and previous (since 2.1.52)
+* Change : Editing exceptions also allow deletion if constant PP_EDIT_EXCEPTIONS_ALLOW_DELETION is defined
+* Change : Editing exceptions also allow deletion for specified post type if constant PP_EDIT_EXCEPTIONS_ALLOW_PAGE_DELETION, PP_EDIT_EXCEPTIONS_ALLOW_ATTACHMENT_DELETION, etc. is defined
+
+= 2.1.54 - 21 Feb 2015 =
+* Fixed : PP tabs in wp-admin broke if a third party plugin added classes to their links
+* Feature : Support filtering of WP Users listing by PP group, by appending pp_group argument to URL
+* Compat : Wiki plugin - white screen on non-Administrator access of wp-admin Wikis screen
+
+= 2.1.53 - 4 Feb 2015 =
+* Compat : Visual Composer - invalid display of VC "add element" UI on Edit Term screen
+
+= 2.1.52 - 3 Feb 2015 =
+* Compat : The Events Calendar - Ajax refresh of calendar did not display events to subscribers or anonymous viewers
+* Compat : Visual Composer - invalid display of VC metabox on Edit Term screen
+* Change (Pro) : Refresh support key data to more promptly display expiration status
+* Fixed : White screen after cloning permissions from one role group to another
+* Fixed : PHP warning for deprecated function call on Permissions > Groups screen
+
+= 2.1.51 - 9 Jan 2015 =
+* Compat : Google Analytics by Yoast - PP filtering was disabled due to GA loading user prior to init action
+* Compat : WP Cron Control - PP filtering was disabled due to WPCC setting constant DOING_CRON universally
+* Compat : Events Manager - PHP Warning on Event Tags, Event Categories screen under some configurations
+* Compat : Kriesi Enfold theme - More Posts query failed
+* Fixed : Incorrect user count for WP role groups on Permissions > Groups screen
+
+= 2.1.50 - 5 Jan 2015 =
+* Fixed : Pro: Media Items were not properly filtered in grid view
+* Fixed : Errors on Add Supplemental Role UI if standard WP role definition are deleted
+* Fixed : Pro: Expired support key caused incorrect display of Activation UI
+* Fixed : Fatal Error when calling some PP API functions from front end
+* Fixed : Fatal Error for redeclared class SQLTokenizer on some installations
+* Compat : JSON REST API - filtering of calls does not match typical API usage (now not filtered at all unless PP_FILTER_JSON_REST constant defined)
+
+= 2.1.49 - 13 Nov 2014 =
+* Fixed : With "Post-assigned Exceptions take priority" setting active, post-specific enables did not override post-specific blockages
+* Fixed : With Network-wide groups enabled, exceptions stored (with network-wide previously disabled) to regular main site groups were still applied (though not displayed on Edit Group Permissions screen)
+* Fixed : Users with "Only These" editing exceptions for specified pages could delete those pages for editing access to other pages.  Trash/deletion is now blocked unless user also has an "Also these" exception for the page.
+* Fixed : PHP warnings for "implode(): Invalid arguments" on various wp-admin screens
+* Fixed : Some non-Apache servers had "Fatal error: Object of class stdClass could not be converted to string" on Edit User and Edit Permission Groups screens
+* Fixed : Edit User screen did not display Network Groups checkboxes under some configurations 
+* Change : Post / term selection UI on Edit Permission Group screen now default to 100 items per page, and can be customized via PP_ITEM_MENU_PER_PAGE constant definition. 
+* Compat : To resolve numerous Ajax conflicts, don't require editing permissions by default. New filter 'pp_ajax_edit_actions' replaces 'pp_ajax_read_actions'.
+* Compat : Ozh Admin Menus: caption PP Settings submenu (in Settings menu) more descriptively
+* API : New filter 'pp_ajax_edit_actions' to require editing permissions for specific Ajax actions.
+* Fixed : Edit Permissions UI did not obey PP_ALL_ANON_FULL_EXCEPTIONS constant, limiting assignments to the "{All}" and "{Anon}" groups
+* Fixed : PHP warnings on Permissions > Settings > Install screen when key is not activated
+
+= 2.1.48 - 29 Sep 2014 =
+* Fixed : Post-specific restrictions were not applied correctly if PP setting "Post-assigned Exceptions take priority" enabled
+* Fixed : Nuisance notification of "Post-assigned Exceptions take priority" setting on new installations
+
+= 2.1.47 - 4 Sep 2014 =
+* Feature : Option to change exceptions handling to make post-specific blockages take priority over term-specific additions
+* Fixed : Media Upload by non-Editors stalled on "crunching" under some configurations
+* Fixed : Edit User Permissions screen labeled group Exceptions box as "Supplemental Roles"
+* Fixed : Support key expiration message was displayed incorrectly in some situations
 
 = 2.1.46 - 24 July 2014 =
 * Feature : Option to keep non-editable posts visible in wp-admin (only if PP Collaborative Editing pack is NOT active).

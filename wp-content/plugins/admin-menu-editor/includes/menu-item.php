@@ -124,13 +124,13 @@ abstract class ameMenuItem {
 		$blank_menu = array_merge($blank_menu, array(
 			'items' => array(), //List of sub-menu items.
 			'grant_access' => array(), //Per-role and per-user access. Supersedes role_access.
-			'role_access' => array(), //Per-role access settings.
 			'colors' => null,
 
 			'custom' => false,  //True if item is made-from-scratch and has no template.
 			'missing' => false, //True if our template is no longer present in the default admin menu. Note: Stored values will be ignored. Set upon merging.
 			'unused' => false,  //True if this item was generated from an unused default menu. Note: Stored values will be ignored. Set upon merging.
 			'hidden' => false,  //Hide/show the item. Hiding is purely cosmetic, the item remains accessible.
+			'separator' => false,  //True if the item is a menu separator.
 
 			'defaults' => self::basic_defaults(),
 		));
@@ -223,6 +223,14 @@ abstract class ameMenuItem {
 			$parent_file = 'users.php';
 		}
 
+		//Special case: In WP 4.0+ the URL of the "Appearance -> Customize" item is different on every admin page.
+		//This is because the URL includes a "return" parameter that contains the current page's URL. It also makes
+		//the template ID different on every page, so it's impossible to identify the menu. To fix that, lets remove
+		//the "return" parameter from the ID.
+		if ( ($parent_file === 'themes.php') && (strpos($item_file, 'customize.php?') === 0) ) {
+			$item_file = remove_query_arg('return', $item_file);
+		}
+
 		return $parent_file . '>' . $item_file;
 	}
 
@@ -311,7 +319,7 @@ abstract class ameMenuItem {
 			foreach($item['role_access'] as $role_id => $has_access) {
 				$item['grant_access']['role:' . $role_id] = $has_access;
 			}
-			$item['role_access'] = array();
+			unset($item['role_access']);
 		}
 
 		if ( isset($item['items']) ) {
@@ -357,6 +365,66 @@ abstract class ameMenuItem {
 		return $item;
 	}
 
+	/**
+	 * Sanitize item properties.
+	 *
+	 * Strips disallowed HTML and invalid characters from many fields. For example, only users who
+	 * have the "unfiltered_html" capability can use arbitrary HTML in menu titles.
+	 *
+	 * To avoid the performance hit of calling current_user_can('unfiltered_html') for every item,
+	 * you can call it once and pass the result to this function.
+	 *
+	 * @param array $item Menu item in the internal format.
+	 * @param bool|null $user_can_unfiltered_html
+	 * @return array Sanitized menu item.
+	 */
+	public static function sanitize($item, $user_can_unfiltered_html = null) {
+		if ( $user_can_unfiltered_html === null ) {
+			$user_can_unfiltered_html = current_user_can('unfiltered_html');
+		}
+
+		if ( !$user_can_unfiltered_html ) {
+			$kses_fields = array('menu_title', 'page_title', 'file', 'page_heading');
+			foreach($kses_fields as $field) {
+				$value = self::get($item, $field);
+				if ( is_string($value) && !empty($value) && !self::is_default($item, $field) ) {
+					$item[$field] = wp_kses_post($value);
+				}
+			}
+		}
+
+		//Sanitize CSS class names. Note that the WP implementation of sanitize_html_class() is very basic
+		//and doesn't comply with the CSS2 spec, but that's probably OK in this case.
+		$css_class = self::get($item, 'css_class');
+		if ( !self::is_default($item, 'css_class') && is_string($css_class) && function_exists('sanitize_html_class') ) {
+			$item['css_class'] = implode(' ', array_map('sanitize_html_class', explode(' ', $css_class)));
+		}
+
+		//While menu capabilities are generally not displayed anywhere except this plugin (which already
+		//escapes them properly), lets sanitize them anyway in case another plugin displays them as-is.
+		$capability_fields = array('access_level', 'extra_capability');
+		foreach($capability_fields as $field) {
+			$value = self::get($item, $field);
+			if ( !self::is_default($item, $field) && is_string($value) ) {
+				$item[$field] = strip_tags($value);
+			}
+		}
+
+		//Menu icons can be all kinds of stuff (dashicons, data URIs, etc), but they can't contain HTML.
+		//See /wp-admin/menu-header.php line #90 and onwards for how WordPress handles icons.
+		if ( !self::is_default($item, 'icon_url') ) {
+			$item['icon_url'] = strip_tags($item['icon_url']);
+		}
+
+		//WordPress already sanitizes the menu ID (hookname) on display, but, again, lets clean it just in case.
+		if ( !self::is_default($item, 'hookname') ) {
+			//Regex from menu-header.php, WP 4.1.
+			$item['hookname'] = preg_replace('@[^a-zA-Z0-9_:.]@', '-', self::get($item, 'hookname'));
+		}
+
+		return $item;
+	}
+
   /**
    * Custom comparison function that compares menu items based on their position in the menu.
    *
@@ -379,12 +447,17 @@ abstract class ameMenuItem {
 		$menu_url = is_array($item_slug) ? self::get($item_slug, 'file') : $item_slug;
 		$parent_url = !empty($parent_slug) ? $parent_slug : 'admin.php';
 
+		//Workaround for WooCommerce 2.1.12: For some reason, it uses "&amp;" instead of a plain "&" to separate
+		//query parameters. We need a plain URL, not a HTML-entity-encoded one.
+		//It is theoretically possible that another plugin might want to use a literal "&amp;", but its very unlikely.
+		$menu_url = str_replace('&amp;', '&', $menu_url);
+
 		if ( strpos($menu_url, '://') !== false ) {
 			return $menu_url;
 		}
 
 		if ( self::is_hook_or_plugin_page($menu_url, $parent_url) ) {
-			$base_file = self::is_hook_or_plugin_page($parent_url) ? 'admin.php' : $parent_url;
+			$base_file = self::is_wp_admin_file($parent_url) ? $parent_url : 'admin.php';
 			$url = add_query_arg(array('page' => $menu_url), $base_file);
 		} else {
 			$url = $menu_url;
@@ -398,14 +471,8 @@ abstract class ameMenuItem {
 		}
 		$pageFile = self::remove_query_from($page_url);
 
-		//Check our hard-coded list of admin pages first. It's measurably faster than
-		//hitting the disk with is_file().
-		if ( isset(self::$known_wp_admin_files[$pageFile]) ) {
-			return false;
-		}
-		//Now actually check the filesystem.
-		$adminFileExists = is_file(ABSPATH . '/wp-admin/' . $pageFile);
-		if ( $adminFileExists ) {
+		//Files in /wp-admin are part of WP core so they're not plugin pages.
+		if ( self::is_wp_admin_file($pageFile) ) {
 			return false;
 		}
 
@@ -414,12 +481,70 @@ abstract class ameMenuItem {
 			return true;
 		}
 
-		$pluginFileExists = ($page_url != 'index.php') && is_file(WP_PLUGIN_DIR . '/' . $pageFile);
+		/*
+		 * Special case: Absolute paths.
+		 *
+		 * - add_submenu_page() applies plugin_basename() to the menu slug, so we don't need to worry about plugin
+		 * paths. However, absolute paths that *don't* point point to the plugins directory can be a problem.
+		 *
+		 * - Due to a known PHP bug, certain invalid paths can crash PHP. See self::is_safe_to_append().
+		 *
+		 * - WP 3.9.2 and 4.0+ unintentionally break menu URLs like "foo.php?page=c:\a\b.php" because esc_url()
+		 * interprets the part before the colon as an invalid protocol. As a result, such links have an empty URL
+		 * on Windows (but they might still work on other OS).
+		 *
+		 * - Recent versions of WP won't let you load a PHP file from outside the plugins and mu-plugins directories
+		 * with "admin.php?page=filename". See the validate_file() call in /wp-admin/admin.php. However, such filenames
+		 * can still be used as unique slugs for menus with hook callbacks, so we shouldn't reject them outright.
+		 * Related: https://core.trac.wordpress.org/ticket/10011
+		 */
+		$allowPathConcatenation = self::is_safe_to_append($pageFile);
+
+		$pluginFileExists = $allowPathConcatenation
+			&& ($page_url != 'index.php')
+			&& is_file(WP_PLUGIN_DIR . '/' . $pageFile);
 		if ( $pluginFileExists ) {
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check if a file exists inside the /wp-admin subdirectory.
+	 *
+	 * @param string $filename
+	 * @return bool
+	 */
+	private static function is_wp_admin_file($filename) {
+		//Check our hard-coded list of admin pages first. It's measurably faster than
+		//hitting the disk with is_file().
+		if ( isset(self::$known_wp_admin_files[$filename]) ) {
+			return self::$known_wp_admin_files[$filename];
+		}
+
+		//Now actually check the filesystem.
+		$adminFileExists = self::is_safe_to_append($filename)
+			&& is_file(ABSPATH . 'wp-admin/' . $filename);
+
+		//Cache the result for later. We can generally expect more than one call per top level menu URL.
+		self::$known_wp_admin_files[$filename] = $adminFileExists;
+
+		return $adminFileExists;
+	}
+
+	/**
+	 * Verify that it's safe to append a given filename to another path.
+	 *
+	 * If we blindly append an absolute path to another path, we can get something like "C:\a\b/wp-admin/C:\c\d.php".
+	 * PHP 5.2.5 has a known bug where calling file_exists() on that kind of an invalid filename will cause
+	 * a timeout and a crash in some configurations. See: https://bugs.php.net/bug.php?id=44412
+	 *
+	 * @param string $filename
+	 * @return bool
+	 */
+	private static function is_safe_to_append($filename) {
+		return (substr($filename, 1, 1) !== ':'); //Reject "C:\whatever" and similar.
 	}
 
 	/**

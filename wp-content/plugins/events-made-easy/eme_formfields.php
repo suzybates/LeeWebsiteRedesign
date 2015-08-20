@@ -9,7 +9,7 @@ function eme_formfields_page() {
       return;
    }
    
-   if (isset($_GET['eme_admin_action']) && $_GET['eme_admin_action'] == "editformfield") { 
+   if (isset($_GET['eme_admin_action']) && $_GET['eme_admin_action'] == "edit_formfield") { 
       // edit formfield  
       $field_id = intval($_GET['field_id']);
       eme_formfields_edit_layout($field_id);
@@ -21,7 +21,7 @@ function eme_formfields_page() {
    $validation_result = '';
    $message = '';
    if (isset($_POST['eme_admin_action'])) {
-      if ($_POST['eme_admin_action'] == "edit") {
+      if ($_POST['eme_admin_action'] == "do_editformfield") {
          $formfield = array();
          $field_id = intval($_POST['field_id']);
          $formfield['field_name'] = trim(stripslashes($_POST['field_name']));
@@ -48,7 +48,7 @@ function eme_formfields_page() {
             if ($validation_result !== false )
                $message = __("Successfully edited the field", "eme");
          }
-      } elseif ($_POST['eme_admin_action'] == "add" ) {
+      } elseif ($_POST['eme_admin_action'] == "do_addformfield" ) {
          // Add a new formfield
          $formfield = array();
          $formfield['field_name'] = trim(stripslashes($_POST['field_name']));
@@ -71,7 +71,7 @@ function eme_formfields_page() {
             if ($validation_result !== false )
                $message = __("Successfully added the field", "eme");
          }
-      } elseif ($_POST['eme_admin_action'] == "delete" && isset($_POST['formfields'])) {
+      } elseif ($_POST['eme_admin_action'] == "do_deleteformfield" && isset($_POST['formfields'])) {
          // Delete formfield or multiple
          $formfields = $_POST['formfields'];
          if (is_array($formfields)) {
@@ -127,7 +127,7 @@ function eme_formfields_table_layout($message="") {
             <div id='col-right'>
              <div class='col-wrap'>
                 <form id='bookings-filter' method='post' action='".$destination."'>
-                  <input type='hidden' name='eme_admin_action' value='delete' />";
+                  <input type='hidden' name='eme_admin_action' value='do_deleteformfield' />";
                   if (count($formfields)>0) {
                      $table .= "<table class='widefat'>
                         <thead>
@@ -151,9 +151,9 @@ function eme_formfields_table_layout($message="") {
                         $table .= "    
                            <tr>
                            <td><input type='checkbox' class ='row-selector' value='".$this_formfield['field_id']."' name='formfields[]' /></td>
-                           <td><a href='".admin_url("admin.php?page=eme-formfields&amp;eme_admin_action=editformfield&amp;field_id=".$this_formfield['field_id'])."'>".$this_formfield['field_id']."</a></td>
-                           <td><a href='".admin_url("admin.php?page=eme-formfields&amp;eme_admin_action=editformfield&amp;field_id=".$this_formfield['field_id'])."'>".$this_formfield['field_name']."</a></td>
-                           <td><a href='".admin_url("admin.php?page=eme-formfields&amp;eme_admin_action=editformfield&amp;field_id=".$this_formfield['field_id'])."'>".eme_get_fieldtype($this_formfield['field_type'])."</a></td>
+                           <td><a href='".admin_url("admin.php?page=eme-formfields&amp;eme_admin_action=edit_formfield&amp;field_id=".$this_formfield['field_id'])."'>".$this_formfield['field_id']."</a></td>
+                           <td><a href='".admin_url("admin.php?page=eme-formfields&amp;eme_admin_action=edit_formfield&amp;field_id=".$this_formfield['field_id'])."'>".$this_formfield['field_name']."</a></td>
+                           <td><a href='".admin_url("admin.php?page=eme-formfields&amp;eme_admin_action=edit_formfield&amp;field_id=".$this_formfield['field_id'])."'>".eme_get_fieldtype($this_formfield['field_type'])."</a></td>
                            </tr>
                         ";
                      }
@@ -186,7 +186,7 @@ EOT;
                      <div id='ajax-response'/>
                   <h3>".__('Add field', 'eme')."</h3>
                       <form name='add' id='add' method='post' action='".$destination."' class='add:the-list: validate'>
-                        <input type='hidden' name='eme_admin_action' value='add' />
+                        <input type='hidden' name='eme_admin_action' value='do_addformfield' />
                          <div class='form-field form-required'>
                            <label for='field_name'>".__('Field name', 'eme')."</label>
                            <input name='field_name' id='field_name' type='text' value='' size='40' />
@@ -235,14 +235,14 @@ function eme_formfields_edit_layout($field_id,$message = "") {
       </div>
       <div id='ajax-response'></div>
 
-      <form name='editcat' id='editcat' method='post' action='".admin_url("admin.php?page=eme-formfields")."' class='validate'>
-      <input type='hidden' name='eme_admin_action' value='edit' />
+      <form name='edit_formfield' id='edit_formfield' method='post' action='".admin_url("admin.php?page=eme-formfields")."' class='validate'>
+      <input type='hidden' name='eme_admin_action' value='do_editformfield' />
       <input type='hidden' name='field_id' value='".$formfield['field_id']."' />
       
       <table class='form-table'>
             <tr class='form-field form-required'>
                <th scope='row' valign='top'><label for='field_name'>".__('Field name', 'eme')."</label></th>
-               <td><input name='field_name' id='field-name' type='text' value='".eme_sanitize_html($formfield['field_name'])."' size='40' /></td>
+               <td><input name='field_name' id='field_name' type='text' value='".eme_sanitize_html($formfield['field_name'])."' size='40' /></td>
             </tr>
             <tr class='form-field form-required'>
                <th scope='row' valign='top'><label for='field_type'>".__('Field type', 'eme')."</label></th>
@@ -250,13 +250,13 @@ function eme_formfields_edit_layout($field_id,$message = "") {
             </tr>
             <tr class='form-field form-required'>
                <th scope='row' valign='top'><label for='field_info'>".__('Field values', 'eme')."</label></th>
-               <td><input name='field_info' id='field-info' type='text' value='".eme_sanitize_html($formfield['field_info'])."' size='40' />
+               <td><input name='field_info' id='field_info' type='text' value='".eme_sanitize_html($formfield['field_info'])."' size='40' />
                   <br />".__('Tip: for multivalue field types (like Drop Down), use "||" to seperate the different values (e.g.: a1||a2||a3)','eme')."
                </td>
             </tr>
             <tr class='form-tags form-required'>
                <th scope='row' valign='top'><label for='field_tags'>".__('Field tags', 'eme')."</label></th>
-               <td><input name='field_tags' id='field-tags' type='text' value='".eme_sanitize_html($formfield['field_tags'])."' size='40' />
+               <td><input name='field_tags' id='field_tags' type='text' value='".eme_sanitize_html($formfield['field_tags'])."' size='40' />
                   <br />".__('For multivalue fields, you can here enter the "visible" tags people will see. If left empty, the field values will be used. Use "||" to seperate the different tags (e.g.: a1||a2||a3)','eme')."
                </td>
             </tr>
@@ -446,17 +446,22 @@ function eme_replace_cancelformfields_placeholders ($event) {
    if ($eme_captcha_for_booking)
       $required_fields_min++;
 
-   $bookerName="";
+   $bookerLastName="";
+   $bookerFirstName="";
    $bookerEmail="";
    if (is_user_logged_in()) {
       get_currentuserinfo();
-      $bookerName=$current_user->display_name;
+      $bookerLastName=$current_user->lastname;
+      if (empty($bookerLastName))
+               $bookerLastName=$current_user->display_name;
+      $bookerFirstName=$current_user->firstname;
       $bookerEmail=$current_user->user_email;
    }
    // check for previously filled in data
    // this in case people entered a wrong captcha
-   if (isset($_POST['bookerName'])) $bookerName = eme_sanitize_html(stripslashes_deep($_POST['bookerName']));
-   if (isset($_POST['bookerEmail'])) $bookerEmail = eme_sanitize_html(stripslashes_deep($_POST['bookerEmail']));
+   if (isset($_POST['lastname'])) $bookerLastName = eme_sanitize_html(stripslashes_deep($_POST['lastname']));
+   if (isset($_POST['firstname'])) $bookerFirstName = eme_sanitize_html(stripslashes_deep($_POST['firstname']));
+   if (isset($_POST['email'])) $bookerEmail = eme_sanitize_html(stripslashes_deep($_POST['email']));
 
    // the 2 placeholders that can contain extra text are treated seperately first
    // the question mark is used for non greedy (minimal) matching
@@ -469,7 +474,7 @@ function eme_replace_cancelformfields_placeholders ($event) {
    }
 
    if (preg_match('/#_SUBMIT\{.+\}/', $format)) {
-      $format = preg_replace('/#_SUBMIT\{(.+?)\}/', "<input type='submit' value='".eme_trans_sanitize_html('$1')."' />" ,$format );
+      $format = preg_replace('/#_SUBMIT\{(.+?)\}/', "<input name='eme_submit_button' type='submit' value='".eme_trans_sanitize_html('$1')."' />" ,$format );
       $required_fields_count++;
    }
 
@@ -483,7 +488,7 @@ function eme_replace_cancelformfields_placeholders ($event) {
    }
 
    if ($deprecated && preg_match('/#_SUBMIT\[.+\]/', $format)) {
-      $format = preg_replace('/#_SUBMIT\[(.+?)\]/', "<input type='submit' value='".eme_trans_sanitize_html('$1')."' />" ,$format );
+      $format = preg_replace('/#_SUBMIT\[(.+?)\]/', "<input name='eme_submit_button' type='submit' value='".eme_trans_sanitize_html('$1')."' />" ,$format );
       $required_fields_count++;
    }
 
@@ -510,26 +515,28 @@ function eme_replace_cancelformfields_placeholders ($event) {
          $result = str_replace("#_RESP","#_",$result);
       }
 
-      if (preg_match('/#_NAME/', $result)) {
-         $replacement = "<input required='required' type='text' name='bookerName' value='$bookerName' $readonly />";
+      if (preg_match('/#_NAME|#_LASTNAME/', $result)) {
+         $replacement = "<input required='required' type='text' name='lastname' id='lastname' value='$bookerLastName' $readonly />";
          $required_fields_count++;
          // #_NAME is always required
          $required=1;
+      } elseif (preg_match('/#_FIRSTNAME/', $result)) {
+         $replacement = "<input required='required' type='text' name='firstname' id='firstname' value='$bookerFirstName' $readonly />";
       } elseif (preg_match('/#_HTML5_EMAIL/', $result)) {
-         $replacement = "<input required='required' type='email' name='bookerEmail' value='$bookerEmail' $readonly />";
+         $replacement = "<input required='required' type='email' name='email' id='email' value='$bookerEmail' $readonly />";
          $required_fields_count++;
          // #_EMAIL is always required
          $required=1;
       } elseif (preg_match('/#_EMAIL/', $result)) {
-         $replacement = "<input required='required' type='text' name='bookerEmail' value='$bookerEmail' $readonly />";
+         $replacement = "<input required='required' type='text' name='email' id='email' value='$bookerEmail' $readonly />";
          $required_fields_count++;
          // #_EMAIL is always required
          $required=1;
       } elseif (preg_match('/#_CAPTCHA/', $result) && $eme_captcha_for_booking) {
-         $replacement = "<img src='".EME_PLUGIN_URL."captcha.php?sessionvar=eme_del_booking'><br /><input required='required' type='text' name='captcha_check' />";
+         $replacement = "<img src='".EME_PLUGIN_URL."captcha.php?sessionvar=eme_del_booking'><br /><input required='required' type='text' name='captcha_check' autocomplete='off' />";
          $required_fields_count++;
       } elseif (preg_match('/#_SUBMIT/', $result, $matches)) {
-         $replacement = "<input type='submit' value='".eme_trans_sanitize_html(get_option('eme_rsvp_delbooking_submit_string'))."' />";
+         $replacement = "<input name='eme_submit_button' type='submit' value='".eme_trans_sanitize_html(get_option('eme_rsvp_delbooking_submit_string'))."' />";
          $required_fields_count++;
       } else {
          $found = 0;
@@ -558,21 +565,38 @@ function eme_replace_cancelformfields_placeholders ($event) {
 
 function eme_replace_multibooking_formfields_placeholders ($format) {
    global $current_user;
-   $bookerName="";
+   $bookerLastName="";
+   $bookerFirstName="";
+   $bookerAddress1="";
+   $bookerAddress2="";
+   $bookerCity="";
+   $bookerState="";
+   $bookerZip="";
+   $bookerCountry="";
    $bookerEmail="";
    $bookerComment="";
    $bookerPhone="";
 
    if (is_user_logged_in()) {
       get_currentuserinfo();
-      $bookerName=$current_user->display_name;
+      $bookerLastName=$current_user->user_lastname;
+      if (empty($bookerLastName))
+               $bookerLastName=$current_user->display_name;
+      $bookerFirstName=$current_user->user_firstname;
       $bookerEmail=$current_user->user_email;
    }
 
-   if (isset($_POST['bookerName'])) $bookerName = eme_sanitize_html(stripslashes_deep($_POST['bookerName']));
-   if (isset($_POST['bookerEmail'])) $bookerEmail = eme_sanitize_html(stripslashes_deep($_POST['bookerEmail']));
-   if (isset($_POST['bookerPhone'])) $bookerPhone = eme_sanitize_html(stripslashes_deep($_POST['bookerPhone']));
-   if (isset($_POST['bookerComment'])) $bookerComment = eme_sanitize_html(stripslashes_deep($_POST['bookerComment']));
+   if (isset($_POST['lastname'])) $bookerLastName = eme_sanitize_html(stripslashes_deep($_POST['lastname']));
+   if (isset($_POST['firstname'])) $bookerFirstName = eme_sanitize_html(stripslashes_deep($_POST['firstname']));
+   if (isset($_POST['address1'])) $bookerAddress1 = eme_sanitize_html(stripslashes_deep($_POST['address1']));
+   if (isset($_POST['address2'])) $bookerAddress2 = eme_sanitize_html(stripslashes_deep($_POST['address2']));
+   if (isset($_POST['city'])) $bookerCity = eme_sanitize_html(stripslashes_deep($_POST['city']));
+   if (isset($_POST['state'])) $bookerState = eme_sanitize_html(stripslashes_deep($_POST['state']));
+   if (isset($_POST['zip'])) $bookerZip = eme_sanitize_html(stripslashes_deep($_POST['zip']));
+   if (isset($_POST['country'])) $bookerCountry = eme_sanitize_html(stripslashes_deep($_POST['country']));
+   if (isset($_POST['email'])) $bookerEmail = eme_sanitize_html(stripslashes_deep($_POST['email']));
+   if (isset($_POST['phone'])) $bookerPhone = eme_sanitize_html(stripslashes_deep($_POST['phone']));
+   if (isset($_POST['comment'])) $bookerComment = eme_sanitize_html(stripslashes_deep($_POST['comment']));
 
    $eme_captcha_for_booking=get_option('eme_captcha_for_booking');
 
@@ -585,7 +609,7 @@ function eme_replace_multibooking_formfields_placeholders ($format) {
    }
 
    if (preg_match('/#_SUBMIT\{.+\}/', $format)) {
-      $format = preg_replace('/#_SUBMIT\{(.+?)\}/', "<input type='submit' value='".eme_trans_sanitize_html('$1')."' />" ,$format );
+      $format = preg_replace('/#_SUBMIT\{(.+?)\}/', "<input name='eme_submit_button' type='submit' value='".eme_trans_sanitize_html('$1')."' />" ,$format );
    }
 
    // now the normal placeholders
@@ -613,28 +637,55 @@ function eme_replace_multibooking_formfields_placeholders ($format) {
          $result = str_replace("#_RESP","#_",$result);
       }
 
-      if (preg_match('/#_NAME/', $result)) {
-         $replacement = "<input required='required' type='text' name='bookerName' value='$bookerName' />";
+      if (preg_match('/#_NAME|#_LASTNAME/', $result)) {
+         $replacement = "<input required='required' type='text' name='lastname' id='lastname' value='$bookerLastName' />";
          // #_NAME is always required
          $required=1;
+      } elseif (preg_match('/#_FIRSTNAME/', $result)) {
+         $replacement = "<input required='required' type='text' name='firstname' id='firstname' value='$bookerFirstName' />";
+      } elseif (preg_match('/#_ADDRESS1/', $result)) {
+         $replacement = "<input $required_att type='text' name='address1' id=address1' value='$bookerAddress1' />";
+      } elseif (preg_match('/#_ADDRESS2/', $result)) {
+         $replacement = "<input $required_att type='text' name='address2' id='address2' value='$bookerAddress2' />";
+      } elseif (preg_match('/#_CITY/', $result)) {
+         $replacement = "<input $required_att type='text' name='city' id='city' value='$bookerCity' />";
+      } elseif (preg_match('/#_STATE/', $result)) {
+         $replacement = "<input $required_att type='text' name='state' id='state' value='$bookerState' />";
+      } elseif (preg_match('/#_ZIP/', $result)) {
+         $replacement = "<input $required_att type='text' name='zip' id='zip' value='$bookerZip' />";
+      } elseif (preg_match('/#_COUNTRY/', $result)) {
+         $replacement = "<input $required_att type='text' name='country' id='country' value='$bookerCountry' />";
       } elseif (preg_match('/#_HTML5_EMAIL/', $result)) {
-         $replacement = "<input required='required' type='email' name='bookerEmail' value='$bookerEmail' />";
+         $replacement = "<input required='required' type='email' name='email' id='email' value='$bookerEmail' />";
          // #_EMAIL is always required
          $required=1;
       } elseif (preg_match('/#_EMAIL/', $result)) {
-         $replacement = "<input required='required' type='text' name='bookerEmail' value='$bookerEmail' />";
+         $replacement = "<input required='required' type='text' name='email' id='email' value='$bookerEmail' />";
          // #_EMAIL is always required
          $required=1;
       } elseif (preg_match('/#_HTML5_PHONE/', $result)) {
-         $replacement = "<input $required_att type='tel' name='bookerPhone' value='$bookerPhone' />";
+         $replacement = "<input $required_att type='tel' name='phone' id='phone' value='$bookerPhone' />";
       } elseif (preg_match('/#_PHONE/', $result)) {
-         $replacement = "<input $required_att type='text' name='bookerPhone' value='$bookerPhone' />";
+         $replacement = "<input $required_att type='text' name='phone' id='phone' value='$bookerPhone' />";
       } elseif (preg_match('/#_COMMENT/', $result)) {
-         $replacement = "<textarea $required_att name='${var_prefix}bookerComment${var_postfix}'>$bookerComment</textarea>";
+         $replacement = "<textarea $required_att name='comment'>$bookerComment</textarea>";
       } elseif (preg_match('/#_CAPTCHA/', $result) && $eme_captcha_for_booking) {
-         $replacement = "<img src='".EME_PLUGIN_URL."captcha.php?sessionvar=eme_add_booking'><br /><input required='required' type='text' name='captcha_check' />";
+         $replacement = "<img src='".EME_PLUGIN_URL."captcha.php?sessionvar=eme_add_booking'><br /><input required='required' type='text' name='captcha_check' autocomplete='off' />";
       } elseif (preg_match('/#_SUBMIT/', $result, $matches)) {
-         $replacement = "<input type='submit' value='".eme_trans_sanitize_html(get_option('eme_rsvp_addbooking_submit_string'))."' />";
+         $replacement = "<input name='eme_submit_button' type='submit' value='".eme_trans_sanitize_html(get_option('eme_rsvp_addbooking_submit_string'))."' />";
+      } elseif (preg_match('/#_FIELDNAME\{(\d+)\}/', $result, $matches)) {
+         $field_id = intval($matches[1]);
+         $formfield = eme_get_formfield_byid($field_id);
+         $replacement = eme_trans_sanitize_html($formfield['field_name']);
+      } elseif (preg_match('/#_FIELD\{(\d+)\}/', $result, $matches)) {
+         $field_id = intval($matches[1]);
+         $postfield_name="FIELD".$field_id;
+         if (isset($_POST[$postfield_name]))
+            $entered_val = stripslashes_deep($_POST[$postfield_name]);
+         else
+            $entered_val = "";
+         $replacement = eme_get_formfield_html($field_id,$entered_val,$required);
+
       } else {
          $found = 0;
       }
@@ -656,7 +707,16 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
    global $current_user;
 
    $registration_wp_users_only=$event['registration_wp_users_only'];
-   if ($registration_wp_users_only || (is_admin() && $booking)) {
+   $is_admin=is_admin();
+   if ($is_admin && $booking) {
+      $editing_booking_from_backend=1;
+   } else {
+      $editing_booking_from_backend=0;
+   }
+
+   // if not in the backend and wp membership is required
+   // or when editing an existing booking via backend (not a new)
+   if (($registration_wp_users_only && !$is_admin) || $editing_booking_from_backend) {
       $readonly="disabled='disabled'";
    } else {
       $readonly="";
@@ -673,7 +733,12 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
 
    $min_allowed = $event['event_properties']['min_allowed'];
    $max_allowed = $event['event_properties']['max_allowed'];
-   if (is_admin() && $booking) {
+   if ($event['event_properties']['take_attendance']) {
+      $min_allowed = 0;
+      $max_allowed = 1;
+   }
+
+   if ($editing_booking_from_backend) {
       // in the admin itf, and editing a booking
       // then the avail seats are the total seats
       if (eme_is_multi($event['event_seats'])) {
@@ -702,7 +767,7 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
    if (eme_is_multi($event['event_seats'])) {
       // in the admin itf, and editing a booking
       // then the avail seats are the total seats
-      if (is_admin() && $booking)
+      if ($editing_booking_from_backend)
          $multi_avail = eme_convert_multi2array($event['event_seats']);
       else
          $multi_avail = eme_get_available_multiseats($event['event_id']);
@@ -777,14 +842,21 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
    else
       $required_fields_min = 4;
    // if we require the captcha: add 1
-   if (!is_admin() && $eme_captcha_for_booking)
+   if (!$is_admin && $eme_captcha_for_booking)
       $required_fields_min++;
 
    // for multi booking forms, the required field count per booking form is 1 (SEATS)
-   if (!is_admin() && $eme_multibooking)
+   if (!$is_admin && $eme_multibooking)
       $required_fields_min =1;
 
-   $bookerName="";
+   $bookerLastName="";
+   $bookerFirstName="";
+   $bookerAddress1="";
+   $bookerAddress2="";
+   $bookerCity="";
+   $bookerState="";
+   $bookerZip="";
+   $bookerCountry="";
    $bookerEmail="";
    $bookerComment="";
    $bookerPhone="";
@@ -792,16 +864,26 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
 
    if (is_user_logged_in()) {
       get_currentuserinfo();
-      $bookerName=$current_user->display_name;
+      $bookerLastName=$current_user->user_lastname;
+      if (empty($bookerLastName))
+               $bookerLastName=$current_user->display_name;
+      $bookerFirstName=$current_user->user_firstname;
       $bookerEmail=$current_user->user_email;
    }
 
-   if (is_admin() && $booking) {
+   if ($editing_booking_from_backend) {
       $person = eme_get_person ($booking['person_id']);
       // when editing a booking
-      $bookerName = eme_sanitize_html($person['person_name']);
-      $bookerEmail = eme_sanitize_html($person['person_email']);
-      $bookerPhone = eme_sanitize_html($person['person_phone']);
+      $bookerLastName = eme_sanitize_html($person['lastname']);
+      $bookerFirstName = eme_sanitize_html($person['firstname']);
+      $bookerAddress1 = eme_sanitize_html($person['address1']);
+      $bookerAddress2 = eme_sanitize_html($person['address2']);
+      $bookerCity = eme_sanitize_html($person['city']);
+      $bookerState = eme_sanitize_html($person['state']);
+      $bookerZip = eme_sanitize_html($person['zip']);
+      $bookerCountry = eme_sanitize_html($person['country']);
+      $bookerEmail = eme_sanitize_html($person['email']);
+      $bookerPhone = eme_sanitize_html($person['phone']);
       $bookerComment = eme_sanitize_html($booking['booking_comment']);
       $bookedSeats = eme_sanitize_html($booking['booking_seats']);
       if ($booking['booking_seats_mp']) {
@@ -814,11 +896,18 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
    } else {
       // check for previously filled in data
       // this in case people entered a wrong captcha
-      if (isset($_POST['bookerName'])) $bookerName = eme_sanitize_html(stripslashes_deep($_POST['bookerName']));
-      if (isset($_POST['bookerEmail'])) $bookerEmail = eme_sanitize_html(stripslashes_deep($_POST['bookerEmail']));
-      if (isset($_POST['bookerPhone'])) $bookerPhone = eme_sanitize_html(stripslashes_deep($_POST['bookerPhone']));
-      if (isset($_POST['bookerComment'])) $bookerComment = eme_sanitize_html(stripslashes_deep($_POST['bookerComment']));
-      if (isset($_POST['bookedSeats'])) $bookedSeats = eme_sanitize_html(stripslashes_deep($_POST['bookedSeats']));
+      if (isset($_POST['lastname'])) $bookerLastName = eme_sanitize_html(stripslashes_deep($_POST['lastname']));
+      if (isset($_POST['firstname'])) $bookerFirstName = eme_sanitize_html(stripslashes_deep($_POST['firstname']));
+      if (isset($_POST['address1'])) $bookerAddress1 = eme_sanitize_html(stripslashes_deep($_POST['address1']));
+      if (isset($_POST['address2'])) $bookerAddress2 = eme_sanitize_html(stripslashes_deep($_POST['address2']));
+      if (isset($_POST['city'])) $bookerCity = eme_sanitize_html(stripslashes_deep($_POST['city']));
+      if (isset($_POST['state'])) $bookerState = eme_sanitize_html(stripslashes_deep($_POST['state']));
+      if (isset($_POST['zip'])) $bookerZip = eme_sanitize_html(stripslashes_deep($_POST['zip']));
+      if (isset($_POST['country'])) $bookerCountry = eme_sanitize_html(stripslashes_deep($_POST['country']));
+      if (isset($_POST['email'])) $bookerEmail = eme_sanitize_html(stripslashes_deep($_POST['email']));
+      if (isset($_POST['phone'])) $bookerPhone = eme_sanitize_html(stripslashes_deep($_POST['phone']));
+      if (isset($_POST['comment'])) $bookerComment = eme_sanitize_html(stripslashes_deep($_POST['comment']));
+      if (isset($_POST['Seats'])) $bookedSeats = eme_sanitize_html(stripslashes_deep($_POST['Seats']));
    }
 
    // first we do the custom attributes, since these can contain other placeholders
@@ -848,7 +937,7 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
       }
 
       if ($need_escape)
-         $replacement = eme_sanitize_request(preg_replace('/\n|\r/','',$replacement));
+         $replacement = eme_sanitize_request(eme_sanitize_html(preg_replace('/\n|\r/','',$replacement)));
       if ($need_urlencode)
          $replacement = rawurlencode($replacement);
       $format = str_replace($orig_result, $replacement ,$format );
@@ -858,17 +947,17 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
    // the question mark is used for non greedy (minimal) matching
    if (preg_match('/#_CAPTCHAHTML\{.+\}/', $format)) {
       // only show the captcha when booking via the frontend, not the admin backend
-      if (!is_admin() && $eme_captcha_for_booking)
+      if (!$is_admin && $eme_captcha_for_booking)
          $format = preg_replace('/#_CAPTCHAHTML\{(.+?)\}/', '$1' ,$format );
       else
          $format = preg_replace('/#_CAPTCHAHTML\{(.+?)\}/', '' ,$format );
    }
 
    if (preg_match('/#_SUBMIT\{.+\}/', $format)) {
-      if (is_admin() && $booking)
-         $format = preg_replace('/#_SUBMIT\{(.+?)\}/', "<input type='submit' value='".__('Update booking','eme')."' />" ,$format );
+      if ($editing_booking_from_backend)
+         $format = preg_replace('/#_SUBMIT\{(.+?)\}/', "<input name='eme_submit_button' type='submit' value='".__('Update booking','eme')."' />" ,$format );
       else
-         $format = preg_replace('/#_SUBMIT\{(.+?)\}/', "<input type='submit' value='".eme_trans_sanitize_html('$1')."' />" ,$format );
+         $format = preg_replace('/#_SUBMIT\{(.+?)\}/', "<input name='eme_submit_button' type='submit' value='".eme_trans_sanitize_html('$1')."' />" ,$format );
       if (!$eme_multibooking)
          $required_fields_count++;
    }
@@ -876,17 +965,17 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
    $deprecated = get_option('eme_deprecated');
    if ($deprecated && preg_match('/#_CAPTCHAHTML\[.+\]/', $format)) {
       // only show the captcha when booking via the frontend, not the admin backend
-      if (!is_admin() && $eme_captcha_for_booking)
+      if (!$is_admin && $eme_captcha_for_booking)
          $format = preg_replace('/#_CAPTCHAHTML\[(.+?)\]/', '$1' ,$format );
       else
          $format = preg_replace('/#_CAPTCHAHTML\[(.+?)\]/', '' ,$format );
    }
 
    if ($deprecated && preg_match('/#_SUBMIT\[.+\]/', $format)) {
-      if (is_admin() && $booking)
-         $format = preg_replace('/#_SUBMIT\[(.+?)\]/', "<input type='submit' value='".__('Update booking','eme')."' />" ,$format );
+      if ($editing_booking_from_backend)
+         $format = preg_replace('/#_SUBMIT\[(.+?)\]/', "<input name='eme_submit_button' type='submit' value='".__('Update booking','eme')."' />" ,$format );
       else
-         $format = preg_replace('/#_SUBMIT\[(.+?)\]/', "<input type='submit' value='".eme_trans_sanitize_html('$1')."' />" ,$format );
+         $format = preg_replace('/#_SUBMIT\[(.+?)\]/', "<input name='eme_submit_button' type='submit' value='".eme_trans_sanitize_html('$1')."' />" ,$format );
       if (!$eme_multibooking)
          $required_fields_count++;
    }
@@ -924,33 +1013,50 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
          $var_postfix='';
       }
 
-      if (preg_match('/#_NAME/', $result)) {
+      if (preg_match('/#_NAME|#_LASTNAME/', $result)) {
          if (!$eme_multibooking) {
-            $replacement = "<input required='required' type='text' name='${var_prefix}bookerName${var_postfix}' value='$bookerName' $readonly />";
+            $replacement = "<input required='required' type='text' name='${var_prefix}lastname${var_postfix}' value='$bookerLastName' $readonly />";
             $required_fields_count++;
             // #_NAME is always required
             $required=1;
          }
+      } elseif (preg_match('/#_FIRSTNAME/', $result)) {
+         $replacement = "<input required='required' type='text' name='${var_prefix}firstname${var_postfix}' value='$bookerFirstName' $readonly />";
+      } elseif (preg_match('/#_ADDRESS1/', $result)) {
+         $replacement = "<input $required_att type='text' name='${var_prefix}address1${var_postfix}' value='$bookerAddress1' />";
+      } elseif (preg_match('/#_ADDRESS2/', $result)) {
+         $replacement = "<input $required_att type='text' name='${var_prefix}address2${var_postfix}' value='$bookerAddress2' />";
+      } elseif (preg_match('/#_CITY/', $result)) {
+         $replacement = "<input $required_att type='text' name='${var_prefix}city${var_postfix}' value='$bookerCity' />";
+      } elseif (preg_match('/#_STATE/', $result)) {
+         $replacement = "<input $required_att type='text' name='${var_prefix}state${var_postfix}' value='$bookerState' />";
+      } elseif (preg_match('/#_ZIP/', $result)) {
+         $replacement = "<input $required_att type='text' name='${var_prefix}zip${var_postfix}' value='$bookerZip' />";
+      } elseif (preg_match('/#_COUNTRY/', $result)) {
+         $replacement = "<input $required_att type='text' name='${var_prefix}country${var_postfix}' value='$bookerCountry' />";
       } elseif (preg_match('/#_HTML5_EMAIL/', $result)) {
          if (!$eme_multibooking) {
-            $replacement = "<input required='required' type='email' name='${var_prefix}bookerEmail${var_postfix}' value='$bookerEmail' $readonly />";
+            $replacement = "<input required='required' type='email' name='${var_prefix}email${var_postfix}' value='$bookerEmail' $readonly />";
             $required_fields_count++;
             // #_EMAIL is always required
             $required=1;
          }
       } elseif (preg_match('/#_EMAIL/', $result)) {
          if (!$eme_multibooking) {
-            $replacement = "<input required='required' type='text' name='${var_prefix}bookerEmail${var_postfix}' value='$bookerEmail' $readonly />";
+            $replacement = "<input required='required' type='text' name='${var_prefix}email${var_postfix}' value='$bookerEmail' $readonly />";
             $required_fields_count++;
             // #_EMAIL is always required
             $required=1;
          }
       } elseif (preg_match('/#_HTML5_PHONE/', $result)) {
-         $replacement = "<input $required_att type='tel' name='${var_prefix}bookerPhone${var_postfix}' value='$bookerPhone' />";
+         $replacement = "<input $required_att type='tel' name='${var_prefix}phone${var_postfix}' value='$bookerPhone' />";
       } elseif (preg_match('/#_PHONE/', $result)) {
-         $replacement = "<input $required_att type='text' name='${var_prefix}bookerPhone${var_postfix}' value='$bookerPhone' />";
+         $replacement = "<input $required_att type='text' name='${var_prefix}phone${var_postfix}' value='$bookerPhone' />";
       } elseif (preg_match('/#_SEATS$|#_SPACES$/', $result)) {
-         $replacement = eme_ui_select($bookedSeats,"${var_prefix}bookedSeats${var_postfix}",$booked_places_options);
+         if ($event['event_properties']['take_attendance'])
+            $replacement = eme_ui_select_binary($bookedSeats,"${var_prefix}bookedSeats${var_postfix}");
+         else
+            $replacement = eme_ui_select($bookedSeats,"${var_prefix}bookedSeats${var_postfix}",$booked_places_options);
          $required_fields_count++;
       } elseif (($deprecated && preg_match('/#_(SEATS|SPACES)(\d+)/', $result, $matches)) ||
                  preg_match('/#_(SEATS|SPACES)\{(\d+)\}/', $result, $matches)) {
@@ -964,17 +1070,24 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
          else
             $entered_val=0;
 
-         if (eme_is_multi($event['event_seats']) || eme_is_multi($event['price']))
-            $replacement = eme_ui_select($entered_val,$postfield_name,$booked_places_options[$field_id-1]);
-         else
-            $replacement = eme_ui_select($entered_val,$postfield_name,$booked_places_options);
+         if (eme_is_multi($event['event_seats']) || eme_is_multi($event['price'])) {
+            if ($event['event_properties']['take_attendance'])
+               $replacement = eme_ui_select_binary($entered_val,$postfield_name);
+            else
+               $replacement = eme_ui_select($entered_val,$postfield_name,$booked_places_options[$field_id-1]);
+         } else {
+            if ($event['event_properties']['take_attendance'])
+               $replacement = eme_ui_select_binary($entered_val,$postfield_name);
+            else
+               $replacement = eme_ui_select($entered_val,$postfield_name,$booked_places_options);
+         }
          $required_fields_count++;
       } elseif (preg_match('/#_COMMENT/', $result)) {
          if (!$eme_multibooking)
-            $replacement = "<textarea $required_att name='${var_prefix}bookerComment${var_postfix}'>$bookerComment</textarea>";
+            $replacement = "<textarea $required_att name='${var_prefix}comment${var_postfix}'>$bookerComment</textarea>";
       } elseif (preg_match('/#_CAPTCHA/', $result) && $eme_captcha_for_booking) {
          if (!$eme_multibooking) {
-            $replacement = "<img src='".EME_PLUGIN_URL."captcha.php?sessionvar=eme_add_booking'><br /><input required='required' type='text' name='captcha_check' />";
+            $replacement = "<img src='".EME_PLUGIN_URL."captcha.php?sessionvar=eme_add_booking'><br /><input required='required' type='text' name='captcha_check' autocomplete='off' />";
             $required_fields_count++;
          }
       } elseif (($deprecated && preg_match('/#_FIELDNAME(\d+)/', $result, $matches)) || preg_match('/#_FIELDNAME\{(\d+)\}/', $result, $matches)) {
@@ -984,6 +1097,7 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
       } elseif (($deprecated && preg_match('/#_FIELD(\d+)/', $result, $matches)) || preg_match('/#_FIELD\{(\d+)\}/', $result, $matches)) {
          $field_id = intval($matches[1]);
          $postfield_name="${var_prefix}FIELD".$field_id.$var_postfix;
+         $entered_val = "";
          if ($booking) {
             $answers = eme_get_answers($booking['booking_id']);
             $formfield = eme_get_formfield_byid($field_id);
@@ -999,16 +1113,14 @@ function eme_replace_formfields_placeholders ($event,$booking="",$format="",$eme
             }
          } elseif (isset($_POST[$postfield_name])) {
             $entered_val = stripslashes_deep($_POST[$postfield_name]);
-         } else {
-            $entered_val = "";
          }
          $replacement = eme_get_formfield_html($field_id,$entered_val,$required);
       } elseif (preg_match('/#_SUBMIT/', $result, $matches)) {
          if (!$eme_multibooking) {
-            if (is_admin() && $booking)
-               $replacement = "<input type='submit' value='".__('Update booking','eme')."' />";
+            if ($editing_booking_from_backend)
+               $replacement = "<input name='eme_submit_button' type='submit' value='".__('Update booking','eme')."' />";
             else
-               $replacement = "<input type='submit' value='".eme_trans_sanitize_html(get_option('eme_rsvp_addbooking_submit_string'))."' />";
+               $replacement = "<input name='eme_submit_button' type='submit' value='".eme_trans_sanitize_html(get_option('eme_rsvp_addbooking_submit_string'))."' />";
             $required_fields_count++;
          }
       } else {
@@ -1058,7 +1170,11 @@ function eme_find_required_formfields ($format) {
    }
    preg_match_all("/#REQ_?[A-Z0-9_]+(\{[A-Z0-9_]+\})?/", $format, $placeholders);
    usort($placeholders[0],'sort_stringlenth');
-   return preg_replace("/#REQ_|\{|\}/","",$placeholders[0]);
+   // We just want the fieldnames: FIELD1, FIELD2, ... like they are POST'd via the form
+   $result=preg_replace("/#REQ_|\{|\}/","",$placeholders[0]);
+   // just to be sure: remove leadinf zeros in the names: FIELD01 should be FIELD1
+   $result=preg_replace("/FIELD0+/","FIELD",$result);
+   return $result;
 }
 
 ?>

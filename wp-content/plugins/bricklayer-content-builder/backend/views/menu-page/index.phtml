@@ -12,6 +12,13 @@
                     </td>
                 </tr>                
                 <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Use Global Container Properties:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->checkbox('use_global_container_properties', 1); ?>
+                        <p class="description"><?php echo $this->translate('Uncheck this if you dont want Bricklayer to set global contaner width and padding.'); ?></p>
+                    </td>
+                </tr>                
+                <tr valign="top">
                     <th scope="row"><?php echo $this->translate('Global Container Width:'); ?></th>
                     <td>
                         <?php echo $this->formElement->textField('global_container_width'); ?>
@@ -158,6 +165,12 @@
                     <th scope="row"><?php echo $this->translate('Use Scroll To Top Button:'); ?></th>
                     <td>
                         <?php echo $this->formElement->checkbox('use_scroll_to_top', 1); ?>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><?php echo $this->translate('Scroll To Top Button Text:'); ?></th>
+                    <td>
+                        <?php echo $this->formElement->textField('scroll_to_top_text'); ?>
                     </td>
                 </tr>
             </tbody>

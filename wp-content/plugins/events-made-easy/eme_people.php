@@ -9,15 +9,10 @@ function eme_people_page() {
       // don't show the people table in this case, so we return from the function
       return;
    } elseif (isset ($_POST['person_id']) && isset($_POST['eme_admin_action']) && $_POST['eme_admin_action'] == 'confirm_editperson') {
-      global $wpdb;
-      $people_table = $wpdb->prefix.PEOPLE_TBNAME;
       $person_id=intval($_POST['person_id']);
-      $person = array();
-      $person['person_name'] = trim(stripslashes($_POST['person_name']));
-      $person['person_email'] = trim(stripslashes($_POST['person_email']));
-      $person['person_phone'] = trim(stripslashes($_POST['person_phone']));
-      $validation_result = $wpdb->update( $people_table, $person, array('person_id' => $person_id) );
-      if ($validation_result)
+      $basic_info_too=1;
+      $person=eme_update_person_with_postinfo($person_id,$basic_info_too);
+      if ($person)
                $message = __("Person info has been updated.","eme");
       else
                $message = __("Couldn't update the person. Please try again.","eme");
@@ -35,24 +30,26 @@ function eme_people_page() {
             foreach ($persons as $person_id) {
                if (is_numeric($person_id)) {
                   $person=eme_get_person($person_id);
+                  $person_name=$person['lastname'].' '.$person['firstname'];
                   if (isset($_POST['delete_option']) && $_POST['delete_option'] == 'delete_assoc_bookings') {
                      $res=eme_delete_all_bookings_for_person_id($person_id);
                      if ($res) {
-                        $message.=__("Deleted all bookings made by '".$person['person_name']."'", 'eme');
+                        $message.=__("Deleted all bookings made by '".$person_name."'", 'eme');
                         $message.="<br />";
                      }
                   } elseif (isset($_POST['delete_option']) && $_POST['delete_option'] == 'transfer_assoc_bookings') {
                      $to_person_id=intval($_POST['to_person_id']);
                      $to_person=eme_get_person($to_person_id);
+                     $to_person_name=$to_person['lastname'].' '.$to_person['firstname'];
                      $res=eme_transfer_all_bookings($person_id,$to_person_id);
                      if ($res) {
-                        $message.=__("Transferred all bookings made by '".$person['person_name']."' to '".$to_person['person_name']."'", 'eme');
+                        $message.=__("Transferred all bookings made by '".$person_name."' to '".$to_person_name."'", 'eme');
                         $message.="<br />";
                      }
                   }
                   $res=eme_delete_person($person_id);
                   if ($res) {
-                     $message.=__("Deleted '".$person['person_name']."'", 'eme');
+                     $message.=__("Deleted '".$person_name."'", 'eme');
                      $message.="<br />";
                   }
                }
@@ -100,16 +97,44 @@ function eme_people_edit_layout($message = "") {
    $layout .= "
       <table class='form-table'>
       <tr class='form-field form-required'>
-      <th scope='row' valign='top'><label for='person_name'>".__('Name', 'eme')."</label></th>
-      <td><input name='person_name' id='person_name' type='text' value='".eme_sanitize_html($person['person_name'])."' size='40' /></td>
+      <th scope='row' valign='top'><label for='lastname'>".__('Last Name', 'eme')."</label></th>
+      <td><input name='lastname' id='lastname' type='text' value='".eme_sanitize_html($person['lastname'])."' size='40' /></td>
       </tr>
       <tr class='form-field form-required'>
-      <th scope='row' valign='top'><label for='person_email'>".__('E-mail', 'eme')."</label></th>
-      <td><input name='person_email' id='person_email' type='text' value='".eme_sanitize_html($person['person_email'])."' size='40' /></td>
+      <th scope='row' valign='top'><label for='firstname'>".__('First Name', 'eme')."</label></th>
+      <td><input name='firstname' id='firstname' type='text' value='".eme_sanitize_html($person['firstname'])."' size='40' /></td>
+      </tr>
+      <tr class='form-field'>
+      <th scope='row' valign='top'><label for='address1'>".__('Address1', 'eme')."</label></th>
+      <td><input name='address1' id='address1' type='text' value='".eme_sanitize_html($person['address1'])."' size='40' /></td>
+      </tr>
+      <tr class='form-field'>
+      <th scope='row' valign='top'><label for='address2'>".__('Address2', 'eme')."</label></th>
+      <td><input name='address2' id='address2' type='text' value='".eme_sanitize_html($person['address2'])."' size='40' /></td>
+      </tr>
+      <tr class='form-field'>
+      <th scope='row' valign='top'><label for='city'>".__('City', 'eme')."</label></th>
+      <td><input name='city' id='city' type='text' value='".eme_sanitize_html($person['city'])."' size='40' /></td>
+      </tr>
+      <tr class='form-field'>
+      <th scope='row' valign='top'><label for='state'>".__('State', 'eme')."</label></th>
+      <td><input name='state' id='state' type='text' value='".eme_sanitize_html($person['state'])."' size='40' /></td>
+      </tr>
+      <tr class='form-field'>
+      <th scope='row' valign='top'><label for='zip'>".__('Zip', 'eme')."</label></th>
+      <td><input name='zip' id='zip' type='text' value='".eme_sanitize_html($person['zip'])."' size='40' /></td>
+      </tr>
+      <tr class='form-field'>
+      <th scope='row' valign='top'><label for='country'>".__('Country', 'eme')."</label></th>
+      <td><input name='country' id='country' type='text' value='".eme_sanitize_html($person['country'])."' size='40' /></td>
       </tr>
       <tr class='form-field form-required'>
-      <th scope='row' valign='top'><label for='person_phone'>".__('Phone number', 'eme')."</label></th>
-      <td><input name='person_phone' id='person_phone' type='text' value='".eme_sanitize_html($person['person_phone'])."' size='40' /></td>
+      <th scope='row' valign='top'><label for='email'>".__('E-mail', 'eme')."</label></th>
+      <td><input name='email' id='email' type='text' value='".eme_sanitize_html($person['email'])."' size='40' /></td>
+      </tr>
+      <tr class='form-field form-required'>
+      <th scope='row' valign='top'><label for='phone'>".__('Phone number', 'eme')."</label></th>
+      <td><input name='phone' id='phone' type='text' value='".eme_sanitize_html($person['phone'])."' size='40' /></td>
       </tr>
       </table>
       <p class='submit'><input type='submit' class='button-primary' name='submit' value='".__('Update person', 'eme')."' /></p>
@@ -133,7 +158,8 @@ function eme_people_delete_layout($message = "") {
          foreach ($persons as $person_id) {
             if (is_numeric($person_id)) {
                $person=eme_get_person($person_id);
-               print "<li><input type='hidden' name='persons[]' value='".$person_id."' />".eme_sanitize_html($person['person_name'])."</li>";
+               $person_name=$person['lastname'].' '.$person['firstname'];
+               print "<li><input type='hidden' name='persons[]' value='".$person_id."' />".eme_sanitize_html($person_name)."</li>";
             }
          }
       }
@@ -151,7 +177,8 @@ function eme_people_delete_layout($message = "") {
          <select name='to_person_id' id='to_person_id' class=''>
          <?php
          foreach ($other_persons as $person) {
-            print "<option value='".$person['person_id']."'>".eme_sanitize_html($person['person_name'])."</option>";
+            $person_name=$person['lastname'].' '.$person['firstname'];
+            print "<option value='".$person['person_id']."'>".eme_sanitize_html($person_name)."</option>";
          }
          ?>
          </select>
@@ -223,7 +250,12 @@ function eme_global_map_json($eventful = false, $scope = "all", $category = '', 
    echo $json;
 }
 
-function fputcsv2 ($fh, $fields, $delimiter = ',', $enclosure = '"', $mysql_null = false) {
+function fputcsv2 ($fh, $fields, $delimiter = '', $enclosure = '"', $mysql_null = false) {
+    if (empty($delimiter))
+      $delimiter = get_option('eme_csv_separator');
+    if (empty($delimiter))
+      $delimiter = ',';
+
     $delimiter_esc = preg_quote($delimiter, '/');
     $enclosure_esc = preg_quote($enclosure, '/');
 
@@ -256,9 +288,20 @@ function eme_csv_booking_report($event_id) {
    $bookings =  eme_get_bookings_for($event_id);
    $answer_columns = eme_get_answercolumns(eme_get_bookingids_for($event_id));
    $out = fopen('php://output', 'w');
+   if (has_filter('eme_csv_header_filter')) {
+      $line=apply_filters('eme_csv_header_filter',$event);
+      fputcsv2($out,$line);
+   }
    $line=array();
    $line[]=__('ID', 'eme');
-   $line[]=__('Name', 'eme');
+   $line[]=__('Last Name', 'eme');
+   $line[]=__('First Name', 'eme');
+   $line[]=__('Address1', 'eme');
+   $line[]=__('Address2', 'eme');
+   $line[]=__('City', 'eme');
+   $line[]=__('State', 'eme');
+   $line[]=__('Zip', 'eme');
+   $line[]=__('Country', 'eme');
    $line[]=__('E-mail', 'eme');
    $line[]=__('Phone number', 'eme');
    if ($is_multiprice)
@@ -284,9 +327,16 @@ function eme_csv_booking_report($event_id) {
          $pending_string=__('(pending)','eme');
       }
       $line[]=$booking['booking_id'];
-      $line[]=$person['person_name'];
-      $line[]=$person['person_email'];
-      $line[]=$person['person_phone'];
+      $line[]=$person['lastname'];
+      $line[]=$person['firstname'];
+      $line[]=$person['address1'];
+      $line[]=$person['address2'];
+      $line[]=$person['city'];
+      $line[]=$person['state'];
+      $line[]=$person['zip'];
+      $line[]=$person['country'];
+      $line[]=$person['email'];
+      $line[]=$person['phone'];
       if ($is_multiprice) {
          // in cases where the event switched to multiprice, but somebody already registered while it was still single price: booking_seats_mp is then empty
          if ($booking['booking_seats_mp'] == "")
@@ -314,6 +364,10 @@ function eme_csv_booking_report($event_id) {
          if (!$found)
             $line[]="";
       }
+      fputcsv2($out,$line);
+   }
+   if (has_filter('eme_csv_footer_filter')) {
+      $line=apply_filters('eme_csv_footer_filter',$event);
       fputcsv2($out,$line);
    }
    fclose($out);
@@ -374,7 +428,8 @@ function eme_printable_booking_report($event_id) {
          <table id="eme_printable_table">
             <tr>
                <th scope='col' class='eme_print_name'><?php _e('ID', 'eme')?></th>
-               <th scope='col' class='eme_print_name'><?php _e('Name', 'eme')?></th>
+               <th scope='col' class='eme_print_name'><?php _e('Last Name', 'eme')?></th>
+               <th scope='col' class='eme_print_name'><?php _e('First Name', 'eme')?></th>
                <th scope='col' class='eme_print_email'><?php _e('E-mail', 'eme')?></th>
                <th scope='col' class='eme_print_phone'><?php _e('Phone number', 'eme')?></th> 
                <th scope='col' class='eme_print_seats'><?php if ($is_multiprice) _e('Seats (Multiprice)', 'eme'); else _e('Seats', 'eme'); ?></th>
@@ -384,7 +439,7 @@ function eme_printable_booking_report($event_id) {
                <th scope='col' class='eme_print_unique_nbr'><?php _e('Unique nbr', 'eme')?></th>
                <th scope='col' class='eme_print_comment'><?php _e('Comment', 'eme')?></th> 
             <?php
-            $nbr_columns=10;
+            $nbr_columns=11;
             foreach($answer_columns as $col) {
                $class="eme_print_formfield".$formfield[$col['field_name']];
                print "<th scope='col' class='$class'>".$col['field_name']."</th>";
@@ -404,9 +459,10 @@ function eme_printable_booking_report($event_id) {
                 ?>
             <tr>
                <td class='eme_print_id'><?php echo $booking['booking_id']?></td> 
-               <td class='eme_print_name'><?php echo $person['person_name']?></td> 
-               <td class='eme_print_email'><?php echo $person['person_email']?></td>
-               <td class='eme_print_phone'><?php echo $person['person_phone']?></td>
+               <td class='eme_print_name'><?php echo $person['lastname']?></td> 
+               <td class='eme_print_name'><?php echo $person['firstname']?></td> 
+               <td class='eme_print_email'><?php echo $person['email']?></td>
+               <td class='eme_print_phone'><?php echo $person['phone']?></td>
                <td class='eme_print_seats' class='seats-number'><?php 
                if ($is_multiprice) {
                   // in cases where the event switched to multiprice, but somebody already registered while it was still single price: booking_seats_mp is then empty
@@ -525,9 +581,9 @@ function eme_people_table($message="") {
          print "<tr><td><input type='checkbox' class ='row-selector' value='".$person['person_id']."' name='persons[]' /></td>
                   <td>[person_id=".$person['person_id']."]</td>
                   <td><a href='".admin_url("admin.php?page=eme-people&amp;eme_admin_action=editperson&amp;person_id=".$person['person_id'])."' title='". __('Click the ID in order to edit the person.','eme')."'>".$person['person_id']."</a></td>
-                  <td>".eme_sanitize_html($person['person_name'])."</td>
-                  <td>".eme_sanitize_html($person['person_email'])."</td>
-                  <td>".eme_sanitize_html($person['person_phone'])."</td>
+                  <td>".eme_sanitize_html($person['lastname'].' '.$person['firstname'])."</td>
+                  <td>".eme_sanitize_html($person['email'])."</td>
+                  <td>".eme_sanitize_html($person['phone'])."</td>
                   <td><a href='".$search_url."'>".__('Show all bookings','eme')."</a></td>
                   </tr>";
       }
@@ -537,11 +593,12 @@ function eme_people_table($message="") {
 <script type="text/javascript">
    jQuery(document).ready( function() {
             jQuery('#eme-people-table').dataTable( {
+               "dom": 'CT<"clear">Rlfrtip',
                <?php
                // jquery datatables locale loading
                $locale_code = get_locale();
-               $locale_file = EME_PLUGIN_DIR. "/js/jquery-datatables/i18n/$locale_code.json";
-               $locale_file_url = EME_PLUGIN_URL. "/js/jquery-datatables/i18n/$locale_code.json";
+               $locale_file = EME_PLUGIN_DIR. "js/jquery-datatables/i18n/$locale_code.json";
+               $locale_file_url = EME_PLUGIN_URL. "js/jquery-datatables/i18n/$locale_code.json";
                if ($locale_code != "en_US" && file_exists($locale_file)) {
                ?>
                "language": {
@@ -568,28 +625,32 @@ function eme_people_table($message="") {
                ?> 
                "pagingType": "full",
                "columnDefs": [
-               { "sortable": false, "targets": 0 },
-               { "visible": false, "targets": 1 }
-               ]
-               } );
+                  { "sortable": false, "targets": 0 },
+                  { "visible": false, "targets": 1 }
+               ],
+               "colVis": {
+                  "exclude": [0,1,2,6]
+               },
+               "tableTools": {
+                  "aButtons": [ { "sExtends": "csv", "mColumns": "visible"},
+                                "print"
+                              ],
+                  "sSwfPath": "<?php echo EME_PLUGIN_URL;?>js/jquery-datatables/extensions/TableTools-2.2.4-dev/swf/copy_csv_xls.swf"
+               }
+           });
    } );
 </script>
 <?php
    }
 } 
 
-function eme_get_person_by_name_and_email($name, $email) {
+function eme_get_person_by_name_and_email($lastname, $firstname, $email) {
    global $wpdb; 
    $people_table = $wpdb->prefix.PEOPLE_TBNAME;
-   $sql = $wpdb->prepare("SELECT * FROM $people_table WHERE person_name = %s AND person_email = %s",$name,$email);
-   $result = $wpdb->get_row($sql, ARRAY_A);
-   return $result;
-}
-
-function eme_get_person_by_wp_info($name, $email, $wp_id) {
-   global $wpdb; 
-   $people_table = $wpdb->prefix.PEOPLE_TBNAME;
-   $sql = $wpdb->prepare("SELECT * FROM $people_table WHERE person_name = %s AND person_email = %s AND wp_id = %d ",$name,$email,$wp_id);
+   if (!empty($firstname))
+      $sql = $wpdb->prepare("SELECT * FROM $people_table WHERE lastname = %s AND firstname = %s AND email = %s",$lastname,$firstname,$email);
+   else
+      $sql = $wpdb->prepare("SELECT * FROM $people_table WHERE lastname = %s AND email = %s",$lastname,$email);
    $result = $wpdb->get_row($sql, ARRAY_A);
    return $result;
 }
@@ -602,8 +663,11 @@ function eme_get_person_by_wp_id($wp_id) {
    $result = $wpdb->get_row($sql, ARRAY_A);
    if (!is_null($result['wp_id']) && $result['wp_id']) {
       $user_info = get_userdata($result['wp_id']);
-      $result['person_name']=$user_info->display_name;
-      $result['person_email']=$user_info->user_email;
+      $result['lastname']=$user_info->user_lastname;
+      if (empty($result['lastname']))
+         $result['lastname']=$user_info->display_name;
+      $result['firstname']=$user_info->user_firstname;
+      $result['email']=$user_info->user_email;
    }
    return $result;
 }
@@ -651,12 +715,12 @@ function eme_get_persons($person_ids="",$not_person_ids="") {
    $people_table = $wpdb->prefix.PEOPLE_TBNAME;
    if ($person_ids != "") {
       $tmp_ids=join(",",$person_ids);
-      $sql = "SELECT * FROM $people_table WHERE person_id IN ($tmp_ids);" ;
+      $sql = "SELECT * FROM $people_table WHERE person_id IN ($tmp_ids) ORDER BY person_id" ;
    } elseif ($not_person_ids != "") {
       $tmp_ids=join(",",$not_person_ids);
-      $sql = "SELECT * FROM $people_table WHERE person_id NOT IN ($tmp_ids);" ;
+      $sql = "SELECT * FROM $people_table WHERE person_id NOT IN ($tmp_ids) ORDER BY person_id" ;
    } else {
-      $sql = "SELECT *  FROM $people_table";
+      $sql = "SELECT * FROM $people_table ORDER BY person_id";
    }
    $lines = $wpdb->get_results($sql, ARRAY_A);
    $result = array();
@@ -664,15 +728,15 @@ function eme_get_persons($person_ids="",$not_person_ids="") {
       // if in the admin backend: also show the WP username if it exists
       if (is_admin() && !is_null($line['wp_id']) && $line['wp_id']) {
          $user_info = get_userdata($line['wp_id']);
-         if ($line['person_name'] != $user_info->display_name)
-            $line['person_name'].= " (WP username: ".$user_info->display_name.")";
+         if (($line['lastname'] != $user_info->display_name) && ($line['lastname'] != $user_info->user_lastname && $line['firstname'] != $user_info->user_firstname) )
+            $line['lastname'].= " (WP username: ".$user_info->display_name.")";
          #$line['person_email']=$user_info->user_email;
          #$line['person_phone']=eme_get_user_phone($line['wp_id']);
       }
       # to be able to sort on person names, we need a hash starting with the name
       # but some people might have the same name (or register more than once),
       # so we add the ID to it
-      $unique_id=$line['person_name']."_".$line['person_id'];
+      $unique_id=$line['lastname']."_".$line['firstname']."_".$line['person_id'];
       $result[$unique_id]=$line;
    }
    # now do the sorting
@@ -680,24 +744,62 @@ function eme_get_persons($person_ids="",$not_person_ids="") {
    return $result;
 }
 
-function eme_add_person($name, $email, $phone, $wp_id, $lang) {
+function eme_add_person($lastname, $firstname, $email, $wp_id, $lang) {
    global $wpdb; 
    $people_table = $wpdb->prefix.PEOPLE_TBNAME;
    $person=array();
-   $person['person_name'] = eme_sanitize_request($name);
-   $person['person_email'] = eme_sanitize_request($email);
-   $person['person_phone'] = eme_sanitize_request($phone);
-   $person['wp_id'] = eme_sanitize_request($wp_id);
-   $person['lang'] = eme_sanitize_request($lang);
+   $person['lastname'] = eme_strip_tags($lastname);
+   $person['firstname'] = eme_strip_tags($firstname);
+   $person['email'] = eme_strip_tags($email);
+   if (isset($_POST['address1'])) $person['address1'] = eme_strip_tags($_POST['address1']);
+   if (isset($_POST['address2'])) $person['address2'] = eme_strip_tags($_POST['address2']);
+   if (isset($_POST['city'])) $person['city'] = eme_strip_tags($_POST['city']);
+   if (isset($_POST['state'])) $person['state'] = eme_strip_tags($_POST['state']);
+   if (isset($_POST['zip'])) $person['zip'] = eme_strip_tags($_POST['zip']);
+   if (isset($_POST['country'])) $person['country'] = eme_strip_tags($_POST['country']);
+   if (isset($_POST['phone'])) $person['phone'] = eme_strip_tags($_POST['phone']);
+   $person['wp_id'] = intval($wp_id);
+   $person['lang'] = eme_strip_tags($lang);
    $wpdb->insert($people_table,$person);
-   $person['person_id'] = $wpdb->insert_id;
-   return ($person);
+   $person_id = $wpdb->insert_id;
+   return eme_get_person($person_id);
+}
+
+function eme_update_person_with_postinfo($person_id,$basic_info_too=0) {
+   global $wpdb; 
+   $people_table = $wpdb->prefix.PEOPLE_TBNAME;
+
+   $where = array();
+   $where['person_id'] = intval($person_id);
+   $fields = array();
+   if (isset($_POST['address1'])) $fields['address1'] = eme_strip_tags($_POST['address1']);
+   if (isset($_POST['address2'])) $fields['address2'] = eme_strip_tags($_POST['address2']);
+   if (isset($_POST['city'])) $fields['city'] = eme_strip_tags($_POST['city']);
+   if (isset($_POST['state'])) $fields['state'] = eme_strip_tags($_POST['state']);
+   if (isset($_POST['zip'])) $fields['zip'] = eme_strip_tags($_POST['zip']);
+   if (isset($_POST['country'])) $fields['country'] = eme_strip_tags($_POST['country']);
+   if (isset($_POST['phone'])) $fields['phone'] = eme_strip_tags($_POST['phone']);
+   if ($basic_info_too) {
+      $fields['lastname'] = eme_strip_tags($_POST['lastname']);
+      $fields['email'] = eme_strip_tags($_POST['email']);
+      if (isset($_POST['firstname'])) $fields['firstname'] = eme_strip_tags($_POST['firstname']);
+   }
+
+   // take into account that $fields can be empty too (if $basic_info_too=0 and the other fields are not set)
+   if (!empty($fields) && $wpdb->update($people_table, $fields, $where) === false)
+      return false;
+   else
+      return eme_get_person($person_id);
 }
 
 function eme_user_profile($user) {
    //$eme_phone=get_user_meta($user,'eme_phone',true);
    $eme_phone=$user->eme_phone;
-   $eme_date_format=$user->eme_date_format;
+   $person = eme_get_person_by_wp_id($user->ID);
+   // only show future bookings
+   $future=1;
+   // define a simple template
+   $template="#_STARTDATE #_STARTTIME: #_EVENTNAME (#_RESPSPACES places). #_CANCEL_LINK<br />";
    ?>
    <h3><?php _e('Events Made Easy settings', 'eme')?></h3>
    <table class='form-table'>
@@ -706,14 +808,12 @@ function eme_user_profile($user) {
          <td><input type="text" name="eme_phone" id="eme_phone" value="<?php echo $eme_phone; ?>" class="regular-text" /> <br />
          <?php _e('The phone number used by Events Made Easy when the user is indicated as the contact person for an event.','eme');?></td>
       </tr>
+      <?php if ($person) { ?>
       <tr>
-         <th><label for="eme_date_format"><?php _e('Date format','eme');?></label></th>
-         <td><input type="text" name="eme_date_format" id="eme_date_format" value="<?php echo $eme_date_format; ?>" class="regular-text" /> <br />
-         <?php _e('The date format used by Events Made Easy in the admin section. If empty the general WP date format setting will be used.','eme');
-               echo "\t<p>" . __('<a href="http://codex.wordpress.org/Formatting_Date_and_Time">Documentation on date and time formatting</a>.') . "</p>\n";
-         ?>
-         </td>
+         <th><label for="eme_phone"><?php _e('Future bookings made','eme');?></label></th>
+	 <td><?php echo eme_get_bookings_list_for_person($person,$future,$template); ?>
       </tr>
+      <?php } ?>
    </table>
    <?php
 }
@@ -721,22 +821,6 @@ function eme_user_profile($user) {
 function eme_update_user_profile($wp_user_ID) {
    if(isset($_POST['eme_phone'])) {
       update_user_meta($wp_user_ID,'eme_phone', $_POST['eme_phone']);
-   }
-   if(isset($_POST['eme_date_format'])) {
-      update_user_meta($wp_user_ID,'eme_date_format', $_POST['eme_date_format']);
-   }
-   
-}
-
-function eme_update_phone($person,$phone) {
-   global $wpdb; 
-   $people_table = $wpdb->prefix.PEOPLE_TBNAME;
-   $phone = eme_sanitize_request($phone);
-   $sql = "UPDATE $people_table SET person_phone='$phone' WHERE person_id=".$person['person_id'].";";
-   $wpdb->query($sql);
-
-   if (!is_null($person['wp_id']) && $person['wp_id']) {
-      update_user_meta($person['wp_id'],'eme_phone', $phone);
    }
 }
 
@@ -748,5 +832,39 @@ function eme_get_indexed_users() {
    foreach($users as $user) 
       $indexed_users[$user['ID']] = $user['display_name'];
    return $indexed_users;
+}
+
+function eme_people_search_ajax() {
+   $persons = eme_get_persons();
+   $return = array();
+
+   if (!isset($_GET["q"])) {
+      echo json_encode($return);
+      return;
+   }
+   foreach($persons as $item) {
+      $record = array();
+      $record['lastname']    = eme_trans_sanitize_html($item['lastname']); 
+      $record['firstname']    = eme_trans_sanitize_html($item['firstname']); 
+      $record['address1']    = eme_trans_sanitize_html($item['address1']); 
+      $record['address2']    = eme_trans_sanitize_html($item['address2']); 
+      $record['city']    = eme_trans_sanitize_html($item['city']); 
+      $record['state']    = eme_trans_sanitize_html($item['state']); 
+      $record['zip']    = eme_trans_sanitize_html($item['zip']); 
+      $record['country']    = eme_trans_sanitize_html($item['country']); 
+      $record['email'] = eme_trans_sanitize_html($item['email']);
+      $record['phone']    = eme_trans_sanitize_html($item['phone']); 
+      $return[]  = $record;
+   }
+
+   $q = strtolower($_GET["q"]);
+   if (!$q) return;
+
+   $result=array();
+   foreach($return as $row) {
+      if (strpos(strtolower($row['lastname']), $q) !== false)
+         $result[]=$row;
+   }
+   echo json_encode($result);
 }
 ?>

@@ -72,10 +72,12 @@ class CbpMenuPageController extends CbpController
             CBP_APP_PREFIX . 'custom_thumbnail_sizes'                    => '',
             CBP_APP_PREFIX . 'custom_css'                                => '',
             CBP_APP_PREFIX . 'use_scroll_to_top'                         => true,
+            CBP_APP_PREFIX . 'scroll_to_top_text'                        => 'Scroll to top',
             CBP_APP_PREFIX . 'enabled_custom_post_types'                 => '',
             CBP_APP_PREFIX . 'bricklayer_builder_skin'                   => 'default',
             CBP_APP_PREFIX . 'template_links'                            => '',
             CBP_APP_PREFIX . 'use_layout_global_settings_override'       => true,
+            CBP_APP_PREFIX . 'use_global_container_properties'           => true,
         );
 
         foreach ($this->default_options_array as $key => $value) {
@@ -98,6 +100,7 @@ class CbpMenuPageController extends CbpController
             case CBP_APP_PREFIX . 'use_content_builder_layouts_and_templates':
             case CBP_APP_PREFIX . 'use_scroll_to_top':
             case CBP_APP_PREFIX . 'use_layout_global_settings_override':
+            case CBP_APP_PREFIX . 'use_global_container_properties':
 
                 $sanitizedValue = filter_var($value, FILTER_VALIDATE_BOOLEAN);
                 break;

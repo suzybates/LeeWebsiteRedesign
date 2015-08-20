@@ -279,9 +279,9 @@ if (!class_exists('CbpWidgetSinglePost')):
                     <<?php echo $title_size; ?>><?php echo!empty($title) ? $title : $post->post_title; ?>
                 <?php endif; ?>
                 </<?php echo $title_size; ?>>
-                <?php if ((int) $show_featured_image): ?> 
+                <?php if ((int) $show_featured_image): ?>
 
-                    <?php $imageArgs = array('echo' => false, 'size' => $thumbnail_dimensions); ?>
+                    <?php $imageArgs = array('post_id' => $post_id, 'echo' => false, 'size' => $thumbnail_dimensions); ?>
                     <?php $image = cbp_get_the_image($imageArgs); ?>
                     <?php if (isset($image) && $image): ?>
                         <div class="<?php echo $this->getPrefix(); ?>-widget-post-image">

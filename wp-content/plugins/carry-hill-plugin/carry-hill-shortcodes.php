@@ -85,13 +85,14 @@ function chp_icon_bullet_text_shortcode($atts, $content = null)
 
     $class = 'ch-icon-bullet-text';
 
+    $title    = $title ? $titleTagOpen . html_entity_decode($title) . $titleTagClose : '';
+    $subtitle = $subtitle ? $subtitleTagOpen . html_entity_decode($subtitle) . $subtitleTagClose : '';
+
     $out .= '<div class="ch-shortcode ' . $class . '">
         <div class="one eighth mobile align-center ch-icon-bullet-text-icon">
             <i class="fa ' . $icon . ' ' . $iconSize . '"></i>
         </div>
-        <div class="seven eighths mobile pad-left">' .
-            $titleTagOpen . html_entity_decode($title) . $titleTagClose .
-            $subtitleTagOpen . html_entity_decode($subtitle) . $subtitleTagClose .
+        <div class="seven eighths mobile pad-left">' . $title . $subtitle .
             $descriptionTagOpen . html_entity_decode($content) . $descriptionTagClose .
             '</div>
         </div>';

@@ -2,7 +2,7 @@
 
 class ChpWidgetPortfolioArchive extends CbpWidget
 {
- 
+
     public function __construct()
     {
         parent::__construct(

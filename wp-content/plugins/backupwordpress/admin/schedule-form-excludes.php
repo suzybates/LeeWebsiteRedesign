@@ -1,125 +1,369 @@
-<form method="post" class="hmbkp-form">
+<div class="hmbkp-exclude-settings">
 
-    <input type="hidden" name="hmbkp_schedule_id" value="<?php echo esc_attr( $schedule->get_id() ); ?>" />
+	<?php if ( $schedule->get_excludes() ) : ?>
 
-    <fieldset class="hmbkp-edit-schedule-excludes-form">
+		<h3>
+			<?php _e( 'Currently Excluded', 'backupwordpress' ); ?>
+		</h3>
 
-        <legend><?php _e( 'Manage Excludes', 'hmbkp' ); ?></legend>
+		<p><?php _e( 'We automatically detect and ignore common <abbr title="Version Control Systems">VCS</abbr> folders and other backup plugin folders.', 'backupwordpress' ); ?></p>
 
-        <div class="hmbkp_add_exclude_rule">
+		<table class="widefat">
 
-        	<label for="hmbkp-new-exclude-rule">
+			<tbody>
 
-                <?php _e( 'New Exclude Rule[s]', 'hmbkp' ); ?>
+			<?php foreach ( array_diff( $schedule->get_excludes(), $schedule->backup->default_excludes() ) as $key => $exclude ) :
 
-                <input id="hmbkp-new-exclude-rule" type="text" class="code" placeholder="" />
+				$exclude_path = new SplFileInfo( trailingslashit( $schedule->backup->get_root() ) . ltrim( str_ireplace( $schedule->backup->get_root(), '', $exclude ), '/' ) ); ?>
 
-                <button type="button" class="button-secondary hmbkp_preview_exclude_rule"><?php _e( 'Preview', 'hmbkp' ); ?></button>
+				<tr>
 
-                <span class="howto"><?php printf( __( 'Enter new exclude rules as a comma separated list, e.g. %s', 'hmbkp' ), '<code>.git/, *.mp3, wp-content/uploads/</code>' ); ?></span>
+					<th scope="row">
 
-            </label>
+						<?php if ( $exclude_path->isFile() ) { ?>
 
-        </div>
+							<div class="dashicons dashicons-media-default"></div>
 
-        <table class="widefat">
+						<?php } elseif ( $exclude_path->isDir() ) { ?>
 
-        	<thead>
-        		<tr>
-        			<th><?php _e( 'Exclude Rules', 'hmbkp' ); ?></th>
-        		</tr>
-        	</thead>
+							<div class="dashicons dashicons-portfolio"></div>
 
-        	<tbody>
+						<?php } ?>
 
-    <?php foreach ( $schedule->get_excludes() as $key => $exclude ) : ?>
+					</th>
 
-    			<tr>
-    			    <td data-hmbkp-exclude-rule="<?php echo esc_attr( $exclude ); ?>">
+					<td>
+						<code><?php echo esc_html( str_ireplace( $schedule->backup->get_root(), '', $exclude ) ); ?></code>
 
-    			    	<span class="code"><?php echo esc_attr( str_ireplace( untrailingslashit( $schedule->get_root() ), '', $exclude ) ); ?></span>
+					</td>
 
-    	<?php if ( ( $schedule->get_path() === untrailingslashit( $exclude ) ) || ( in_array( $exclude, $schedule->default_excludes() ) ) ) : ?>
+					<td>
 
-    					<span class="reason"><?php _e( 'default', 'hmbkp' ); ?></span>
+						<?php if ( ( in_array( $exclude, $schedule->backup->default_excludes() ) ) || ( hmbkp_path() === untrailingslashit( $exclude ) ) ) : ?>
 
-    	<?php elseif ( defined( 'HMBKP_EXCLUDE' ) && strpos( HMBKP_EXCLUDE, $exclude ) !== false ) : ?>
+							<?php _e( 'Default rule', 'backupwordpress' ); ?>
 
-    					<span class="reason"><?php _e( 'defined', 'hmbkp' ); ?></span>
+						<?php elseif ( defined( 'HMBKP_EXCLUDE' ) && false !== strpos( HMBKP_EXCLUDE, $exclude ) ) : ?>
 
-    	<?php else : ?>
+							<?php _e( 'Defined in wp-config.php', 'backupwordpress' ); ?>
 
-    					<a href="#" class="delete-action"><?php _e( 'Remove', 'hmbkp' ); ?></a>
+						<?php else : ?>
 
-    	<?php endif; ?>
+							<a href="<?php echo hmbkp_admin_action_url( 'remove_exclude_rule', array(
+								'hmbkp_remove_exclude' => $exclude,
+								'hmbkp_schedule_id'    => $schedule->get_id()
+							) ); ?>" class="delete-action"><?php _e( 'Stop excluding', 'backupwordpress' ); ?></a>
 
-    				</td>
-    			</tr>
+						<?php endif; ?>
 
-    <?php endforeach; ?>
+					</td>
 
-        	</tbody>
+				</tr>
 
-        </table>
+			<?php endforeach; ?>
 
-        <div class="hmbkp-tabs">
+			</tbody>
 
-        	<ul class="subsubsub">
+		</table>
 
-	<?php if ( $schedule->get_excluded_file_count() ) : ?>
+	<?php endif; ?>
 
-        		<li><a href="#hmbkp_excluded_files"><?php _e( 'Excluded', 'hmbkp' ); ?></a>(<?php esc_html_e( $schedule->get_excluded_file_count() ); ?>)</li>
+	<h3 id="directory-listing"><?php _e( 'Directory Listing', 'backupwordpress' ); ?></h3>
 
-    <?php endif; ?>
+	<p><?php _e( 'Here\'s a directory listing of all files on your site, you can browse through and exclude files or folders that you don\'t want included in your backup.', 'backupwordpress' ); ?></p>
 
-        		<li><a href="#hmbkp_included_files"><?php _e( 'Included', 'hmbkp' ); ?></a>(<?php esc_html_e( $schedule->get_included_file_count() ); ?>)</li>
+	<?php
 
-    <?php if ( $schedule->get_unreadable_file_count() ) : ?>
+	// The directory to display
+	$directory = $schedule->backup->get_root();
 
-                <li><a href="#hmbkp_unreadable_files"><?php _e( 'Unreadable', 'hmbkp' ); ?></a>(<?php esc_html_e( $schedule->get_unreadable_file_count() ); ?>)</li>
+	if ( isset( $_GET['hmbkp_directory_browse'] ) ) {
 
-    <?php endif; ?>
+		$untrusted_directory = urldecode( $_GET['hmbkp_directory_browse'] );
 
-        	</ul>
+		// Only allow real sub directories of the site root to be browsed
+		if ( false !== strpos( $untrusted_directory, $schedule->backup->get_root() ) && is_dir( $untrusted_directory ) ) {
+			$directory = $untrusted_directory;
+		}
 
-	<?php if ( $schedule->get_excluded_file_count() ) : ?>
+	}
 
-        	<div id="hmbkp_excluded_files">
+	$exclude_string = $schedule->backup->exclude_string( 'regex' );
 
-        		<?php hmbkp_file_list( $schedule, null, 'get_excluded_files' ); ?>
+	// Kick off a recursive filesize scan
+	$files = $schedule->list_directory_by_total_filesize( $directory );
 
-        	</div>
+	if ( $files ) { ?>
 
-    <?php endif; ?>
+		<table class="widefat">
 
-        	<div id="hmbkp_included_files">
+			<thead>
 
-        		<?php hmbkp_file_list( $schedule, null, 'get_included_files' ); ?>
+			<tr>
+				<th></th>
+				<th scope="col"><?php _e( 'Name', 'backupwordpress' ); ?></th>
+				<th scope="col" class="column-format"><?php _e( 'Size', 'backupwordpress' ); ?></th>
+				<th scope="col" class="column-format"><?php _e( 'Permissions', 'backupwordpress' ); ?></th>
+				<th scope="col" class="column-format"><?php _e( 'Type', 'backupwordpress' ); ?></th>
+				<th scope="col" class="column-format"><?php _e( 'Status', 'backupwordpress' ); ?></th>
+			</tr>
 
-        	</div>
+			<tr>
 
-    <?php if ( $schedule->get_unreadable_file_count() ) : ?>
+				<th scope="row">
+					<div class="dashicons dashicons-admin-home"></div>
+				</th>
 
-            <div id="hmbkp_unreadable_files">
+				<th scope="col">
 
-                <?php hmbkp_file_list( $schedule, null, 'get_unreadable_files' ); ?>
+					<?php if ( $schedule->backup->get_root() !== $directory ) { ?>
 
-                <p class="description"><?php _e( 'Unreadable files can\'t be backed up', 'hmbkp' ); ?></p>
+						<a href="<?php echo esc_url( remove_query_arg( 'hmbkp_directory_browse' ) ); ?>"><?php echo esc_html( $schedule->backup->get_root() ); ?></a>
+						<code>/</code>
 
-            </div>
+						<?php $parents = array_filter( explode( '/', str_replace( trailingslashit( $schedule->backup->get_root() ), '', trailingslashit( dirname( $directory ) ) ) ) );
 
-    <?php endif; ?>
+						foreach ( $parents as $directory_basename ) { ?>
 
-        <p><?php printf( __( 'Your site is %s. Backups will be compressed and so will be smaller.', 'hmbkp' ), '<code>' . esc_html( $schedule->get_formatted_file_size( false ) ) . '</code>' ); ?></p>
+							<a href="<?php echo esc_url( add_query_arg( 'hmbkp_directory_browse', urlencode( substr( $directory, 0, strpos( $directory, $directory_basename ) ) . $directory_basename ) ) ); ?>"><?php echo esc_html( $directory_basename ); ?></a>
+							<code>/</code>
 
-        </div>
+						<?php } ?>
 
-        <p class="submit">
+						<?php echo esc_html( basename( $directory ) ); ?>
 
-            <button type="submit" class="button-primary"><?php _e( 'Close', 'hmbkp' ); ?></button>
+					<?php } else { ?>
 
-        </p>
+						<?php echo esc_html( $schedule->backup->get_root() ); ?>
 
-    </fieldset>
+					<?php } ?>
 
-</form>
+				</th>
+
+				<td class="column-filesize">
+
+					<?php if ( $schedule->is_site_size_being_calculated() ) { ?>
+
+						<span class="spinner"></span>
+
+					<?php } else {
+
+						$root = new SplFileInfo( $schedule->backup->get_root() );
+
+						$size = $schedule->filesize( $root, true );
+
+						if ( false !== $size ) {
+
+							$size = size_format( $size );
+
+							if ( ! $size ) {
+								$size = '0 B';
+							} ?>
+
+							<code>
+
+								<?php echo esc_html( $size ); ?>
+
+								<a class="dashicons dashicons-update"
+								   href="<?php echo wp_nonce_url( add_query_arg( 'hmbkp_recalculate_directory_filesize', urlencode( $schedule->backup->get_root() ) ), 'hmbkp-recalculate_directory_filesize' ); ?>"><span><?php _e( 'Refresh', 'backupwordpress' ); ?></span></a>
+
+							</code>
+
+
+						<?php } ?>
+
+					<?php } ?>
+
+				<td>
+					<?php echo esc_html( substr( sprintf( '%o', fileperms( $schedule->backup->get_root() ) ), - 4 ) ); ?>
+				</td>
+
+				<td>
+
+					<?php if ( is_link( $schedule->backup->get_root() ) ) {
+
+						_e( 'Symlink', 'backupwordpress' );
+
+					} elseif ( is_dir( $schedule->backup->get_root() ) ) {
+
+						_e( 'Folder', 'backupwordpress' );
+
+					} ?>
+
+				</td>
+
+				<td></td>
+
+			</tr>
+
+			</thead>
+
+			<tbody>
+
+			<?php foreach ( $files as $size => $file ) {
+
+				$is_excluded = $is_unreadable = false;
+
+				// Check if the file is excluded
+				if ( $exclude_string && preg_match( '(' . $exclude_string . ')', str_ireplace( trailingslashit( $schedule->backup->get_root() ), '', HM\BackUpWordPress\Backup::conform_dir( $file->getPathname() ) ) ) ) {
+					$is_excluded = true;
+				}
+
+				// Skip unreadable files
+				if ( ! @realpath( $file->getPathname() ) || ! $file->isReadable() ) {
+					$is_unreadable = true;
+				} ?>
+
+				<tr>
+
+					<td>
+
+						<?php if ( $is_unreadable ) { ?>
+
+							<div class="dashicons dashicons-dismiss"></div>
+
+						<?php } elseif ( $file->isFile() ) { ?>
+
+							<div class="dashicons dashicons-media-default"></div>
+
+						<?php } elseif ( $file->isDir() ) { ?>
+
+							<div class="dashicons dashicons-portfolio"></div>
+
+						<?php } ?>
+
+					</td>
+
+					<td>
+
+						<?php if ( $is_unreadable ) { ?>
+
+							<code class="strikethrough"
+							      title="<?php echo esc_attr( $file->getRealPath() ); ?>"><?php echo esc_html( $file->getBasename() ); ?></code>
+
+						<?php } elseif ( $file->isFile() ) { ?>
+
+							<code
+								title="<?php echo esc_attr( $file->getRealPath() ); ?>"><?php echo esc_html( $file->getBasename() ); ?></code>
+
+						<?php } elseif ( $file->isDir() ) { ?>
+
+							<code title="<?php echo esc_attr( $file->getRealPath() ); ?>"><a
+									href="<?php echo add_query_arg( 'hmbkp_directory_browse', urlencode( $file->getPathname() ) ); ?>"><?php echo esc_html( $file->getBasename() ); ?></a></code>
+
+						<?php } ?>
+
+					</td>
+
+					<td class="column-format column-filesize">
+
+						<?php if ( $file->isDir() && $schedule->is_site_size_being_calculated() ) { ?>
+
+							<span class="spinner"></span>
+
+						<?php } else {
+
+							$size = $schedule->filesize( $file );
+
+							if ( false !== $size ) {
+
+								$size = size_format( $size );
+
+								if ( ! $size ) {
+									$size = '0 B';
+								} ?>
+
+								<code>
+
+									<?php echo esc_html( $size ); ?>
+
+									<?php if ( $file->isDir() ) { ?>
+
+										<a title="<?php _e( 'Recalculate the size of this directory', 'backupwordpress' ); ?>"
+										   class="dashicons dashicons-update"
+										   href="<?php echo wp_nonce_url( add_query_arg( 'hmbkp_recalculate_directory_filesize', urlencode( $file->getPathname() ) ), 'hmbkp-recalculate_directory_filesize' ); ?>"><span><?php _e( 'Refresh', 'backupwordpress' ); ?></span></a>
+
+									<?php } ?>
+
+								</code>
+
+
+							<?php } else { ?>
+
+								<code>--</code>
+
+							<?php }
+						} ?>
+
+					</td>
+
+					<td>
+						<?php echo esc_html( substr( sprintf( '%o', $file->getPerms() ), - 4 ) ); ?>
+					</td>
+
+					<td>
+
+						<?php if ( $file->isLink() ) { ?>
+
+							<span
+								title="<?php echo esc_attr( $file->GetRealPath() ); ?>"><?php _e( 'Symlink', 'backupwordpress' ); ?></span>
+
+						<?php } elseif ( $file->isDir() ) {
+
+							_e( 'Folder', 'backupwordpress' );
+
+						} else {
+
+							_e( 'File', 'backupwordpress' );
+
+						} ?>
+
+					</td>
+
+					<td class="column-format">
+
+						<?php if ( $is_unreadable ) { ?>
+
+							<strong
+								title="<?php _e( 'Unreadable files won\'t be backed up.', 'backupwordpress' ); ?>"><?php _e( 'Unreadable', 'backupwordpress' ); ?></strong>
+
+						<?php } elseif ( $is_excluded ) { ?>
+
+							<strong><?php _e( 'Excluded', 'backupwordpress' ); ?></strong>
+
+						<?php } else {
+
+							$exclude_path = $file->getPathname();
+
+							// Excluded directories need to be trailingslashed
+							if ( $file->isDir() ) {
+								$exclude_path = trailingslashit( $file->getPathname() );
+							} ?>
+
+							<a href="<?php echo wp_nonce_url( add_query_arg( array(
+								'hmbkp_schedule_id' => $schedule->get_id(),
+								'action' => 'hmbkp_add_exclude_rule',
+								'hmbkp_exclude_pathname' => urlencode( $exclude_path )
+							), admin_url( 'admin-post.php' ) ), 'hmbkp-add-exclude-rule', 'hmbkp-add-exclude-rule-nonce' ); ?>"
+							   class="button-secondary"><?php _e( 'Exclude &rarr;', 'backupwordpress' ); ?></a>
+
+						<?php } ?>
+
+					</td>
+
+				</tr>
+
+			<?php } ?>
+
+			</tbody>
+
+		</table>
+
+	<?php } ?>
+
+	<p class="submit">
+		<a href="<?php echo esc_url( hmbkp_get_settings_url() ) ?>"
+		   class="button-primary"><?php _e( 'Done', 'backupwordpress' ); ?></a>
+	</p>
+
+</div>

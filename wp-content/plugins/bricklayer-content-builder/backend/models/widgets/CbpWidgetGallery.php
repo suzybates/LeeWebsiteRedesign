@@ -84,7 +84,7 @@ if (!class_exists('CbpWidgetGallery')):
                 <div class="<?php echo $type; ?>_filter">
                     <span class="<?php echo $filterClass; ?> cbp_widget_link" data-filter="all"><?php echo $this->translate('All'); ?></span>
                     <?php foreach ($tags as $tag): ?>
-                        <span class="<?php echo $filterClass; ?> cbp_widget_link" data-filter="<?php echo $tag[1]; ?>"><?php echo $tag[0]; ?></span>
+                        <span class="<?php echo $filterClass; ?> cbp_widget_link" data-filter=".<?php echo $tag[1]; ?>"><?php echo $tag[0]; ?></span>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
@@ -93,7 +93,7 @@ if (!class_exists('CbpWidgetGallery')):
                 <?php foreach ($shortcodes as $key => $shortcode): ?>
                     <?php if ($shortcode['atts']['type'] == 'cbp_gallery_item' && isset($shortcode['atts']['img_src']) && $shortcode['atts']['img_src']): ?>
                         <?php $image = CbpWidgets::parseImageDetails($shortcode['atts']['img_src']); ?>
-                        <div class="<?php echo $number_of_columns; ?> <?php echo $targetClass; ?> <?php echo $this->getFormatedTagsClasses($shortcode['atts']['tags']); ?> <?php echo CbpWidgets::getCssClass($shortcode['atts']['padding']); ?> <?php echo (int) $equal_height ? $equalHeightClass : ''; ?>">
+                        <div class="<?php echo $type; ?>_image_container <?php echo $number_of_columns; ?> <?php echo $targetClass; ?> <?php echo $this->getFormatedTagsClasses($shortcode['atts']['tags']); ?> <?php echo CbpWidgets::getCssClass($shortcode['atts']['padding']); ?> <?php echo (int) $equal_height ? $equalHeightClass : ''; ?>">
                             <a class="cbp-row <?php echo $type; ?>_image" href="<?php echo $image['original_src']; ?>" data-lightbox="gallery-<?php echo $id; ?>" title="<?php echo $shortcode['atts']['caption']; ?>">
                                 <img src="<?php echo $image['selected_src']; ?>" alt="<?php echo $shortcode['atts']['name']; ?>" />
                             </a>
@@ -117,8 +117,10 @@ if (!class_exists('CbpWidgetGallery')):
                 cbp_content_builder.data.galleries.push({
                     id: '<?php echo $id; ?>',
                     options: {
-                        targetSelector: '.<?php echo $targetClass; ?>', // needs dot infront
-                        filterSelector: '.<?php echo $filterClass; ?>'  // needs dot infront
+                        selectors: {
+                            target: '.<?php echo $targetClass; ?>', // needs dot infront
+                            filter: '.<?php echo $filterClass; ?>'  // needs dot infront
+                        }
                     },
                     equalHeightClass: '<?php echo (int) $equal_height ? $equalHeightClass : 'null'; ?>'
                 });      

@@ -4,7 +4,7 @@
  * 
  * @package PP
  * @author Kevin Behrens <kevin@agapetry.net>
- * @copyright Copyright (c) 2011-2013, Agapetry Creations LLC
+ * @copyright Copyright (c) 2011-2015, Agapetry Creations LLC
  * 
  */
 
@@ -54,6 +54,9 @@ else
 	add_action( 'pp_pre_init', '_pp_enable_attachment_metacap_workaround' );
 
 $pp_role_defs = new PP_Role_Defs();
+
+if ( did_action( 'set_current_user' ) )  // Google Analytics by Yoast load current user prior to 'init' action
+	_pp_act_set_current_user();
 
 //if ( ! pp_wp_ver( '3.0' ) )
 //	require_once( dirname(__FILE__).'/wp-legacy_pp.php' );
@@ -114,7 +117,7 @@ function _pp_bbpress_forum_only( $unfiltered_types ) {
 	
 // this fires late on the 'init' action (priority 50)
 function _pp_act_on_init() {
-	if ( defined( 'INIT_ACTION_DONE_PP' ) ) { return; }
+	if ( defined( 'INIT_ACTION_DONE_PP' ) || ppc_interrupt_init() ) { return; }
 	define ( 'INIT_ACTION_DONE_PP', true );
 
 	// --- version check ---
@@ -177,6 +180,10 @@ function _pp_act_on_init() {
 
 function _pp_act_set_current_user() {
 	global $current_user, $pp_current_user;
+	
+	if ( ppc_interrupt_init() )
+		return;
+	
 	$pp_current_user = pp_get_user($current_user->ID);
 	
 	static $done;
@@ -201,6 +208,10 @@ function pp_init_with_user() {
 	if ( empty( $pp_current_user) || ! defined( 'INIT_ACTION_DONE_PP' ) )
 		return;
 
+	// Prevent conflicts with JSON REST API (no filtering support for now)
+	if ( defined( 'JSON_API_VERSION' ) && ! defined( 'PP_FILTER_JSON_REST' ) && ( false !== strpos( $_SERVER['REQUEST_URI'], apply_filters( 'json_url_prefix', 'wp-json' ) ) ) )
+		return;
+		
 	require_once( dirname(__FILE__).'/pp_main.php');
 	
 	if ( empty($pp) )
@@ -214,6 +225,16 @@ function pp_init_with_user() {
 	$current_user->allcaps = array_merge( $current_user->allcaps, $pp_current_user->allcaps );  // copies above changes and any 3rd party filtering
 	
 	do_action( 'pp_user_init' );
+}
+
+function ppc_interrupt_init() {
+	if ( is_admin() && strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php') && ! empty($_POST['attachment_id']) && ! empty($_POST['fetch']) && ( 3 == $_POST['fetch']) ) {
+		if ( $att = get_post( $_POST['attachment_id'] ) ) {
+			global $current_user;
+			if ( $att->post_author == $current_user->ID && ! defined( 'PP_UPLOADS_FORCE_FILTERING' ) )
+				return true;
+		}
+	}
 }
 
 function pp_supplement_user_allcaps( &$user ) {
@@ -487,7 +508,13 @@ function pp_is_content_administrator( $user = false ) { return pp_is_administrat
 function pp_unfiltered( $user = false ) { return pp_is_administrator( $user, 'unfiltered' ); }
 
 function pp_is_front() {
-	return ( ! is_admin() && ! defined('XMLRPC_REQUEST') && ! defined('DOING_AJAX') && ! defined('DOING_CRON') );
+	return ( ! is_admin() && ! defined('XMLRPC_REQUEST') && ! defined('DOING_AJAX') && ! pp_doing_cron() );
+}
+
+function pp_doing_cron() {
+	// WP Cron Control plugin disables core cron by setting DOING_CRON on every site access.  Use plugin's own scheme to detect actual cron requests.
+	$doing_cron = defined('DOING_CRON') && ( ! class_exists('WP_Cron_Control') || ! defined('ABSPATH') ) && apply_filters( 'pp_doing_cron', true );
+	return $doing_cron;
 }
 
 function pp_get_role_attributes( $role_name ) {

@@ -94,9 +94,9 @@ if (!class_exists('CbpWidget')):
                 ));
             }
 
-            $diplayCssClass = apply_filters('cbp_widget_display_css_class', true, $this->getId());
+            $displayCssClass = apply_filters('cbp_widget_display_css_class', true, $this->getId());
 
-            if ($diplayCssClass && isset($instance['css_class'])) {
+            if ($displayCssClass && isset($instance['css_class'])) {
                 CbpWidgetFormElements::text(array(
                     'name'              => $this->getIdString('css_class'),
                     'value'             => $instance['css_class'],
@@ -126,7 +126,7 @@ if (!class_exists('CbpWidget')):
                 'double-pad-right'    => 'double-pad-right',
                 'double-pad-bottom'   => 'double-pad-bottom',
                 'double-pad-left'     => 'double-pad-left',
-                'double-top-botton'   => 'double-pad-top double-pad-bottom',
+                'double-top-bottom'   => 'double-pad-top double-pad-bottom',
                 'double-left-right'   => 'double-pad-left double-pad-right',
                 'triple-padded'       => 'triple-padded',
                 'triple-pad-top'      => 'triple-pad-top',

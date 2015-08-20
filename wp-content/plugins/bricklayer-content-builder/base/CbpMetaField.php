@@ -78,7 +78,13 @@ class CbpMetaField extends CbpPageAbstract
 
 
             update_post_meta($post_id, CBP_APP_PREFIX . 'layout' , $_POST[CBP_APP_PREFIX . 'layout']);
-            update_post_meta($post_id, CBP_APP_PREFIX . 'use_layout' , $_POST[CBP_APP_PREFIX . 'use_layout']);
+
+            // if checkbox is not checked it doesn't get send via POST so we need to set it to false here
+            if (isset($_POST[CBP_APP_PREFIX . 'use_layout'])) {
+                update_post_meta($post_id, CBP_APP_PREFIX . 'use_layout' , $_POST[CBP_APP_PREFIX . 'use_layout']);
+            } else {
+                update_post_meta($post_id, CBP_APP_PREFIX . 'use_layout' , false);
+            }
 
         } elseif (isset($_POST['post_type']) && $_POST['post_type'] == 'post'){
 //            if (!current_user_can('edit_post', $post_id)) return;

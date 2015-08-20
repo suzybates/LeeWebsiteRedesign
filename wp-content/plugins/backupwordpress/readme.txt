@@ -1,15 +1,17 @@
 === BackUpWordPress ===
 Contributors: humanmade, willmot, pauldewouters, joehoyle, mattheu, tcrsavage, cuvelier
 Tags: back up, backup, backups, database, zip, db, files, archive, wp-cli, humanmade
-Requires at least: 3.7.3
-Tested up to: 3.9.1
-Stable tag: 2.6.2
+Requires at least: 3.9
+Tested up to: 4.2-beta
+Stable tag: 3.2.4
 
 Simple automated backups of your WordPress powered website.
 
 == Description ==
 
 [BackUpWordPress](https://bwp.hmn.md/?utm_source=wordpress-org&utm_medium=plugin-page&utm_campaign=freeplugin) will back up your entire site including your database and all your files on a schedule that suits you. Try it now to see how easy it is!
+
+This plugin requires PHP version 5.3.2 or later
 
 = Features =
 
@@ -41,27 +43,28 @@ The plugin will try to use the `mysqldump` and `zip` commands via shell if they 
 
 == Frequently Asked Questions ==
 
+
 **Where does BackUpWordPress store the backup files?**
 
 Backups are stored on your server in `/wp-content/backups`, you can change the directory.
 
-**Important:** By default BackUpWordPress backs up everything in your site root as well as your database, this includes any non WordPress folders that happen to be in your site root. This does means that your backup directory can get quite large.
+Important: By default BackUpWordPress backs up everything in your site root as well as your database, this includes any non WordPress folders that happen to be in your site root. This does mean that your backup directory can get quite large.
 
-**What if I want I want to back up my site to another destination?**
+**What if I want to back up my site to another destination?**
 
-BackUpWordPress Pro supports Dropbox, Google Drive, Amazon S3, Rackspace, Azure, DreamObjects and FTP/SFTP. Check it out here: [https://bwp.hmn.md](http://bwp.hmn.md/?utm_source=wordpress-org&utm_medium=plugin-page&utm_campaign=freeplugin)
+BackUpWordPress Pro supports Dropbox, Google Drive, Amazon S3, Rackspace, Azure, DreamObjects and FTP/SFTP. Check it out here: [https://bwp.hmn.md](http://bwp.hmn.md/?utm_source=wordpress-org&utm_medium=plugin-page&utm_campaign=freeplugin "BackUpWordPress Homepage")
 
 **How do I restore my site from a backup?**
 
 You need to download the latest backup file either by clicking download on the backups page or via `FTP`. `Unzip` the files and upload all the files to your server overwriting your site. You can then import the database using your hosts database management tool (likely `phpMyAdmin`).
 
-See this post for more details http://hmn.md/backupwordpress-how-to-restore-from-backup-files/.
+See this guide for more details - [How to restore from backup](https://bwp.hmn.md/support-center/restore-backup/ "Go to support center").
 
 **Does BackUpWordPress back up the backups directory?**
 
 No.
 
-**I'm not receiving my backups by email**
+**I'm not receiving my backups by email?**
 
 Most servers have a filesize limit on email attachments, it's generally about 10mb. If your backup file is over that limit it won't be sent attached to the email, instead you should receive an email with a link to download the backup, if you aren't even receiving that then you likely have a mail issue on your server that you'll need to contact your host about.
 
@@ -73,23 +76,31 @@ BackUpWordPress stores the last 10 backups by default.
 
 Unless your site is very large (many gigabytes) it should only take a few minutes to perform a back up, if your back up has been running for longer than an hour it's safe to assume that something has gone wrong, try de-activating and re-activating the plugin, if it keeps happening, contact support.
 
-**What do I do if I get the wp-cron error message**
+**What do I do if I get the wp-cron error message?**
 
-The issue is that your `wp-cron.php` is not returning a `200` response when hit with a http request originating from your own server, it could be several things, most of the time it's an issue with the server / site and not with BackUpWordPress.
+The issue is that your `wp-cron.php` is not returning a `200` response when hit with a HTTP request originating from your own server, it could be several things, in most cases, it's an issue with the server / site.
 
-Some things you can test are.
+There are some things you can test to confirm this is the issue.
 
-* Are scheduled posts working? (They use wp-cron too).
-* Are you hosted on Heart Internet? (wp-cron is known not to work with them).
-* If you click manual backup does it work?
-* Try adding `define( 'ALTERNATE_WP_CRON', true ); to your `wp-config.php`, do automatic backups work?
-* Is your site private (I.E. is it behind some kind of authentication, maintenance plugin, .htaccess) if so wp-cron won't work until you remove it, if you are and you temporarily remove the authentication, do backups start working?
+     * Are scheduled posts working? (They use wp-cron as well ). 
 
-If you have tried all these then feel free to contact support.
+     * Are you hosted on Heart Internet? (wp-cron may not be supported by Heart Internet, see below for work-around).
+
+     * If you click manual backup does it work?
+
+     * Try adding `define( 'ALTERNATE_WP_CRON', true );` to your `wp-config.php`, do automatic backups work?
+
+     * Is your site private (I.E. is it behind some kind of authentication, maintenance plugin, .htaccess) if so wp-cron won't work until you remove it, if you are and you temporarily remove the authentication, do backups start working?
+
+Report the results to our support team for further help. To do this, either enable suport from your Admin Dashboard (recommended), or email support@hmn.md
 
 **How to get BackUpWordPress working in Heart Internet**
 
 The script to be entered into the Heart Internet cPanel is: `/usr/bin/php5 /home/sites/yourdomain.com/public_html/wp-cron.php` (note the space between php5 and the location of the file). The file `wp-cron.php` `chmod` must be set to `711`.
+
+**My backups seem to be failing?**
+
+If your backups are failing - it's commonly caused by lack of available resources on your server. The easiest way to establish this to exclude some [of] or your entire uploades folder, running a backup an if that succeeds. If so, we know it's probably a server issue. If not, report the results to our support team for further help. To do this, either enable suport from your Admin Dashboard (recommended), or email support@hmn.md
 
 **Further Support & Feedback**
 
@@ -105,7 +116,477 @@ You can also tweet <a href="http://twitter.com/humanmadeltd">@humanmadeltd</a> o
 2. Choose your schedule, backup type, number of backups to keep and whether to recieve a notification email.
 3. Easily manage exclude rules and see exactly which files are included and excluded from your backup.
 
+== Upgrade Notice ==
+
+= 3.2.1 =
+
+* Important bug fixes. Please upgrade to this version to avoid incomplete or broken backups.
+
+= 3.1.3 =
+
+  * Fixes backwards compatibility for add-ons and avoids a Fatal Error. Please upgrade straight to this version before upgrading your add-ons.
+  
+= 3.0.4 =
+
+  * Fixes a few minor bugs. Immediate update is recommended.
+
+= 3.0.2 =
+
+  * Important: we have dropped support for PHP 5.2, you will not be able to activate BackUpWordPress on a server running PHP versions older than PHP 5.3.29
+
+= 3.0.1 =
+
+  * This is a critical update. Fixes a bug in the core backup library. Please update immediately.
+
 == Changelog ==
+
+### 3.2.4 / 2015-04-01
+
+* Fixes default exclude pattern that was too greedy.
+
+### 3.2.3 / 2015-04-01
+
+* Fixes issue where files where 'cache' files were excluded by default.
+* Updates brazilian portuguese translations.
+* Fixes the issue with the 'no thanks' button in the Support modal and misc JS improvements. props SiamKreative.
+
+### 3.2.2 / 2015-03-25
+
+* Fixes error in manual backups, caused by incorrect plugin version number in class, which is used for the JS script version.
+
+### 3.2.1 / 2015-03-25
+
+* Check if shell_exec is available before running command
+* Only validate day of month if this is the schedule type
+* Make FS optional and fix the DB connect method
+* (issue-770) Exclude the folder, not the wildcard
+* (issue-751) Rename plugin
+
+### 3.2 / 2015-03-16
+
+* (issue-698) skip mySql bug
+* Use shell_exec
+* Remove use statement
+* Revert to using shell_exec
+* Remove Process
+* (cool-runnings-757) Add back session_write_close
+* (issue-479) Hide hours and minutes for hourly backups
+* (backupception) Only load if main site on multisite
+* (all-paths-lead-to-rome) Set plugin path to main plugin file to avoid relative paths
+* (socket-to-me-one-more-time) Fix paths
+* Use socket if available
+* Display errors
+* Put the db dump in the archive first - fixes issue with large archive
+* Dont wait for response
+* Run schedule as a Backdrop task
+* Pass array directly to function
+* (issue-759) Fix require paths
+* check PHP version before anything else
+* Move plugin class to own file
+* Skip mysql bug error
+* Delete all BWP options
+* Start the process
+* Return and check WP_Error
+* (what-time-is-backup) Extract hours and minutes from the date as an array for display
+* Change plugin description if multisite
+* Use wp_get_sites
+* Add a comment
+* We check for this on plugin instantiation
+* Revert to clearing schedule and rescheduling
+* Delete schedules and leftover options from subsites
+* Ensure plugin only runs on main site
+* Fix Too Many Schedules
+* Use Symfony Process
+* (fix-incorrect-type-error) File is an SPL object so get path
+* Set root as default param
+* Delete backdrop transient
+* Force directory sizes recalculation
+* Define VCS abbr
+* Hide exclude patterns from Excludes list.
+* Check if user can connect
+* Test that the mysqldump command works
+* Add a couple of mysql versions
+* Automatically exclude VCS folders
+* Calculate Root size correctly
+* Get default rules from backup object
+* Do not auto ignore dot files
+* Count excluded
+* Do not count excluded
+* If its the root then return its size directly
+* Fix typo in transient names
+* Set and return class property instead
+* List default excludes as such
+* Require symfony finder
+* Clear transients on deactivate
+* Get list of files with Finder
+* Load composer packages
+* These are alredy filtered
+* Add some default excludes
+* Use absolute path for excludes added via UI
+* Fix tests
+* Fix conditional
+* Fix syntax error in travis YML
+* Run codesniffer only on pull requests
+* Update tested WP versions
+* Change min WP version required to match travis CI
+* Fix readme changelog placement
+* Add condtion for Cron and Ajax
+* Fix deactivate logic
+* Fixes recursive exclusion of files
+
+
+### 3.1.4 / 2015-02-24
+
+* (upgrade-options) Bump version
+* strtolower is redundant
+* Upgrade routine - renames service settings to avoid backslashes.
+* Use the Service name as the setting name
+* Clear settings for schedule settings
+* Fixes bug in displaying settings error notices
+* Update version number
+* Merge pull request #726 from humanmade/fix-fatal-error-missing-class-addons
+* Leave bare minimum to avoid fatal error
+* remove old main plugin class
+
+### 3.1.3 / 2015-02-04
+
+* Keep deprecated classes in a deprecated.php file to avoid Fatal Error in addons during upgrade.
+
+### 3.1.2 / 2015-02-03
+
+* (simplify-bwp-file-timestamp) Simplify the file name timestamp
+* Fix class file name
+* (fixup-setup-class) Add missing transients to uninstall routine
+* switch Travis notifications to Slack instead of Hipchat
+* Do not delete backups on uninstall
+* wrap in parenthesis
+* Fix include paths after moving uninstall to own file herpderp
+* Update BackUp class include
+* Add all cases to switch
+* Pass scanned files sizes through conform_dir()
+* Fix some classes and requires
+* (origin/issue-684, issue-684) Fix namespaces
+* Remove unnecessary wildcard from regex
+* (crazy-refactor) Remove some duplication
+* Formatting
+* Fix Class name
+* Blank line
+* Uses a DirectoryIterator to delete files
+* Remove tests for now
+* Fix stable tag number
+* Revert to using uninstall.php
+* Add tests for uninstall and deactivate
+* Remove double lie break
+* Remove double line break
+* Remove phpdocumentor
+* We still need to require some scripts...
+* We dont need to check for this constant in the hook callback
+* Use get_col to directly have an array of schedule option names
+* Remove namespacing
+* Remove debugging
+* Make the uninstall, activation and deactivation hooks work
+* (change-singleton-implementation) Change the singleton implementation to not use the static() function
+* path argument interfers with wp-cli path argument.
+* Fix some scrutinizer issues, mostly major ones
+* Consistent default name for database dumps
+* Major 5.3 re-factoring fun
+* Minor code formatting
+* else if should be elseif
+* Update the WP_CLI command to fix some issues
+* Add support for copying and updating an existing backups
+
+#### 3.1.0 / 2015-01-13
+
+* Correct $response1 variable
+* (origin/issue-652, issue-652) Suppress warnings from filesystem functions
+* Remove debugging function
+* (origin/issue-475, issue-475) Fix a French string
+* Format the intercom data better
+* Load Intercom in the admin footer
+* Fix some HTML issues
+* Add a function that returns a given option value
+* Return Unknown if no average exists or invalid
+* Add a start parameter to function
+* Pass in the start time as a parameter
+* Make strings translatable
+* Escape values
+* Adds a function to track backup duration and another to display it
+* Adds Average Backup Duration Info
+* Improve display of arrays
+* Fixes open_basedir warnings
+* Replace spaces with tabs for indentation
+* (wp-cron-test-improvements) Improve the reliability of the wp-cron test
+* Pop in the directory sizes
+* Adapt heartbeat pulse
+* Update Javascript
+* Update constant name
+* Load the default translations so that activation error message is in user language
+* Fix a few translatable strings
+* Update French translations
+* Re-uglify Intercom js
+* Use provided callback argument to determine current screen
+* remove deprecated code
+* Only show notices on BWP admin page
+* Fix class name
+* Make function public for now
+* Get an instance of BWP to load functions
+* Fix conditional
+* Show admin notice if fails to meet requirements
+* Remove unneeded function
+* Fix references
+* Refactor main class after addition of the Setup class
+* Introduce a setup class
+* Determine if we need to run a cleanup routine
+* Introduce a custom hook for addons
+* Refactor main plugin file into a singleton class
+* Bring activation and deactivation into main plugin class
+* css changes to fix support button alignment
+* Fixes issue preventing backups from running without JS
+* Remove back compat memory limit define
+* Refactor HMBKP_Notices to support non-persistant notices
+* Minor refactor for PHP minimum requirements notice
+* Clear previous backup notices when running a new backup
+* Fix issues with custom paths
+* Improved singleton pattern
+* Display errors in network admin
+* Change to text input so multiple email address are supported
+* Removes HTML tag from string
+* Account for new schedule
+* Make upsell sentence translatable
+* fix return type
+* Return true if transient exists
+* Check if constant is defined
+* Request the site size via heartbeat send
+* Pass site size through heartbeat
+* Only calculate if necessary
+
+#### 3.0.4 / 2014-12-10
+
+  * Simplify the backup count display
+  * Enqueue scripts properly
+  * Change how we check directory_sizes
+  * Add BackUpWordPress test case class
+  * Move class to separate file
+  * Group help tab display functions
+  * Update POT file
+  * Make strings ready for translation
+
+#### 3.0.3 / 2014-12-06
+
+  * Add French translations
+  * Update textdomain
+  * Fix deleted function
+  * Use HM_Backup function to determine if shell_exec is enabled
+  * Check if file is readable first
+  * Fix how we kick off Task
+  * Remove unused var
+  * Call recursive filescanner on admin page load
+  * Update package.json
+  * Update the POT file task params
+  * Replace hmbkp with backupwordpress as textdomain
+  * Exclude folders
+  * Add Grunt task options
+  * Remove hard line returns
+  * Display placeholder if exec fails
+  * Add 30 second time diff allowance
+  * Use $TRAVIS_BUILD_DIR
+  * we do this in travis.yml
+  * Regenerate github account info
+  * Update command to reflect function rename
+  * Update tests to reflect function name change
+  * Rename function
+  * Filter tests to run
+  * Fix group flags
+  * Calculate site size on page load
+
+#### 3.0.2 / 2014-12-02
+
+  * Bump version
+  * Add parenthesis to require_once
+  * Remove disk space info
+  * Attempt to fix build
+  * define WP_TESTS_DIR
+  * Make sure current_action fnction is loaded
+  * Remove extra slashes and semicolons
+  * Remove the custom webhook service
+  * Better default WP_TESTS_DIR
+  * move trailingslash calls out of the loop for performance
+  * Minor code cleanup
+  * Correct path for hm-backup so it's tests are run
+  * add composer.lock
+  * Use scrutinizer code coverage
+  * add waffle.io badge
+  * Use up to date commands for coverage
+  * Add code rating
+  * Don't test 5.2
+  * Update readme.md
+  * excluded_dirs is deprecated
+  * Update scrutinizer config
+  * Add composer config and dev dependencies
+  * Make PHPUnit generate an XML for coveralls
+  * Add scrutinizer config
+  * Ignore vendor dir
+  * Add a link to Help page
+  * Move to activation hook
+  * Bump up required WP version
+  * Escape all the things
+  * Save errors to a notices option
+  * Reload page on errors
+  * Remove script
+  * Remove unneeded class
+  * Check PHP version on plugins loaded
+  * Check PHP version on activate
+  * Update readme
+  * Set required version to 5.3.2
+  * Update tests
+  * Allow for a 30 second delta in asserting schedule time
+  * Use the new build env on Travis
+  * Restrict plugin to be network only
+  * Fix admin URL logic
+  * Formatting
+  * Update readme changelog
+
+#### 3.0.1 / 2014-11-20
+
+  * remove uneeded images
+  * latest hm-backup / fixes a serious bug in backups.
+  * Typos in v 3.0 changelog
+  * Specify POT filename in grunt task
+  * Update POT file
+  * Markdown readme
+  * Regenerate readme
+  * Add plugin headers
+
+#### 3.0 / 2014-11-14
+
+  * Refactor the recursive filesize scanner
+  * correct text domain
+  * Remove unneede statements
+  * reload the excludes filelist in the correct place when someone excludes a file
+  * Latest backdrop
+  * Regenerate minified CSS
+  * Regenerate minified JS
+  * Fix cancel backup action
+  * WordPress Coding Standards
+  * Exit early if incompatible version of WordPress
+  * Update translations
+  * Update changelog
+
+#### 3.0.0-beta / 2014-09-08
+
+  * Load minified CSS
+  * Formatting
+  * Biweekly wording
+  * Add missing period
+  * use nonce_url instead of manually adding the nonce query param
+  * close the settings form when done
+  * Design changes as per ticket
+  * Start tracking langauge in server info
+  * Right align the primary button in the enable support modal
+  * Re-factor the directory filesize code to use a single array instead of thoussands of transients
+  * Remove the warning that would show if you were using anything other than the latest stable, it's no longer needed now that the FAQ is local
+  * switch to using a single transient to store directory filesize data
+  * Add an anchor link
+  * Add error message
+  * Rename function
+  * Prefix GET params
+  * Update exclude rule action
+  * Adds function for building admin action urls
+  * fix vertical scroll
+  * Adds some functions to manage settings form submission errors
+  * Rename nonce and action
+  * fetch errors to display
+  * Form submission handling for BWP and add-ons settings
+  * Use a new function that persists form submission errors to  a transient
+  * None check
+  * Pass the nonce around in the ajax request
+  * Enable support action links
+  * Check nonces
+  * Modify action URLs to use the admin_post hook
+  * Remove unneeded code
+  * New line at end
+  * Use admin_post hook
+  * Display schedule start time in local timezone
+  * Add an action hook that gives access to consumers to the backup progress
+ * Update translatable strings POT file
+ * Bump version
+ * Update min WP version and tested up to
+ * accidently used dash instead of underscore
+ * namespaced option and added option to uninstall.php
+ * basic show/hide of premium upsell
+ * Fix incorrect transient expiry
+ * Show the spinner in the tab if a schedule other than the current is running
+ * Snip snip
+ * Bring back the some javascript enhancements
+ * Switch to the PHP 5.2 compatible version of Backdrop
+ * Finish up support
+ * Brace up single line if's and foreach's
+ * Only load minified scripts and styles if WP_DEBUG isn't on
+ * Load the minified css and js files by default
+ * Remove the combined css files as we only have one now. Stop loading colorbox.
+ * Remove colorbox
+ * Improvements
+ * More improvements
+ * Don't die when directly running a backup on page load
+ * Re-factor the backup filesize calculation
+ * make capability filterable
+ * use core capabilities instead of custom
+ * Switch to Backdrop
+ * Fix typo in prefix
+ * Hook function onto admin_post
+ * Update delete link
+ * Bookmark current admin page for redirect
+ * Add custom capabilities and role
+ * Exclude BackUpWP by default
+ * Ignore the build folder
+ * Add more build excludes
+ * minify JS
+ * generate markdown readme
+ * minify css
+ * combine css
+ * regenerate readme
+ * Make links consistent for the grunt task
+ * Convert URLS to markdown
+ * Update lang files
+ * Add colorbox as bower dependency
+ * remove colorbox folder
+ * Remove colorbox submodule
+ * Change how we include FAQ
+ * Add readme partials
+ * Add package.json
+ * Add Gruntfile
+ * Add bower.json
+ * JSHint rules
+ * remove from ignore
+ * Update ignore list
+ * Add bower config
+ * Add FAQ strings
+ * Return the cached directory size early if we have it
+ * Re-factor the file browser scanner
+ * correct sprintf usage
+ * Handle saving service forms
+ * Codeing standards
+ * Move the error check outside of the foreach
+ * Remove uneeded $is_tab_visible
+ * Only show excludes for backups which include files
+ * Show destinations in the list of schedule links
+ * WordPress standard modal for enabling support
+ * Remove extra slash in include path
+ * Add a heading to the settings form
+ * More work on excludes
+ * Another todo
+ * Add some todos
+ * Don't include the parent directory in a browsable list
+ * More work on Excludes
+ * Switch to only storing 3 backups by default
+ * More work on redesign
+ * commented out enable support button till we figure out what to do with it
+ * made tabs responsive below 639px
+ * More work on redesign
+ * Add more default excludes
+ * Correctly highlight the tab for the first schedule
+ * Switch to tabs instead of subsubsub
+ * First bash at a redesign settings UX
 
 #### 2.6.2
 

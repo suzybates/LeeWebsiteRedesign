@@ -90,7 +90,7 @@ class ChpWidgetFeatureBox extends CbpWidget
             <div class="two fifths mobile ch-feature-box-icon-wrapper">
                 <?php if (!empty($title_link_to) && (int) $icon_is_link): ?>
                     <a href="<?php echo $title_link_to; ?>">
-                        <span class="ch-feature-box-icon">                    
+                        <span class="ch-feature-box-icon">
                             <i class="fa <?php echo $icon; ?> fa-3x"></i>
                         </span>
                     </a>
@@ -107,10 +107,10 @@ class ChpWidgetFeatureBox extends CbpWidget
 
                     <?php if (!empty($title_link_to)): ?>
                         <a href="<?php echo $title_link_to; ?>">
-                            <h1><?php echo $title; ?></h1>
+                            <h2><?php echo $title; ?></h2>
                         </a>
                     <?php else: ?>
-                        <h1><?php echo $title; ?></h1>
+                        <h2><?php echo $title; ?></h2>
                     <?php endif; ?>
                 <?php endif; ?>
                 <?php echo $content; ?>

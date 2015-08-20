@@ -405,7 +405,7 @@ if (!class_exists('CbpEditor')) :
 				self::$first_init = array(
 					'theme' => 'modern',
 					'skin' => 'lightgray',
-					'language' => self::$mce_locale,
+//					'language' => self::$mce_locale,
 					'resize' => 'vertical',
 					'formats' => "{
 						alignleft: [

@@ -124,8 +124,8 @@ class ChpLatestPostsWidget extends WP_Widget
                         <?php echo date($instance['date_format'], strtotime($post->post_date)); ?>
                     </span>
                     <span class="cbp-widget-post-meta-author">
-                        <?php _e('by', CHT_APP_TEXT_DOMAIN); ?> <a href="<?php echo get_author_posts_url(get_the_author_meta('ID')); ?>">
-                            <?php the_author_meta('display_name'); ?>
+                        <?php _e('by', CHT_APP_TEXT_DOMAIN); ?> <a href="<?php echo get_author_posts_url($post->post_author); ?>">
+                            <?php the_author_meta('display_name', $post->post_author); ?>
                         </a>
                     </span>
 
@@ -135,16 +135,6 @@ class ChpLatestPostsWidget extends WP_Widget
                     <?php $text = apply_filters('widget_text', $post->post_content); ?>
                     <p><?php echo wp_trim_words($text, 10); ?></p>                        </div>
             </div>
-
-
-
-
-
-
-
-
-
-
 
         <?php endforeach; ?>     
         <?php if (!empty($instance['cat_link_text'])): ?>

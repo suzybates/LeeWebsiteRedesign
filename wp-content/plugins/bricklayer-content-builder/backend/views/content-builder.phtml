@@ -4,11 +4,11 @@
 <?php // $bricklayer_original_post_content = CbpUtils::getMeta($post->ID, 'bricklayer_original_post_content'); ?>
 <?php // $bricklayer_post_shortcodes       = CbpUtils::getMeta($post->ID, 'bricklayer_post_shortcodes'); ?>
 <?php /*
-<div class="cbp-hidden-controls">
-    <input type="checkbox" <?php echo $bricklayer_enabled ? 'checked="checked"' : ''; ?> name="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_enabled" id="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_enabled"/>
-    <textarea name="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_original_post_content" id="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_original_post_content" cols="30" rows="10"><?php echo $bricklayer_original_post_content; ?></textarea>
-    <textarea name="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_post_shortcodes" id="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_post_shortcodes" cols="30" rows="10"><?php echo $bricklayer_post_shortcodes; ?></textarea>
-</div>
+  <div class="cbp-hidden-controls">
+  <input type="checkbox" <?php echo $bricklayer_enabled ? 'checked="checked"' : ''; ?> name="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_enabled" id="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_enabled"/>
+  <textarea name="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_original_post_content" id="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_original_post_content" cols="30" rows="10"><?php echo $bricklayer_original_post_content; ?></textarea>
+  <textarea name="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_post_shortcodes" id="<?php echo CbpWidgets::getPrefix(); ?>_bricklayer_post_shortcodes" cols="30" rows="10"><?php echo $bricklayer_post_shortcodes; ?></textarea>
+  </div>
  */ ?>
 <div id="<?php echo CbpWidgets::getPrefix(); ?>-tabs-wrapper">
     <div id="<?php echo CbpWidgets::getPrefix(); ?>-tabs">
@@ -36,7 +36,13 @@
                                 <?php $widgetDisplaySettings = $widget->getSettings('display'); ?>
                                 <?php $widgetSettingsTab     = isset($widgetDisplaySettings['backend']) && isset($widgetDisplaySettings['backend']['tab']) ? $widgetDisplaySettings['backend']['tab'] == $tab['id'] : false; ?>
                                 <?php if ($widgetSettingsTab && !in_array($widget->getId(), $disallowedWidgets)): ?>
-                                    <li data-type="<?php echo $widget->getId(); ?>"><i class="<?php echo $widget->getSettings('icon'); ?>"></i><p><?php echo $widget->getName(); ?></p></li>
+                                    <li data-type="<?php echo $widget->getId(); ?>">
+                                        <?php if ($widget->getSettings('icon_img')): ?>
+                                            <img src="<?php echo $widget->getSettings('icon_img'); ?>">
+                                        <?php else: ?>
+                                            <i class="<?php echo $widget->getSettings('icon'); ?>"></i>
+                                        <?php endif; ?>
+                                        <p><?php echo $widget->getName(); ?></p></li>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         </ul>
@@ -89,33 +95,38 @@
 <script type="text/template" id="<?php echo CbpWidgets::getPrefix(); ?>_widget_element">
     <#= partial( '<?php echo CbpWidgets::getPrefix(); ?>_widget_edit_bar', {partial: partial, data: {}, templates: ['<?php echo CbpWidgets::getPrefix(); ?>_widget_element_edit', '<?php echo CbpWidgets::getPrefix(); ?>_widget_element_duplicate', '<?php echo CbpWidgets::getPrefix(); ?>_widget_element_remove']} ) #>
     <div class="<?php echo CbpWidgets::getPrefix(); ?>-widget-content-wrapper">
-        <div class="<?php echo CbpWidgets::getPrefix(); ?>-widget-icon"><i class="<#= model.iconClass #>"></i></div>
-        <div class="<?php echo CbpWidgets::getPrefix(); ?>-widget-title"><#= model.name #></div>
-
-    </div>
+    <# if (model.iconImg) { #>
+    <span><img src="<#= model.iconImg #>"></span>
+    <# } else { #>
+    <div class="<?php echo CbpWidgets::getPrefix(); ?>-widget-icon"><i class="<#= model.iconClass #>"></i></div>
+    <# } #>
+    <div class="<?php echo CbpWidgets::getPrefix(); ?>-widget-content-text">
+    <div class="<?php echo CbpWidgets::getPrefix(); ?>-widget-title"><#= model.name #></div>
     <div class="<?php echo CbpWidgets::getPrefix(); ?>-widget-display-description"><#= helpers.trimmer(jQuery('<div/>').html(_.unescape(model.get('display_description'))).text(), 55) #></div>
+    </div>
+    </div>
 
 </script>
 
 <script type="text/template" id="<?php echo CbpWidgets::getPrefix(); ?>_widget_edit_bar">
 
     <div class="<?php echo CbpWidgets::getPrefix(); ?>-edit-bar not-sortable">
-        <# _.each(templates, function(templateId) { #> 
-        <#= partial( templateId, {width:data.width} ) #>
-        <# }); #>
+    <# _.each(templates, function(templateId) { #> 
+    <#= partial( templateId, {width:data.width} ) #>
+    <# }); #>
     </div>
 </script>
 
 <!--partials-->
 <script type="text/template" id="<?php echo CbpWidgets::getPrefix(); ?>_widget_element_edit">
     <div class="edit-bar-element content-element-edit not-sortable">
-        <i class="fa fa-edit"></i>        
+    <i class="fa fa-edit"></i>        
     </div>
 </script>
 
 <script type="text/template" id="<?php echo CbpWidgets::getPrefix(); ?>_widget_element_duplicate">
     <div class="edit-bar-element content-element-duplicate not-sortable">
-        <i class="fa fa-copy"></i>        
+    <i class="fa fa-copy"></i>        
     </div>
 </script>
 
@@ -125,9 +136,9 @@
 
 <script type="text/template" id="<?php echo CbpWidgets::getPrefix(); ?>_widget_element_spinner">
     <div class="edit-bar-element width-spinner not-sortable">
-        <span class="width-down"><i class="fa fa-minus"></i></span>
-        <#= width #>
-        <span class="width-up"><i class="fa fa-plus"></i></span>
+    <span class="width-down"><i class="fa fa-minus"></i></span>
+    <#= width #>
+    <span class="width-up"><i class="fa fa-plus"></i></span>
     </div>
 </script>
 
@@ -143,6 +154,6 @@
 
 <script type="text/template" id="<?php echo CbpWidgets::getPrefix(); ?>_widget_form_submit">
     <div class="row padded border-top">
-        <input class="button button-primary button-large" type="submit" id="content-element-save" value="Save">
+    <input class="button button-primary button-large" type="submit" id="content-element-save" value="Save">
     </div>
 </script>

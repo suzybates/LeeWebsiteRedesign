@@ -89,6 +89,7 @@ if (!class_exists('CbpWidgetNewsletterList')):
                 'options' => array(
                     'date'              => $this->translate('Date'),
                     'title'             => $this->translate('Title'),
+                    'title'             => $this->translate('Title'),
                 ),
                 'name'              => $this->getIdString('order_by'),
                 'value'             => $instance['order_by'],
@@ -118,54 +119,8 @@ if (!class_exists('CbpWidgetNewsletterList')):
                 'description_title' => $this->translate('Newsletters Per Page'),
                 'description_body'  => $this->translate('Enter number.'),
             ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_post_date'),
-                'value'             => $instance['show_post_date'],
-                'description_title' => $this->translate('Show Newsletter Date?'),
-                'attribs'           => array('data-type' => 'triggerparent', 'data-name' => 'show_post_date')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_post_date_icon'),
-                'value'             => $instance['show_post_date_icon'],
-                'description_title' => $this->translate('Show Newsletter Date Icon?'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_post_date', 'data-parentstate' => '1')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    'M j, Y'            => date('M j, Y'),
-                    'j M, Y'            => date('j M, Y'),
-                    'F j, Y'            => date('F j, Y'),
-                    'j F, Y'            => date('j F, Y'),
-                ),
-                'name'              => $this->getIdString('post_date_format'),
-                'value'             => $instance['post_date_format'],
-                'description_title' => $this->translate('Newsletter Date Format'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_newsletter_date', 'data-parentstate' => '1')
-            ));
-            CbpWidgetFormElements::select(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No')
-                ),
-                'name'              => $this->getIdString('show_featured_image'),
-                'value'             => $instance['show_featured_image'],
-                'description_title' => $this->translate('Show Featured Image?'),
-                'attribs'           => array('data-type' => 'triggerparent', 'data-name' => 'show_featured_image')
-            ));
-            CbpWidgetFormElements::selectRegiseredImageSizes(array(
-                'name'              => $this->getIdString('thumbnail_dimensions'),
-                'value'             => $instance['thumbnail_dimensions'],
-                'description_title' => $this->translate('Featured Image Dimensions'),
-                'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'show_featured_image', 'data-parentstate' => '1')
-            ));
+            
+            
             CbpWidgetFormElements::select(array(
                 'options' => array(
                     'one whole'         => 1,
@@ -199,15 +154,7 @@ if (!class_exists('CbpWidgetNewsletterList')):
                 'description_title' => $this->translate('Link Text'),
                 'attribs'           => array('data-type'        => 'triggerchild', 'data-parent'      => 'use_button_link', 'data-parentstate' => '1')
             ));
-            CbpWidgetFormElements::text(array(
-                'options' => array(
-                    '1'                 => $this->translate('Yes'),
-                    '0'                 => $this->translate('No'),
-                ),
-                'name'              => $this->getIdString('limit_by_newsletter_item_dates'),
-                'value'             => $instance['limit_by_newsletter_item_dates'],
-                'description_title' => $this->translate('Limit by the Newsletter Item Date'),
-            ));
+            
         }
 
        public function sanitize(&$attribute)
@@ -243,15 +190,10 @@ if (!class_exists('CbpWidgetNewsletterList')):
                         'title_size'           => 'h2',
                         'title_link_to_post'   => '1',
                         'post_title_size'      => 'h3',
-                        'order_by'             => 'date',
+                        'order_by'             => 'newsletter_date',
                         'order'                => 'DESC',
                         'use_pagination'       => '0',
                         'posts_per_page'       => 10,
-                        'show_post_date'       => '1',
-                        'show_post_date_icon'  => '1',
-                        'post_date_format'     => 'M j, Y',
-                        'show_featured_image'  => '1',
-                        'thumbnail_dimensions' => 'thumbnail',
                         'number_of_columns'    => 'one whole',
                         'number_of_characters' => 200,
                         'use_button_link'      => '1',
@@ -262,67 +204,53 @@ if (!class_exists('CbpWidgetNewsletterList')):
 
             global $paged;
             global $post;
+            $params = array(
+    			'limit' => $posts_per_page, 
+    			// Be sure to sanitize ANY strings going here
+    			'where'=>"approved_for_publication.meta_value = 'Approved'" ,
+    			'paged'             => $paged,
+                'orderby'           => 'newsletter_date '. $order
+			);
+           
+            $mypod = pods('newsletter', $params);
             
-            query_posts(array(
+            //echo $mypod->display('post_date');
+            
+            /*query_posts(array(
                 'post_type' => 'newsletter',
-                'posts_per_page'    => $posts_per_page,
+                //'posts_per_page'    => $posts_per_page,
                 'paged'             => $paged,
                 'orderby'           => $order_by,
                 'order'             => $order
             ));
-            
+			*/            
             
             $padding            = CbpWidgets::getCssClass($padding);
             $css_class          = !empty($css_class) ? ' ' . $css_class : '';
             $custom_css_classes = !empty($custom_css_classes) ? ' ' . $custom_css_classes : '';
+            
             ?>
-            <?php if (have_posts()) : ?>
+            
                 <div class="<?php echo CbpWidgets::getDefaultWidgetCssClass(); ?> <?php echo $type; ?><?php echo $custom_css_classes; ?><?php echo $css_class; ?> <?php echo $padding; ?>">
                     <?php if (!empty($title)): ?>
                         <<?php echo $title_size; ?>><?php echo $title; ?></<?php echo $title_size; ?>>
                     <?php endif; ?>
-                    <?php while (have_posts()) : the_post(); ?>
+                    <?php while ($mypod->fetch() ) : ?>
                         <div class="<?php echo $number_of_columns; ?> double-pad-right double-pad-bottom <?php echo $this->getPrefix(); ?>-widget-post-list-item">
-                            <?php if ((int) $show_featured_image): ?> 
-                                <?php $imageArgs = array('echo' => false, 'size' => $thumbnail_dimensions); ?>
-                                <?php $image = cbp_get_the_image($imageArgs); ?>
-                                <?php if (isset($image) && $image): ?>
-                                    <div class="<?php echo $this->getPrefix(); ?>-widget-post-image">
-                                        <?php echo $image; ?>
-                                    </div>
-                                <?php endif; ?>
-                            <?php endif; ?>
+                            <?php //var_dump( $mypod) ?>
                             <<?php echo $post_title_size; ?>>
-                            <?php if ((int) $title_link_to_post): ?>
-                                <a href="<?php echo get_permalink($post->ID); ?>"><?php the_title(); ?></a>
-                            <?php else: ?>
-                                <?php the_title(); ?>
-                            <?php endif; ?>
+                            	<a href="<?php echo $mypod->display('permalink'); ?>">
+                            	<?php echo $mypod->display('post_title'); ?></a>
                             </<?php echo $post_title_size; ?>>
-                            <div class="<?php echo $this->getPrefix(); ?>-widget-post-meta-data">
-                                <?php if ((int) $show_post_date): ?>
-                                    <?php $postDateIcon = (int) $show_post_date_icon ? '<i class="fa fa-calendar"></i> ' : ''; ?> 
-                                    <span class="<?php echo $this->getPrefix(); ?>-widget-post-meta-date">
-                                        <?php echo $postDateIcon; ?><?php echo date_i18n($post_date_format, strtotime($post->post_date)); ?>
-                                    </span>
-                                <?php endif; ?>
-                            </div>
-                            <div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
-                                <?php echo CbpUtils::trimmer(strip_shortcodes(get_the_content()), $number_of_characters); ?>
-                            </div>
-                            <?php if ((int) $use_button_link): ?>
-                                <div class="<?php echo $this->getPrefix(); ?>-widget-post-link double-pad-top">
-                                    <a class="cbp_widget_link" href="<?php echo get_permalink(); ?>"><?php echo $link_text; ?></a>
-                                </div>
-                            <?php endif; ?>
                         </div>
+                    <?php //endwhile; ?>
                     <?php endwhile; ?>
                 </div>
-            <?php endif; ?>
-            <?php wp_reset_query(); ?>
-            <?php if ((int) $use_pagination): ?> 
-                <?php CbpUtils::pagination(); ?>
-            <?php endif; ?>
+            
+            <?php //wp_reset_query(); ?>
+            <?php //if ((int) $use_pagination): ?> 
+                <?php //CbpUtils::pagination(); ?>
+            <?php //endif; ?>
             <?php
         }
     }

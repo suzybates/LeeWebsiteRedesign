@@ -1,0 +1,7 @@
+0000.000 (0) Opened log file at time: Sun, 16 Aug 2015 21:49:40 -0500 on http://www.lee-elementary.org
+0000.049 (0) UpdraftPlus WordPress backup plugin (http://updraftplus.com): 1.9.63 WP: 4.2.4 PHP: 5.5.26 (Linux wp361712 3.1.9-vs2.3.2.5vs2.3.2.5+ #3 SMP Wed Feb 12 13:51:29 PST 2014 x86_64) MySQL:  Server: Apache safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 23.8M | 24.8M) multisite: N mcrypt: Y LANG:  ZipArchive::addFile: Y
+0000.055 (0) Free space on disk containing Updraft's temporary directory: 575702.3 Mb
+0000.065 (0) Tasks: Backup files:  (schedule: daily) Backup DB: 1 (schedule: daily)
+0000.072 (0) Processed schedules. Tasks now: Backup files:  Backup DB: 
+0000.080 (0) No email will be sent - this backup set was empty.
+0000.087 (0) The backup apparently succeeded and is now complete

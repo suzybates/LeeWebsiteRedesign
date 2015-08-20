@@ -50,7 +50,7 @@ if (!class_exists('CbpWidgetAccordion')):
                     <?php if ($shortcode['atts']['type'] == 'cbp_accordion_item'): ?>
                         <h3 class="<?php echo $this->getPrefix() ?>-accordion-item-title"><?php echo $shortcode['atts']['name']; ?></h3>
                         <div class="<?php echo $this->getPrefix() ?>-accordion-item-content">
-                            <?php echo $shortcode['content']; ?>
+                            <?php echo do_shortcode($shortcode['content']); ?>
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>

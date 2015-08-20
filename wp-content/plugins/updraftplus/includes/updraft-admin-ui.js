@@ -11,15 +11,18 @@ function updraft_delete(key, nonce, showremote) {
 
 function updraft_openrestorepanel(toggly) {
 	//jQuery('.download-backups').slideDown(); updraft_historytimertoggle(1); jQuery('html,body').animate({scrollTop: jQuery('#updraft_lastlogcontainer').offset().top},'slow');
+	updraft_console_focussed_tab = 2;
 	updraft_historytimertoggle(toggly);
 	jQuery('#updraft-navtab-status-content').hide();
 	jQuery('#updraft-navtab-expert-content').hide();
 	jQuery('#updraft-navtab-settings-content').hide();
+	jQuery('#updraft-navtab-addons-content').hide();
 	jQuery('#updraft-navtab-backups-content').show();
 	jQuery('#updraft-navtab-backups').addClass('nav-tab-active');
 	jQuery('#updraft-navtab-expert').removeClass('nav-tab-active');
 	jQuery('#updraft-navtab-settings').removeClass('nav-tab-active');
 	jQuery('#updraft-navtab-status').removeClass('nav-tab-active');
+	jQuery('#updraft-navtab-addons').removeClass('nav-tab-active');
 }
 
 function updraft_delete_old_dirs() {
@@ -47,6 +50,12 @@ function updraft_restore_setoptions(entities) {
 			jQuery(y).attr('disabled','disabled').parent().hide();
 		}
 	});
+	var cryptmatch = entities.match(/dbcrypted=1/);
+	if (cryptmatch) {
+		jQuery('.updraft_restore_crypteddb').show();
+	} else {
+		jQuery('.updraft_restore_crypteddb').hide();
+	}
 	var dmatch = entities.match(/meta_foreign=([12])/);
 	if (dmatch) {
 		jQuery('#updraft_restore_meta_foreign').val(dmatch[1]);
@@ -63,6 +72,51 @@ var lastlog_lastdata = "";
 var lastlog_jobs = "";
 var lastlog_sdata = { action: 'updraft_ajax', subaction: 'lastlog' };
 var updraft_activejobs_nextupdate = (new Date).getTime() + 1000;
+// Bits: main tab displayed (1); restore dialog open (uses downloader) (2); tab not visible (4)
+var updraft_page_is_visible = 1;
+var updraft_console_focussed_tab = 1;
+
+// N.B. This function works on both the UD settings page and elsewhere
+function updraft_check_page_visibility(firstload) {
+	if ('hidden' == document["visibilityState"]) {
+		updraft_page_is_visible = 0;
+	} else {
+		updraft_page_is_visible = 1;
+		if (1 !== firstload) { updraft_activejobs_update(true); }
+	};
+}
+
+// See http://caniuse.com/#feat=pagevisibility for compatibility (we don't bother with prefixes)
+if (typeof document.hidden !== "undefined") {
+	document.addEventListener('visibilitychange', function() {updraft_check_page_visibility(0);}, false);
+}
+
+updraft_check_page_visibility(1);
+
+var updraft_poplog_log_nonce;
+var updraft_poplog_log_pointer = 0;
+var updraft_poplog_lastscroll = -1;
+var updraft_last_forced_jobid = -1;
+var updraft_last_forced_resumption = -1;
+var updraft_last_forced_when = -1;
+
+var updraft_backupnow_nonce = '';
+var updraft_activejobslist_backupnownonce_only = 0;
+var updraft_inpage_hasbegun = 0;
+
+function updraft_backupnow_inpage_go(success_callback, onlythisfileentity) {
+	// N.B. This function should never be called on the UpdraftPlus settings page - it is assumed we are elsewhere. So, it is safe to fake the console-focussing parameter.
+	updraft_console_focussed_tab = 1;
+	updraft_inpage_success_callback = success_callback;
+	var updraft_inpage_modal_buttons = {};
+	jQuery('#updraft-backupnow-inpage-modal').dialog('option', 'buttons', updraft_inpage_modal_buttons);
+	jQuery('#updraft_inpage_prebackup').hide();
+	jQuery('#updraft-backupnow-inpage-modal').dialog('open');
+	jQuery('#updraft_inpage_backup').show();
+	updraft_activejobslist_backupnownonce_only = 1;
+	updraft_inpage_hasbegun = 0;
+	updraft_backupnow_go(0, 0, 0, onlythisfileentity);
+}
 
 function updraft_activejobs_update(force) {
 	var timenow = (new Date).getTime();
@@ -76,31 +130,123 @@ function updraft_activejobs_update(force) {
 			downloaders = downloaders + dat.base + ',' + dat.nonce + ',' + dat.what + ',' + dat.index;
 		}
 	});
-	jQuery.get(ajaxurl, { action: 'updraft_ajax', subaction: 'activejobs_list', nonce: updraft_credentialtest_nonce, downloaders: downloaders }, function(response) {
+	
+	var gdata = {
+		action: 'updraft_ajax',
+		subaction: 'activejobs_list',
+		nonce: updraft_credentialtest_nonce,
+		downloaders: downloaders
+	}
+	
+	try {
+		if (jQuery("#updraft-poplog").dialog("isOpen")) {
+			gdata.log_fetch = 1;
+			gdata.log_nonce = updraft_poplog_log_nonce;
+			gdata.log_pointer = updraft_poplog_log_pointer
+		}
+	} catch (err) {
+		console.log(err);
+	}
+
+	if (updraft_activejobslist_backupnownonce_only && typeof updraft_backupnow_nonce !== 'undefined' && updraft_backupnow_nonce != '') {
+		gdata.thisjobonly = updraft_backupnow_nonce;
+	}
+	
+	jQuery.get(ajaxurl, gdata, function(response) {
  		try {
 			resp = jQuery.parseJSON(response);
-			timenow = (new Date).getTime();
-			if (lastlog_lastdata == response) {
-				updraft_activejobs_nextupdate = timenow + 4500;
-			} else {
-				updraft_activejobs_nextupdate = timenow + 1200;
-			}
+
 			//if (repeat) { setTimeout(function(){updraft_activejobs_update(true);}, nexttimer);}
-			lastlog_lastdata = response;
 			if (resp.l != null) { jQuery('#updraft_lastlogcontainer').html(resp.l); }
+			
+			var lastactivity = -1;
+			
 			jQuery('#updraft_activejobs').html(resp.j);
+			jQuery('#updraft_activejobs .updraft_jobtimings').each(function(ind, element) {
+				var $el = jQuery(element);
+				// lastactivity, nextresumption, nextresumptionafter
+				if ($el.data('lastactivity') && $el.data('jobid')) {
+					var jobid = $el.data('jobid');
+					var new_lastactivity = $el.data('lastactivity');
+					if (lastactivity == -1 || new_lastactivity < lastactivity) { lastactivity = new_lastactivity; }
+					var nextresumptionafter = $el.data('nextresumptionafter');
+					var nextresumption = $el.data('nextresumption');
+// 					console.log("Job ID: "+jobid+", Next resumption: "+nextresumption+", Next resumption after: "+nextresumptionafter+", Last activity: "+new_lastactivity);
+					// Milliseconds
+					timenow = (new Date).getTime();
+					if (new_lastactivity > 50 && nextresumption >0 && nextresumptionafter < -30 && timenow > updraft_last_forced_when+100000 && (updraft_last_forced_jobid != jobid || nextresumption != updraft_last_forced_resumption)) {
+						updraft_last_forced_resumption = nextresumption;
+						updraft_last_forced_jobid = jobid;
+						updraft_last_forced_when = timenow;
+						console.log('UpdraftPlus: force resumption: job_id='+jobid+', resumption='+nextresumption);
+						jQuery.post(ajaxurl,  {
+							action: 'updraft_ajax',
+							subaction: 'forcescheduledresumption',
+							nonce: updraft_credentialtest_nonce,
+							resumption: nextresumption,
+							job_id: jobid
+						}, function(response) {
+							console.log(response);
+						});
+					}
+				}
+			});
+			
+			timenow = (new Date).getTime();
+			updraft_activejobs_nextupdate = timenow + 180000;
+			// More rapid updates needed if a) we are on the main console, or b) a downloader is open (which can only happen on the restore console)
+			if (updraft_page_is_visible == 1 && (1 == updraft_console_focussed_tab || (2 == updraft_console_focussed_tab && downloaders != ''))) {
+				if (lastactivity > -1) {
+					if (lastactivity < 5) {
+						updraft_activejobs_nextupdate = timenow + 1300;
+					} else {
+						updraft_activejobs_nextupdate = timenow + 4500;
+					}
+				} else if (lastlog_lastdata == response) {
+					// This condition is pretty hard to hit
+					updraft_activejobs_nextupdate = timenow + 4500;
+				} else {
+					updraft_activejobs_nextupdate = timenow + 1300;
+				}
+			}
+
+			lastlog_lastdata = response;
+			
 			if (resp.j != null && resp.j != '') {
 				jQuery('#updraft_activejobsrow').show();
+
+			if (gdata.hasOwnProperty('thisjobonly') && !updraft_inpage_hasbegun && jQuery('#updraft-jobid-'+gdata.thisjobonly).length) {
+					updraft_inpage_hasbegun = 1;
+					console.log('UpdraftPlus: the start of the requested backup job has been detected');
+				}
+				if (updraft_inpage_hasbegun == 1 && jQuery('#updraft-jobid-'+gdata.thisjobonly+'.updraft_finished').length) {
+					// Don't reset to 0 - this will cause the 'began' event to be detected again
+					updraft_inpage_hasbegun = 2;
+// 					var updraft_inpage_modal_buttons = {};
+// 					updraft_inpage_modal_buttons[updraftlion.close] = function() {
+// 						jQuery(this).dialog("close");
+// 					};
+// 					jQuery('#updraft-backupnow-inpage-modal').dialog('option', 'buttons', updraft_inpage_modal_buttons);
+					console.log('UpdraftPlus: the end of the requested backup job has been detected');
+					if (typeof updraft_inpage_success_callback !== 'undefined' && updraft_inpage_success_callback != '') {
+						// Move on to next page
+						updraft_inpage_success_callback.call(false);
+					} else {
+						jQuery('#updraft-backupnow-inpage-modal').dialog('close');
+					}
+				}
 				if ('' == lastlog_jobs) {
 					setTimeout(function(){jQuery('#updraft_backup_started').slideUp();}, 3500);
 				}
 			} else {
 				if (!jQuery('#updraft_activejobsrow').is(':hidden')) {
+					// Backup has now apparently finished - hide the row. If using this for detecting a finished job, be aware that it may never have shown in the first place - so you'll need more than this.
 					if (typeof lastbackup_laststatus != 'undefined') { updraft_showlastbackup(); }
 					jQuery('#updraft_activejobsrow').hide();
 				}
 			}
 			lastlog_jobs = resp.j;
+			
 			// Download status
 			if (resp.ds != null && resp.ds != '') {
 				jQuery(resp.ds).each(function(x, dstatus){
@@ -109,11 +255,68 @@ function updraft_activejobs_update(force) {
 					}
 				});
 			}
+
+			if (resp.u != null && resp.u != '' && jQuery("#updraft-poplog").dialog("isOpen")) {
+				var log_append_array = resp.u;
+				if (log_append_array.nonce == updraft_poplog_log_nonce) {
+					updraft_poplog_log_pointer = log_append_array.pointer;
+					if (log_append_array.html != null && log_append_array.html != '') {
+						var oldscroll = jQuery('#updraft-poplog').scrollTop();
+						jQuery('#updraft-poplog-content').append(log_append_array.html);
+						if (updraft_poplog_lastscroll == oldscroll || updraft_poplog_lastscroll == -1) {
+							jQuery('#updraft-poplog').scrollTop(jQuery('#updraft-poplog-content').prop("scrollHeight"));
+							updraft_poplog_lastscroll = jQuery('#updraft-poplog').scrollTop();
+						}
+					}
+				}
+			}
+			
 		} catch(err) {
 			console.log(updraftlion.unexpectedresponse+' '+response);
 			console.log(err);
 		}
 	});
+}
+
+function updraft_popuplog(backup_nonce) { 
+		
+		popuplog_sdata = {
+			action: 'updraft_ajax',
+			subaction: 'poplog',
+			nonce: updraft_credentialtest_nonce,
+			backup_nonce: backup_nonce
+		};
+
+		jQuery('#updraft-poplog').dialog("option", "title", 'log.'+backup_nonce+'.txt');
+		jQuery('#updraft-poplog-content').html('<em>log.'+backup_nonce+'.txt ...</em>');
+		jQuery('#updraft-poplog').dialog("open");
+		
+		jQuery.get(ajaxurl, popuplog_sdata, function(response){
+
+			var resp = jQuery.parseJSON(response);
+			
+			updraft_poplog_log_pointer = resp.pointer;
+			updraft_poplog_log_nonce = resp.nonce;
+			
+			var download_url = '?page=updraftplus&action=downloadlog&force_download=1&updraftplus_backup_nonce='+resp.nonce;
+			
+			jQuery('#updraft-poplog-content').html(resp.html);
+			
+			var log_popup_buttons = {};
+			log_popup_buttons[updraftlion.download] = function() { window.location.href = download_url; };
+			log_popup_buttons[updraftlion.close] = function() { jQuery(this).dialog("close"); };
+			
+			//Set the dialog buttons: Download log, Close log
+			jQuery('#updraft-poplog').dialog("option", "buttons", log_popup_buttons);
+			//[
+				//{ text: "Download", click: function() { window.location.href = download_url } },
+				//{ text: "Close", click: function(){ jQuery( this ).dialog("close");} }
+			//] 
+			jQuery('#updraft-poplog').dialog("option", "title", 'log.'+resp.nonce+'.txt');
+			
+			updraft_poplog_lastscroll = -1;
+			
+		});
 }
 
 function updraft_showlastlog(repeat){
@@ -126,10 +329,12 @@ function updraft_showlastlog(repeat){
 		lastlog_lastmessage = response;
 	});
 }
+
 var lastbackup_sdata = {
 	action: 'updraft_ajax',
 	subaction: 'lastbackup',
 };
+
 function updraft_showlastbackup(){
 	lastbackup_sdata.nonce = updraft_credentialtest_nonce;
 	
@@ -142,9 +347,11 @@ function updraft_showlastbackup(){
 		lastbackup_laststatus = response;
 	});
 }
+
 var updraft_historytimer = 0;
 var calculated_diskspace = 0;
 var updraft_historytimer_notbefore = 0;
+
 function updraft_historytimertoggle(forceon) {
 	if (!updraft_historytimer || forceon == 1) {
 		updraft_updatehistory(0, 0);
@@ -158,6 +365,7 @@ function updraft_historytimertoggle(forceon) {
 		updraft_historytimer = 0;
 	}
 }
+
 function updraft_updatehistory(rescan, remotescan) {
 	
 	var unixtime = Math.round(new Date().getTime() / 1000);
@@ -195,9 +403,11 @@ function updraft_check_same_times() {
 	var dbmanual = 0;
 	var file_interval = jQuery('#updraft_interval').val();
 	if (file_interval == 'manual') {
-		jQuery('#updraft_files_timings').css('opacity', '0.25');
+// 		jQuery('#updraft_files_timings').css('opacity', '0.25');
+		jQuery('#updraft_files_timings').hide();
 	} else {
-		jQuery('#updraft_files_timings').css('opacity', 1);
+// 		jQuery('#updraft_files_timings').css('opacity', 1);
+		jQuery('#updraft_files_timings').show();
 	}
 	
 	if ('weekly' == file_interval || 'fortnightly' == file_interval || 'monthly' == file_interval) {
@@ -209,7 +419,8 @@ function updraft_check_same_times() {
 	var db_interval = jQuery('#updraft_interval_database').val();
 	if (db_interval == 'manual') {
 		dbmanual = 1;
-		jQuery('#updraft_db_timings').css('opacity', '0.25');
+// 		jQuery('#updraft_db_timings').css('opacity', '0.25');
+		jQuery('#updraft_db_timings').hide();
 	}
 	
 	if ('weekly' == db_interval || 'fortnightly' == db_interval || 'monthly' == db_interval) {
@@ -219,9 +430,20 @@ function updraft_check_same_times() {
 	}
 	
 	if (db_interval == file_interval) {
-		jQuery('#updraft_db_timings').css('opacity','0.25');
+// 		jQuery('#updraft_db_timings').css('opacity','0.25');
+		jQuery('#updraft_db_timings').hide();
+// 		jQuery('#updraft_same_schedules_message').show();
+		if (0 == dbmanual) {
+			jQuery('#updraft_same_schedules_message').show();
+		} else {
+			jQuery('#updraft_same_schedules_message').hide();
+		}
 	} else {
-		if (0 == dbmanual) jQuery('#updraft_db_timings').css('opacity', '1');
+		jQuery('#updraft_same_schedules_message').hide();
+		if (0 == dbmanual) {
+// 			jQuery('#updraft_db_timings').css('opacity', '1');
+			jQuery('#updraft_db_timings').show();
+		}
 	}
 }
 
@@ -306,7 +528,9 @@ function updraft_downloader(base, nonce, what, whicharea, set_contents, prettyda
 			//(function(base, nonce, what, i) {
 			//	setTimeout(function(){updraft_downloader_status(base, nonce, what, i);}, 300);
 			//})(base, nonce, what, set_contents[i]);
+			setTimeout(function() {updraft_activejobs_update(true);}, 1500);
 		}
+		jQuery('#'+stid).data('lasttimebegan', (new Date).getTime());
 		// Now send the actual request to kick it all off
 		jQuery.ajax({
 			url: ajaxurl,
@@ -382,7 +606,7 @@ function updraft_restorer_checkstage2(doalert) {
 		} catch(err) {
 			console.log(data);
 			console.log(err);
-			jQuery('#updraft-restore-modal-stage2a').html(updraftlion.jsonnotunderstood);
+			jQuery('#updraft-restore-modal-stage2a').text(updraftlion.jsonnotunderstood+' '+updraftlion.errordata+": "+data).html();
 		}
 	});
 }
@@ -433,6 +657,27 @@ function updraft_downloader_status_update(base, nonce, what, findex, resp, respo
 		jQuery('#'+stid+'_st .dlfileprogress').width(resp.p+'%');
 		//jQuery('#'+stid+'_st .dlsofar').html(Math.round(resp.s/1024));
 		//jQuery('#'+stid+'_st .dlsize').html(Math.round(resp.t/1024));
+		
+		// Is a restart appropriate?
+		// resp.a, if set, indicates that a) the download is incomplete and b) the value is the number of seconds since the file was last modified...
+		if (resp.a != null && resp.a > 0) {
+			var timenow = (new Date).getTime();
+			var lasttimebegan = jQuery('#'+stid).data('lasttimebegan');
+			// Remember that this is in milliseconds
+			var sincelastrestart = timenow - lasttimebegan;
+			if (resp.a > 90 && sincelastrestart > 60000) {
+				console.log(nonce+" "+what+" "+findex+": restarting download: file_age="+resp.a+", sincelastrestart_ms="+sincelastrestart);
+				jQuery('#'+stid).data('lasttimebegan', (new Date).getTime());
+				jQuery.ajax({
+					url: ajaxurl,
+					timeout: 10000,
+					type: 'POST',
+					data: jQuery('#uddownloadform_'+what+'_'+nonce+'_'+findex).serialize()
+				});
+				jQuery('#'+stid).data('lasttimebegan', (new Date).getTime());
+			}
+		}
+
 		if (resp.m != null) {
 			if (resp.p >=100 && base == 'udrestoredlstatus_') {
 				jQuery('#'+stid+' .raw').html(resp.m);
@@ -453,6 +698,44 @@ function updraft_downloader_status_update(base, nonce, what, findex, resp, respo
 	return cancel_repeat;
 }
 
+
+function updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythisfileentity) {
+
+	jQuery('#updraft_backup_started').html('<em>'+updraftlion.requeststart+'</em>').slideDown('');
+	setTimeout(function() {jQuery('#updraft_backup_started').fadeOut('slow');}, 75000);
+
+	var params = {
+		action: 'updraft_ajax',
+		subaction: 'backupnow',
+		nonce: updraft_credentialtest_nonce,
+		backupnow_nodb: backupnow_nodb,
+		backupnow_nofiles: backupnow_nofiles,
+		backupnow_nocloud: backupnow_nocloud,
+		backupnow_label: jQuery('#backupnow_label').val()
+	};
+	
+	if ('' != onlythisfileentity) {
+		params.onlythisfileentity = onlythisfileentity;
+		params.backupnow_label = updraftlion.automaticbackupbeforeupdate;
+	}
+	
+	jQuery.post(ajaxurl, params, function(response) {
+		try {
+			resp = jQuery.parseJSON(response);
+			jQuery('#updraft_backup_started').html(resp.m);
+			if (resp.hasOwnProperty('nonce')) {
+				// Can't return it from this context
+				updraft_backupnow_nonce = resp.nonce;
+				console.log("UpdraftPlus: ID of started job: "+updraft_backupnow_nonce);
+			}
+			setTimeout(function() {updraft_activejobs_update(true);}, 500);
+		} catch (err) {
+			console.log(err);
+			console.log(response);
+		}
+	});
+}
+
 jQuery(document).ready(function($){
 
 	var bigbutton_width = 180;
@@ -463,8 +746,11 @@ jQuery(document).ready(function($){
 	if (bigbutton_width > 180) jQuery('.updraft-bigbutton').width(bigbutton_width);
 
 	//setTimeout(function(){updraft_showlastlog(true);}, 1200);
-	setInterval(function() {updraft_activejobs_update(false);}, 1200);
+	setInterval(function() {updraft_activejobs_update(false);}, 1250);
 
+	// Prevent profusion of notices
+	setTimeout(function(){jQuery('#setting-error-settings_updated').slideUp();}, 5000);
+	
 	jQuery('.updraftplusmethod').hide();
 	
 	jQuery('#updraft_restore_db').change(function(){
@@ -568,9 +854,10 @@ jQuery(document).ready(function($){
 				jQuery('#updraft_restore_form').submit();
 			}
 		} else {
-			alert('You did not select any components to restore. Please select at least one, and then try again.');
+			alert(updraftlion.youdidnotselectany);
 		}
 	};
+	
 	updraft_restore_modal_buttons[updraftlion.cancel] = function() { jQuery(this).dialog("close"); };
 
 	jQuery( "#updraft-restore-modal" ).dialog({
@@ -582,6 +869,10 @@ jQuery(document).ready(function($){
 		autoOpen: false, height: 500, width: 780, modal: true
 	});
 
+	jQuery("#updraft-backupnow-inpage-modal" ).dialog({
+		autoOpen: false, height: 345, width: 580, modal: true
+	});
+	
 	var backupnow_modal_buttons = {};
 	backupnow_modal_buttons[updraftlion.backupnow] = function() {
 		
@@ -594,25 +885,19 @@ jQuery(document).ready(function($){
 		}
 		
 		jQuery(this).dialog("close");
-		jQuery('#updraft_backup_started').html('<em>'+updraftlion.requeststart+'</em>').slideDown('');
+
 		setTimeout(function() {
 			jQuery('#updraft_lastlogmessagerow').fadeOut('slow', function() {
 				jQuery(this).fadeIn('slow');
 			});
 		}, 1700);
-		setTimeout(function() {updraft_activejobs_update(true);}, 1000);
-		setTimeout(function() {jQuery('#updraft_backup_started').fadeOut('slow');}, 75000);
-		jQuery.post(ajaxurl, { action: 'updraft_ajax', subaction: 'backupnow', nonce: updraft_credentialtest_nonce, backupnow_nodb: backupnow_nodb, backupnow_nofiles: backupnow_nofiles, backupnow_nocloud: backupnow_nocloud }, function(response) {
-			jQuery('#updraft_backup_started').html(response);
-			// Kick off some activity to get WP to get the scheduled task moving as soon as possible
-// 			setTimeout(function() {jQuery.get(updraft_siteurl);}, 5100);
-// 			setTimeout(function() {jQuery.get(updraft_siteurl+'/wp-cron.php');}, 13500);
-		});
+		
+		updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, '');
 	};
 	backupnow_modal_buttons[updraftlion.cancel] = function() { jQuery(this).dialog("close"); };
 	
 	jQuery("#updraft-backupnow-modal" ).dialog({
-		autoOpen: false, height: 335, width: 480, modal: true,
+		autoOpen: false, height: 355, width: 480, modal: true,
 		buttons: backupnow_modal_buttons
 	});
 
@@ -622,7 +907,11 @@ jQuery(document).ready(function($){
 		autoOpen: false, height: 295, width: 420, modal: true,
 		buttons: migrate_modal_buttons
 	});
-
+	
+	jQuery( "#updraft-poplog" ).dialog({
+		autoOpen: false, height: 600, width: '75%', modal: true,
+	});
+	
 	jQuery('#enableexpertmode').click(function() {
 		jQuery('.expertmode').fadeIn();
 		jQuery('#enableexpertmode').off('click'); 
@@ -661,16 +950,23 @@ jQuery(document).ready(function($){
 		updraft_iframe_modal('rawbackuphistory', updraftlion.raw);
 	});
 
+	// + Added addons navtab
 	jQuery('#updraft-navtab-status').click(function(e) {
 		e.preventDefault();
 		jQuery(this).addClass('nav-tab-active');
 		jQuery('#updraft-navtab-expert-content').hide();
 		jQuery('#updraft-navtab-settings-content').hide();
 		jQuery('#updraft-navtab-backups-content').hide();
+		jQuery('#updraft-navtab-addons-content').hide();
 		jQuery('#updraft-navtab-status-content').show();
 		jQuery('#updraft-navtab-expert').removeClass('nav-tab-active');
 		jQuery('#updraft-navtab-backups').removeClass('nav-tab-active');
 		jQuery('#updraft-navtab-settings').removeClass('nav-tab-active');
+		jQuery('#updraft-navtab-addons').removeClass('nav-tab-active');
+		updraft_page_is_visible = 1;
+		updraft_console_focussed_tab = 1;
+		// Refresh the console, as its next update might be far away
+		updraft_activejobs_update(true);
 	});
 	jQuery('#updraft-navtab-expert').click(function(e) {
 		e.preventDefault();
@@ -678,21 +974,46 @@ jQuery(document).ready(function($){
 		jQuery('#updraft-navtab-settings-content').hide();
 		jQuery('#updraft-navtab-status-content').hide();
 		jQuery('#updraft-navtab-backups-content').hide();
+		jQuery('#updraft-navtab-addons-content').hide();
 		jQuery('#updraft-navtab-expert-content').show();
 		jQuery('#updraft-navtab-status').removeClass('nav-tab-active');
 		jQuery('#updraft-navtab-backups').removeClass('nav-tab-active');
 		jQuery('#updraft-navtab-settings').removeClass('nav-tab-active');
+		jQuery('#updraft-navtab-addons').removeClass('nav-tab-active');
+		updraft_page_is_visible = 1;
+		updraft_console_focussed_tab = 4;
 	});
 	jQuery('#updraft-navtab-settings, #updraft-navtab-settings2').click(function(e) {
+		jQuery(this).parents('.updraftmessage').remove();
 		e.preventDefault();
 		jQuery('#updraft-navtab-status-content').hide();
 		jQuery('#updraft-navtab-backups-content').hide();
 		jQuery('#updraft-navtab-expert-content').hide();
+		jQuery('#updraft-navtab-addons-content').hide();
 		jQuery('#updraft-navtab-settings-content').show();
 		jQuery('#updraft-navtab-settings').addClass('nav-tab-active');
 		jQuery('#updraft-navtab-expert').removeClass('nav-tab-active');
 		jQuery('#updraft-navtab-backups').removeClass('nav-tab-active');
 		jQuery('#updraft-navtab-status').removeClass('nav-tab-active');
+		jQuery('#updraft-navtab-addons').removeClass('nav-tab-active');
+		updraft_page_is_visible = 1;
+		updraft_console_focussed_tab = 3;
+	});
+	jQuery('#updraft-navtab-addons').click(function(e) {
+		e.preventDefault();
+		jQuery(this).addClass('b#nav-tab-active');
+		jQuery('#updraft-navtab-status-content').hide();
+		jQuery('#updraft-navtab-backups-content').hide();
+		jQuery('#updraft-navtab-expert-content').hide();
+		jQuery('#updraft-navtab-settings-content').hide();
+		jQuery('#updraft-navtab-addons-content').show();
+		jQuery('#updraft-navtab-addons').addClass('nav-tab-active');
+		jQuery('#updraft-navtab-expert').removeClass('nav-tab-active');
+		jQuery('#updraft-navtab-backups').removeClass('nav-tab-active');
+		jQuery('#updraft-navtab-status').removeClass('nav-tab-active');
+		jQuery('#updraft-navtab-settings').removeClass('nav-tab-active');
+		updraft_page_is_visible = 1;
+		updraft_console_focussed_tab = 5;
 	});
 	jQuery('#updraft-navtab-backups').click(function(e) {
 		e.preventDefault();
@@ -707,7 +1028,9 @@ jQuery(document).ready(function($){
 
 	// Section: Plupload
 	try {
-		plupload_init();
+		if (typeof updraft_plupload_config !== 'undefined') {
+			plupload_init();
+		}
 	} catch (err) {
 		console.log(err);
 	}
@@ -741,7 +1064,7 @@ jQuery(document).ready(function($){
 		
 		plupload.each(files, function(file){
 
-			if (! /^backup_([\-0-9]{15})_.*_([0-9a-f]{12})-[\-a-z]+([0-9]+(of[0-9]+)?)?\.(zip|gz|gz\.crypt)$/i.test(file.name) && ! /^log\.([0-9a-f]{12})\.txt$/.test(file.name)) {
+			if (! /^backup_([\-0-9]{15})_.*_([0-9a-f]{12})-[\-a-z]+([0-9]+?)?(\.(zip|gz|gz\.crypt))?$/i.test(file.name) && ! /^log\.([0-9a-f]{12})\.txt$/.test(file.name)) {
 				var accepted_file = false;
 				for (var i = 0; i<updraft_accept_archivename.length; i++) {
 					if (updraft_accept_archivename[i].test(file.name)) {
@@ -855,14 +1178,16 @@ jQuery(document).ready(function($){
 				resp = jQuery.parseJSON(response);
 				if (resp.e) {
 					alert(resp.e);
-				} else if (resp.r) {
-					$('#updraftplus_httpget_results').html(resp.r);
+				}
+				if (resp.r) {
+					$('#updraftplus_httpget_results').html('<pre>'+resp.r+'</pre>');
 				} else {
 					console.log(response);
-					alert(updraftlion.jsonnotunderstood);
+					//alert(updraftlion.jsonnotunderstood);
 				}
 				
 			} catch(err) {
+				console.log(err);
 				console.log(response);
 				alert(updraftlion.jsonnotunderstood);
 			}
@@ -884,7 +1209,9 @@ jQuery(document).ready(function($){
 jQuery(document).ready(function($){
 	
 	try {
-		plupload_init();
+		if (typeof updraft_plupload_config2 !== 'undefined') {
+			plupload_init();
+		}
 	} catch (err) {
 		console.log(err);
 	}

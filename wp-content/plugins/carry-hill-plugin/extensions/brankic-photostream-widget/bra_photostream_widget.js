@@ -149,15 +149,15 @@ function dump(arr,level) {
 				  }
 				  if (o.social_network == "flickr") { 
 						obj.append("<ul></ul>")
-						$.getJSON("http://api.flickr.com/services/rest/?method=flickr.people.findByUsername&username=" + o.user+ "&format=json&api_key=85145f20ba1864d8ff559a3971a0a033&jsoncallback=?", function(data){
+						$.getJSON("https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&username=" + o.user+ "&format=json&api_key=85145f20ba1864d8ff559a3971a0a033&jsoncallback=?", function(data){
 							var nsid = data.user.nsid;
-							$.getJSON("http://api.flickr.com/services/rest/?method=flickr.photos.search&user_id=" + nsid + "&format=json&api_key=85145f20ba1864d8ff559a3971a0a033&per_page=" + o.limit + "&page=1&extras=url_sq&jsoncallback=?", function(data){
+							$.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&user_id=" + nsid + "&format=json&api_key=85145f20ba1864d8ff559a3971a0a033&per_page=" + o.limit + "&page=1&extras=url_sq&jsoncallback=?", function(data){
 								$.each(data.photos.photo, function(i,img){
 									var img_owner = img.owner;
 									var img_title = img.title;
 									var img_src = img.url_sq;
 									var img_id = img.id;
-									var img_url = "http://www.flickr.com/photos/" + img_owner + "/" + img_id;
+									var img_url = "https://www.flickr.com/photos/" + img_owner + "/" + img_id;
 									var image = $('<img/>').attr({src: img_src, alt: img_title});
 									var url = $('<a/>').attr({href: img_url, target: '_blank', title: img_title});
 									var url2 = $(url).append(image);

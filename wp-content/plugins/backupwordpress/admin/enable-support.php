@@ -1,12 +1,12 @@
 <?php require_once HMBKP_PLUGIN_PATH . 'classes/class-requirements.php'; ?>
 
-<h2><?php _e( 'Enable BackUpWordPress Support', 'hmbkp' ); ?></h2>
+<h2><?php _e( 'Enable BackUpWordPress Support', 'backupwordpress' ); ?></h2>
 
-<p class="howto"><?php printf( __( 'BackUpWordPress uses %s to provide support. In addition to allowing you to send and receive messages we also send the following server information along with your requests:', 'hmbkp' ), '<a target="blank" href="https://www.intercom.io">Intercom</a>' ); ?></p>
+<p class="howto"><?php printf( __( 'BackUpWordPress uses %s to provide support. In addition to allowing you to send and receive messages we also send the following server information along with your requests:', 'backupwordpress' ), '<a target="blank" href="https://www.intercom.io">Intercom</a>' ); ?></p>
 
 <div class="server-info">
 
-<?php foreach( HMBKP_Requirements::get_requirement_groups() as $group ) : ?>
+<?php foreach ( HM\BackUpWordPress\Requirements::get_requirement_groups() as $group ) : ?>
 
 	<table class="fixed widefat">
 
@@ -18,7 +18,7 @@
 
 		<tbody>
 
-		<?php foreach ( HMBKP_Requirements::get_requirements( $group ) as $requirement ) : ?>
+		<?php foreach ( HM\BackUpWordPress\Requirements::get_requirements( $group ) as $requirement ) : ?>
 
 			<?php if ( ( is_string( $requirement->raw_result() ) && strlen( $requirement->result() ) < 20 ) || is_bool( $requirement->raw_result() ) ) { ?>
 
@@ -55,20 +55,7 @@
 
 </div>
 
-<p class="howto"><?php _e( 'You can disable support in the future by deactivating BackUpWordPress.', 'hmbkp' ); ?></p>
+<p class="howto"><?php _e( 'You can disable support in the future by deactivating BackUpWordPress.', 'backupwordpress' ); ?></p>
 
-<form class="hmbkp-form" method="POST">
-
-	<?php wp_nonce_field( 'enable-support', 'hmbkp' ); ?>
-
-	<input type="hidden" name="hmbkp_enable_support" value="1" />
-
-	<p class="submit">
-
-		<button type="button" class="button-secondary hmbkp-colorbox-close"><?php _e( 'No thanks', 'hmbkp' ); ?></button>
-
-		<button type="submit" class="button-primary"><?php _e( 'Yes I want to enable support', 'hmbkp' ); ?></button>
-
-	</p>
-
-</form>
+<a href="#" class="button-secondary hmbkp-thickbox-close"><?php _e( 'No thanks', 'backupwordpress' ); ?></a>
+<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'action' => 'hmbkp_request_enable_support' ), admin_url( 'admin-post.php' ) ), 'hmbkp_enable_support', 'hmbkp_enable_support_nonce' ) ); ?>" class="button-primary right"><?php _e( 'Yes I want to enable support', 'backupwordpress' ); ?></a>

@@ -61,7 +61,8 @@ class CbpInjector
                 data: {
                     temp: {},
                     helpers: {},
-                    useScrollToTop: <?php echo (int) CbpUtils::getOption('use_scroll_to_top'); ?>
+                    useScrollToTop: <?php echo (int) CbpUtils::getOption('use_scroll_to_top'); ?>,
+                    scrollToTopText: '<?php echo CbpUtils::getOption('scroll_to_top_text'); ?>'
                 }
             };
         </script>

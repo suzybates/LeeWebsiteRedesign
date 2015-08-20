@@ -1,0 +1,49 @@
+/*--------------------------------
+S2W Shadow Themes
+------------------------------------*/
+
+.s2w-shadow-light-style, .s2w-shadow-dark-style {
+	padding: 30px;
+	border: 1px solid #E6E6E6;
+	background-color: #F7F7F7;
+	-moz-box-shadow: inset 0 5px 5px #FEFEFE, 0px 0px 40px rgba(0, 0, 0, 0.08);
+	-webkit-box-shadow: inset 0 0 5px #FEFEFE, 0px 0px 40px rgba(0, 0, 0, 0.08);
+	box-shadow: inset 0 0 0 4px #FEFEFE, 0px 0px 40px rgba(0, 0, 0, 0.08);
+}
+
+[id*='subscribe2_widget'].s2w-shadow-light-style input, [id*='subscribe2_widget'].s2w-shadow-dark-style input {
+	border-radius: 0;
+}
+
+[id*='subscribe2_widget'].s2w-shadow-light-style .s2w-submit-btn, .s2w-shadow-dark-style .s2w-submit-btn, [id*='subscribe2_widget'].s2w-shadow-light-style .s2w-submit-btn:hover, .s2w-shadow-dark-style .s2w-submit-btn:hover {
+	background-image: none;
+	text-shadow: none;
+}
+
+.s2w-shadow-light-style label, .s2w-shadow-dark-style label {
+	text-transform: uppercase;
+	font-size: 12px;
+	margin: 0 0 5px;
+	display: block;
+}
+
+[id*='subscribe2_widget'] .s2w-email {
+	margin:0 0 10px;
+}
+
+/* Dark Style */
+
+.s2w-shadow-dark-style {
+	color: #FFF;
+	background-color: #333;
+	border: 1px solid #000000;
+	-moz-box-shadow: inset 0 5px 5px #525252, 0px 0px 40px rgba(0, 0, 0, 0.08);
+	-webkit-box-shadow: inset 0 0 5px #525252, 0px 0px 40px rgba(0, 0, 0, 0.08);
+	box-shadow: inset 0 0 0 4px #525252, 0px 0px 40px rgba(26, 26, 26, 0.08);
+}
+
+.s2w-shadow-dark-style .s2w-widget-title, .s2w-inset-dark-style .s2w-widget-title {
+	border: none;
+	box-shadow: none;
+	color:#FFF;
+}

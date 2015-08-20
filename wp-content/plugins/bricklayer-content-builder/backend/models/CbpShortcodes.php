@@ -21,6 +21,7 @@ class CbpShortcodes
     {
         add_shortcode('cbp', array($this, 'cbpShortcode'));
         add_shortcode('cbp_widget_row', array($this, 'cbpRowShortcode'));
+        add_shortcode('cbp_widget_row_inner', array($this, 'cbpRowInnerShortcode'));
         add_shortcode('cbp_widget_box', array($this, 'cbpBoxShortcode'));
         add_shortcode('cbp_widget_element', array($this, 'cbpContentElementShortcode'));
 
@@ -39,12 +40,14 @@ class CbpShortcodes
         $block = join('|', array(
             'cbp',
             'cbp_widget_row',
+            'cbp_widget_row_inner',
             'cbp_widget_box',
             'cbp_widget_element',
             'cbp_accordion_item',
             'cbp_tab_item',
             'cbp_gallery_item',
             'cbp_slider_item',
+            'cbp_style_item',
             'cbp_widget_element_item',
             'bricklayer_template',
                 ));
@@ -107,6 +110,22 @@ class CbpShortcodes
         return $this->getWidgetHtml($type, $atts, $content);
     }
 
+    /**
+     *  [cbp_widget_row_inner]the rest of shortcodes[/cbp_widget_row_inner]
+     */
+    public function cbpRowInnerShortcode($atts, $content = null)
+    {
+        extract(shortcode_atts(array(
+                    'type'  => 'cbp_widget_row_inner',
+                        ), $atts));
+
+        global $cbp_settings;
+
+        $cbp_settings['row_inner'] = $atts;
+
+        return $this->getWidgetHtml($type, $atts, $content);
+    }
+    
     /**
      *  [cbp_widget_box]the rest of shortcodes[/cbp_widget_box]
      */

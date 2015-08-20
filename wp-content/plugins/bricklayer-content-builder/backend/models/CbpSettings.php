@@ -33,6 +33,7 @@ if (!class_exists('CbpSettings')) :
                 'custom_thumbnail_sizes',
                 'custom_css',
                 'use_scroll_to_top',
+                'scroll_to_top_text',
                 'enabled_custom_post_types',
                 'bricklayer_builder_skin',
                 'template_links',

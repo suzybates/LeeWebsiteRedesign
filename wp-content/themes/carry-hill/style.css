@@ -430,6 +430,11 @@ button:active, input[type="submit"]:active, input[type="button"]:active, input[t
 .chp_widget_post_list .cbp-widget-post-meta-author, .widget .cbp-widget-post-meta-author { font-family: arvoregular, serif; font-style: italic; font-size: 11px; color: #6e6e6e; }
 .chp_widget_post_list .cbp-widget-post-meta-author a, .widget .cbp-widget-post-meta-author a { color: #6e6e6e; }
 
+.cbp_widget_schedule h5, .widget h5 { margin-bottom: 4px; }
+.cbp_widget_schedule .cbp-widget-schedule-item, .widget .cbp-widget-schedule-item { margin-left: 8px; margin-bottom: 4px; }
+.cbp_widget_schedule .cbp-widget-schedule-item-title, .widget .cbp-widget-schedule-item-title { margin-bottom: 4px; }
+
+
 .cbp_widget_map_wrapper { background-color: #f7f6f4; }
 
 .ch-plugins-not-loaded { background-color: white; width: 500px; margin: 0 auto; padding: 50px; box-shadow: 1px 1px 7px grey; }

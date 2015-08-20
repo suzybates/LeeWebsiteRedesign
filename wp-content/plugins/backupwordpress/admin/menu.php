@@ -8,11 +8,17 @@
  */
 function hmbkp_admin_menu() {
 
-	if ( is_multisite() )
-		add_submenu_page( 'settings.php', __( 'Manage Backups','hmbkp' ), __( 'Backups','hmbkp' ), ( defined( 'HMBKP_CAPABILITY' ) && HMBKP_CAPABILITY ) ? HMBKP_CAPABILITY : 'manage_options', HMBKP_PLUGIN_SLUG, 'hmbkp_manage_backups' );
-	else
-		add_management_page( __( 'Manage Backups','hmbkp' ), __( 'Backups','hmbkp' ), ( defined( 'HMBKP_CAPABILITY' ) && HMBKP_CAPABILITY ) ? HMBKP_CAPABILITY : 'manage_options', HMBKP_PLUGIN_SLUG, 'hmbkp_manage_backups' );
+	if ( is_multisite() ) {
+
+		add_submenu_page( 'settings.php', __( 'Manage Backups', 'backupwordpress' ), __( 'Backups', 'backupwordpress' ), ( defined( 'HMBKP_CAPABILITY' ) && HMBKP_CAPABILITY ) ? HMBKP_CAPABILITY : 'manage_options', HMBKP_PLUGIN_SLUG, 'hmbkp_manage_backups' );
+
+	} else {
+
+		add_management_page( __( 'Manage Backups', 'backupwordpress' ), __( 'Backups', 'backupwordpress' ), ( defined( 'HMBKP_CAPABILITY' ) && HMBKP_CAPABILITY ) ? HMBKP_CAPABILITY : 'manage_options', HMBKP_PLUGIN_SLUG, 'hmbkp_manage_backups' );
+
+	}
 }
+
 add_action( 'network_admin_menu', 'hmbkp_admin_menu' );
 add_action( 'admin_menu', 'hmbkp_admin_menu' );
 
@@ -23,7 +29,7 @@ add_action( 'admin_menu', 'hmbkp_admin_menu' );
  * @return null
  */
 function hmbkp_manage_backups() {
-	require_once( HMBKP_PLUGIN_PATH . '/admin/page.php' );
+	require_once( HMBKP_PLUGIN_PATH . 'admin/page.php' );
 }
 
 /**
@@ -31,16 +37,19 @@ function hmbkp_manage_backups() {
  *
  * @param array $links
  * @param string $file
+ *
  * @return array $links
  */
 function hmbkp_plugin_action_link( $links, $file ) {
 
-	if ( strpos( $file, HMBKP_PLUGIN_SLUG ) !== false )
-		array_push( $links, '<a href="' . esc_url( HMBKP_ADMIN_URL ) . '">' . __( 'Backups', 'hmbkp' ) . '</a>' );
+	if ( false !== strpos( $file, HMBKP_PLUGIN_SLUG ) ) {
+		array_push( $links, '<a href="' . esc_url( HMBKP_ADMIN_URL ) . '">' . __( 'Backups', 'backupwordpress' ) . '</a>' );
+	}
 
 	return $links;
 
 }
+
 add_filter( 'plugin_action_links', 'hmbkp_plugin_action_link', 10, 2 );
 
 /**
@@ -53,42 +62,49 @@ add_filter( 'plugin_action_links', 'hmbkp_plugin_action_link', 10, 2 );
 function hmbkp_contextual_help() {
 
 	// Pre WordPress 3.3 compat
-	if ( ! method_exists( get_current_screen(), 'add_help_tab' ) )
+	if ( ! method_exists( get_current_screen(), 'add_help_tab' ) ) {
 		return;
-
-	require_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
-
-	if ( ! $plugin = get_transient( 'hmbkp_plugin_data' ) ) {
-
-		$plugin = plugins_api( 'plugin_information', array( 'slug' => HMBKP_PLUGIN_SLUG ) );
-
-		// Cache for one day
-		set_transient( 'hmbkp_plugin_data', $plugin, 86400 );
-
 	}
 
-	$warning = '';
-
-	// Check if help is for the right version.
-	if ( ! empty( $plugin->version ) && version_compare( HMBKP_VERSION, $plugin->version, '!=' ) )
-		$warning = sprintf( '<div id="message" class="updated inline"><p><strong>' . __( 'You are not using the latest stable version of BackUpWordPress', 'hmbkp' ) . '</strong> &mdash; ' . __( 'The information below is for version %1$s. View the %2$s file for help specific to version %3$s.', 'hmbkp' ) . '</p></div>', '<code>' . esc_attr( $plugin->version ) . '</code>', '<code>readme.txt</code>', '<code>' . esc_attr( HMBKP_VERSION ) . '</code>' );
-
 	ob_start();
-	require_once( HMBKP_PLUGIN_PATH . '/admin/constants.php' );
+	require_once( HMBKP_PLUGIN_PATH . 'admin/constants.php' );
 	$constants = ob_get_clean();
 
+	ob_start();
+	include_once( HMBKP_PLUGIN_PATH . 'admin/faq.php' );
+	$faq = ob_get_clean();
 
-	if ( $plugin && ! is_wp_error( $plugin ) )
-		get_current_screen()->add_help_tab( array( 'title' => __( 'FAQ', 'hmbkp' ), 'id' => 'hmbkp_faq', 'content' => wp_kses_post( $warning . $plugin->sections['faq'] ) ) );
-	
-	get_current_screen()->add_help_tab( array( 'title' => __( 'Constants', 'hmbkp' ), 'id' => 'hmbkp_constants', 'content' => wp_kses_post( $constants ) ) );
+	get_current_screen()->add_help_tab( array( 'title'   => __( 'FAQ', 'backupwordpress' ),
+	                                           'id'      => 'hmbkp_faq',
+	                                           'content' => wp_kses_post( $faq )
+	) );
+
+	get_current_screen()->add_help_tab( array( 'title'   => __( 'Constants', 'backupwordpress' ),
+	                                           'id'      => 'hmbkp_constants',
+	                                           'content' => wp_kses_post( $constants )
+	) );
+
+	require_once( HMBKP_PLUGIN_PATH . 'classes/class-requirements.php' );
+
+	ob_start();
+	require_once( HMBKP_PLUGIN_PATH . 'admin/server-info.php' );
+	$info = ob_get_clean();
+
+	get_current_screen()->add_help_tab(
+		array(
+			'title'   => __( 'Server Info', 'backupwordpress' ),
+			'id'      => 'hmbkp_server',
+			'content' => $info,
+		)
+	);
 
 	get_current_screen()->set_help_sidebar(
-		'<p><strong>' . __( 'For more information:', 'hmbkp' ) . '</strong></p>' .
+		'<p><strong>' . __( 'For more information:', 'backupwordpress' ) . '</strong></p>' .
 		'<p><a href="https://github.com/humanmade/backupwordpress" target="_blank">GitHub</a></p>' .
-		'<p><a href="http://wordpress.org/tags/backupwordpress?forum_id=10" target="_blank">' . __( 'Support Forums', 'hmbkp' ) .'</a></p>' .
-		'<p><a href="http://translate.hmn.md/" target="_blank">' . __( 'Help with translation', 'hmbkp' ) .'</a></p>'
+		'<p><a href="http://wordpress.org/tags/backupwordpress?forum_id=10" target="_blank">' . __( 'Support Forums', 'backupwordpress' ) . '</a></p>' .
+		'<p><a href="http://translate.hmn.md/" target="_blank">' . __( 'Help with translation', 'backupwordpress' ) . '</a></p>'
 	);
 
 }
-add_filter( 'load-tools_page_' . HMBKP_PLUGIN_SLUG, 'hmbkp_contextual_help' );
+
+add_action( 'load-' . HMBKP_ADMIN_PAGE, 'hmbkp_contextual_help' );

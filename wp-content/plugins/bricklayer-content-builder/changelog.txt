@@ -1,3 +1,10 @@
+1.5.2 (2015-01-18)
+- Update to mixitup 2.17
+- Easy gallery tag filters fix
+
+1.5.1 (2014-12-18)
+- Bricklayer builder draggable bugfix
+
 /*-----2014-07-05-----*/
 - fix backbone template tags
 - bx slider update js v4.1.2

@@ -4,73 +4,60 @@
  * Plugin Name: Bricklayer Content Builder
  * Plugin URI:  http://codecanyon.net/item/bricklayer-content-builder-wp-plugin/6834212
  * Description: Bricklayer is a shortcode based, content builder that easily allows building complex layouts brick by brick. 
- * Version:     1.4
+ * Version:     1.5.2
  * Author:      Parmenides
  * Author URI:  http://codecanyon.net/user/parmenides
  * License:     GPLv2+
  * Text Domain: bricklayer
  * Domain Path: /languages
  */
-define('CBP_PLUGIN_VERSION', '1.4');
+define('CBP_PLUGIN_VERSION', '1.5.2');
 define('CBP_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('CBP_PLUGIN_PATH', dirname(__FILE__) . '/');
 define('CBP_PLUGIN_SLUG', basename(dirname(__FILE__)));
 
-if (!function_exists('array_replace_recursive'))
-{
-    function array_replace_recursive($base, $replacements) 
-    { 
-        foreach (array_slice(func_get_args(), 1) as $replacements) { 
-            $bref_stack = array(&$base); 
-            $head_stack = array($replacements); 
-
-            do { 
-                end($bref_stack); 
-
-                $bref = &$bref_stack[key($bref_stack)]; 
-                $head = array_pop($head_stack); 
-
-                unset($bref_stack[key($bref_stack)]); 
-
-                foreach (array_keys($head) as $key) { 
-                    if (isset($key, $bref) && is_array($bref[$key]) && is_array($head[$key])) { 
-                        $bref_stack[] = &$bref[$key]; 
-                        $head_stack[] = $head[$key]; 
-                    } else { 
-                        $bref[$key] = $head[$key]; 
-                    } 
-                } 
-            } while(count($head_stack)); 
-        } 
-
-        return $base; 
-    } 
-} 
-
 $cbp_settings = array();
 
 require_once 'init/config.php';
-// Wireup actions
+
+register_activation_hook(__FILE__, 'cbp_activate');
+register_deactivation_hook(__FILE__, 'cbp_deactivate');
+
 add_action('init', 'cbp_init', 999);
-
 add_action('template_redirect', 'cbp_page_template_redirect');
-
 add_action('wp_head', 'cbpCustomLayerStyles');
+add_action('admin_action_cbp_duplicate_post_as_draft', 'cbp_duplicate_post_as_draft');
 
-
-
+add_filter('image_size_names_choose', 'cbp_insert_custom_image_sizes');
+add_filter('post_row_actions', 'cbp_duplicate_post_link', 10, 2);
 
 $cbpContentTemplateLinks = CbpUtils::getOption('template_links');
 if ($cbpContentTemplateLinks) {
-
     add_filter('cbp_filter_use_content_builder_layout', 'cbp_use_content_builder_layout', 1); // set low priority so it can be overriden in other plugins or theme
     add_filter('cbp_filter_layout', 'cbp_register_layouts', 1); // set low priority so it can be overriden in other plugins or theme
 }
 
-add_filter('image_size_names_choose', 'cbp_insert_custom_image_sizes');
+/**
+ * Activate the plugin
+ */
+function cbp_activate()
+{
+    // First load the init scripts in case any rewrite functionality is being loaded
+    cbp_init();
+    flush_rewrite_rules();
+}
 
 /**
- * Default initialization for the plugin:
+ * Deactivate the plugin
+ * Uninstall routines should be in uninstall.php
+ */
+function cbp_deactivate()
+{
+    
+}
+
+/**
+ * Default initialization
  */
 function cbp_init()
 {
@@ -81,7 +68,7 @@ function cbp_init()
 
     add_theme_support('post-thumbnails');
     cbp_register_custom_thumbnail_sizes();
-    
+    cbp_load_scripts();
 
 //    add_action('edit_form_after_title', 'cbp_add_bricklayer_switcher_button', 20);
 }
@@ -96,49 +83,29 @@ function cbp_insert_custom_image_sizes($sizes)
         if (!isset($sizes[$id]))
             $sizes[$id] = ucfirst(str_replace('-', ' ', $id));
     }
-
     return $sizes;
 }
-
-/**
- * Activate the plugin
- */
-function cbp_activate()
-{
-    // First load the init scripts in case any rewrite functionality is being loaded
-    cbp_init();
-
-    flush_rewrite_rules();
-}
-
-register_activation_hook(__FILE__, 'cbp_activate');
-
-/**
- * Deactivate the plugin
- * Uninstall routines should be in uninstall.php
- */
-function cbp_deactivate()
-{
-    
-}
-
-register_deactivation_hook(__FILE__, 'cbp_deactivate');
 
 function cbp_page_template_redirect()
 {
     global $post, $cbp_settings;
 
-    $layout                                   = null;
-    $useLayoutGlobalSettingsOverride          = CbpUtils::getOption('use_layout_global_settings_override');
-    $globalUseLayoutsAndTemplates             = CbpUtils::getOption('use_content_builder_layouts_and_templates');
-    $themeOverride                            = CbpUtils::getOption('global_theme_override');
-    $backgroundImage                          = CbpUtils::getOption('global_background_image');
-    $cbp_settings['container_width']          = CbpUtils::getOption('global_container_width');
-    $cbp_settings['container_padding_top']    = CbpUtils::getOption('global_container_padding_top');
-    $cbp_settings['container_padding_right']  = CbpUtils::getOption('global_container_padding_right');
-    $cbp_settings['container_padding_bottom'] = CbpUtils::getOption('global_container_padding_bottom');
-    $cbp_settings['container_padding_left']   = CbpUtils::getOption('global_container_padding_left');
-    $cbp_settings['body_background_color']    = CbpUtils::getOption('global_use_background_color') ? CbpUtils::getOption('global_background_color') : false;
+    $layout                          = null;
+    $useLayoutGlobalSettingsOverride = CbpUtils::getOption('use_layout_global_settings_override');
+    $globalUseLayoutsAndTemplates    = CbpUtils::getOption('use_content_builder_layouts_and_templates');
+    $themeOverride                   = CbpUtils::getOption('global_theme_override');
+    $backgroundImage                 = CbpUtils::getOption('global_background_image');
+    $useGlobalContainerProperties    = CbpUtils::getOption('use_global_container_properties');
+
+    if ($useGlobalContainerProperties) {
+        $cbp_settings['container_width']          = CbpUtils::getOption('global_container_width');
+        $cbp_settings['container_padding_top']    = CbpUtils::getOption('global_container_padding_top');
+        $cbp_settings['container_padding_right']  = CbpUtils::getOption('global_container_padding_right');
+        $cbp_settings['container_padding_bottom'] = CbpUtils::getOption('global_container_padding_bottom');
+        $cbp_settings['container_padding_left']   = CbpUtils::getOption('global_container_padding_left');
+    }
+
+    $cbp_settings['body_background_color'] = CbpUtils::getOption('global_use_background_color') ? CbpUtils::getOption('global_background_color') : false;
 
     $useLayout = false;
     if (is_page()) {
@@ -241,8 +208,6 @@ function cbp_load_scripts()
     new CbpStyle('front', $styles);
     new CbpScript('front', array('js/cbp-plugins.min.js', 'js/cbp-main.js'), array('jquery', 'jquery-ui-accordion'));
 }
-
-cbp_load_scripts();
 
 function cbp_use_content_builder_layout($useContentBuilder)
 {
@@ -363,8 +328,7 @@ function cbp_register_layouts($layoutId)
             break;
         }
     }
-
-
+    
     return $layoutId;
 }
 
@@ -482,23 +446,19 @@ function cbp_duplicate_post_as_draft()
     }
 }
 
-add_action('admin_action_cbp_duplicate_post_as_draft', 'cbp_duplicate_post_as_draft');
-
 /*
  * Add the duplicate link to action list for post_row_actions
  */
 
 function cbp_duplicate_post_link($actions, $post)
 {
-    if (($post->post_type == "layouts") or ($post->post_type == "templates")) {
+    if (($post->post_type == "layouts") or ( $post->post_type == "templates")) {
         if (current_user_can('edit_posts')) {
             $actions['duplicate'] = '<a href="admin.php?action=cbp_duplicate_post_as_draft&amp;post=' . $post->ID . '" title="Duplicate this item" rel="permalink">Duplicate</a>';
         }
     }
     return $actions;
 }
-
-add_filter('post_row_actions', 'cbp_duplicate_post_link', 10, 2);
 
 function cbp_add_bricklayer_switcher_button()
 {

@@ -57,3 +57,13 @@ function aisd_menu_query($connectorGuid, $input, $userGuid, $apiKey, $additional
   return json_decode($result);
 }
 
+function my_post_types($types) {
+	$types[] = 'newsletter_item';
+	$types[] = 'volunteer_item';
+	return $types;
+}
+
+add_filter('s2_post_types', 'my_post_types');
+
+//display 16 products per page
+add_filter( 'loop_shop_per_page', create_function( '$cols', 'return 16;' ), 20 );

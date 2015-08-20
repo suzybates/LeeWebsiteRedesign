@@ -4,7 +4,7 @@
  * Plugin Name: Carry Hill
  * Plugin URI:  http://wordpress.org/plugins
  * Description: Carry Hill helper plugin
- * Version:     1.2
+ * Version:     1.3.2
  * Author:      Aislin Themes
  * Author URI:  http://themeforest.net/user/Aislin/portfolio
  * License:     GPLv2+
@@ -12,7 +12,7 @@
  * Domain Path: /languages
  */
 
-define('CHP_PLUGIN_VERSION', '1.2');
+define('CHP_PLUGIN_VERSION', '1.3.2');
 define('CHP_PLUGIN_NAME', 'Carry Hill');
 define('CHP_PLUGIN_PREFIX', 'chp_');
 define('CHP_PLUGIN_URL', plugin_dir_url(__FILE__));

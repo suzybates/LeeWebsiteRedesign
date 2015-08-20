@@ -7,9 +7,9 @@ class CbpPageMetaController extends CbpController
     protected $_type               = 'page-meta';
     protected $_title              = CBP_APP_NAME;
     protected $_viewFolder         = 'page-meta';
-    protected $_scripts            = array('js/page-builder.min.js', 'js/spectrum.js');
+    protected $_scripts            = array('js/page-builder.min.js', 'js/spectrum.js', 'js/jquery.nouislider.min.js');
     protected $_scriptDependencies = array('jquery', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable');
-    protected $_styles             = array('css/main.css', 'css/cbp-absolution-stripped-down.css', 'css/spectrum.css', 'css/font-awesome.min.css');
+    protected $_styles             = array('css/main.css', 'css/cbp-absolution-stripped-down.css', 'css/spectrum.css', 'css/font-awesome.min.css', 'css/jquery.nouislider.css');
     protected $_ajaxCallback       = 'cbpPageMetaAjax';
 
     public function init()

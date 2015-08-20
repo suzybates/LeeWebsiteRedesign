@@ -20,7 +20,8 @@ if (!class_exists('CbpWidgetSlider')):
             $elements['show_bullets']    = 'true';
             $elements['show_controls']   = 'true';
             $elements['transition']      = 'horizontal';
-            $elements['speed']           = '1000';
+            $elements['pause']           = '1000';
+            $elements['speed']           = '500';
             $elements['adaptive_height'] = 'true';
 
             return parent::registerFormElements($elements);
@@ -80,6 +81,12 @@ if (!class_exists('CbpWidgetSlider')):
                 'description_title' => $this->translate('Adaptive Height?'),
             ));
             CbpWidgetFormElements::text(array(
+                'name'              => $this->getIdString('pause'),
+                'value'             => $instance['pause'],
+                'description_title' => $this->translate('Pause'),
+                'description_body'  => $this->translate('The amount of time (in ms) between each auto transition. Enter number only!'),
+            ));
+            CbpWidgetFormElements::text(array(
                 'name'              => $this->getIdString('speed'),
                 'value'             => $instance['speed'],
                 'description_title' => $this->translate('Speed'),
@@ -102,7 +109,8 @@ if (!class_exists('CbpWidgetSlider')):
                         'show_bullets'       => 'true',
                         'show_controls'      => 'true',
                         'transition'         => 'horizontal',
-                        'speed'              => '1000',
+                        'speed'              => '500',
+                        'pause'              => '1000',
                         'adaptive_height'    => 'true',
                         'padding'            => '',
                             ), $atts));
@@ -160,7 +168,8 @@ if (!class_exists('CbpWidgetSlider')):
                         auto: <?php echo $auto_play; ?>,
                         controls: <?php echo $show_controls; ?>,
                         pager: <?php echo $show_bullets; ?>,
-                        speed: <?php echo $speed; ?>
+                        speed: <?php echo $speed; ?>,
+                        pause: <?php echo $pause; ?>
                     }
                 });      
                                                                                                                                                                                                                                                                                 
@@ -169,13 +178,4 @@ if (!class_exists('CbpWidgetSlider')):
         }
     }
 
-    
-
-    
-
-    
-
-    
-
-    
 endif;

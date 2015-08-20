@@ -55,7 +55,7 @@ if (!class_exists('CbpWidgetTabs')):
                 <?php foreach ($shortcodes as $key => $shortcode): ?>
                     <?php if ($shortcode['atts']['type'] == 'cbp_tabs_item'): ?>
                         <div id="tab<?php echo $key; ?>">
-                            <?php echo $shortcode['content']; ?>
+                            <?php echo do_shortcode($shortcode['content']); ?>
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>

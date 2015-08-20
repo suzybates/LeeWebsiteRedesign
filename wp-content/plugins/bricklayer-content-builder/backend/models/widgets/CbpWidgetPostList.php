@@ -429,15 +429,19 @@ if (!class_exists('CbpWidgetPostList')):
                             <div class="<?php echo $this->getPrefix(); ?>-widget-post-content">
                                 <?php echo CbpUtils::trimmer(strip_shortcodes(get_the_content()), $number_of_characters); ?>
                             </div>
-                           
+                            <?php if ((int) $use_button_link): ?>
+                                <div class="<?php echo $this->getPrefix(); ?>-widget-post-link double-pad-top">
+                                    <a class="cbp_widget_link" href="<?php echo get_permalink(); ?>"><?php echo $link_text; ?></a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     <?php endwhile; ?>
                 </div>
             <?php endif; ?>
-            <?php wp_reset_query(); ?>
-            <?php if ((int) $use_pagination): ?> 
+            <?php if ((int) $use_pagination): ?>
                 <?php CbpUtils::pagination(); ?>
             <?php endif; ?>
+            <?php wp_reset_query(); ?>
             <?php
         }
     }

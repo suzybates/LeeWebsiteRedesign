@@ -16,7 +16,6 @@ class ChpWidgetTeamMemeber extends CbpWidget
         $elements['img_src']              = '';
         $elements['image_is_circle']      = '0';
         $elements['name']                 = '';
-        $elements['name_size']            = 'h2';
         $elements['link']                 = '';
         $elements['job_title']            = '';
         $elements['number_of_characters'] = 200;
@@ -52,20 +51,6 @@ class ChpWidgetTeamMemeber extends CbpWidget
             'description_title' => $this->translate('Name'),
             'description_body'  => $this->translate('Team member name.'),
         ));
-        CbpWidgetFormElements::select(array(
-                'options' => array(
-                    'h1'                => $this->translate('H1'),
-                    'h2'                => $this->translate('H2'),
-                    'h3'                => $this->translate('H3'),
-                    'h4'                => $this->translate('H4'),
-                    'h5'                => $this->translate('H5'),
-                    'h6'                => $this->translate('H6'),
-                ),
-                'name'              => $this->getIdString('name_size'),
-                'value'             => $instance['name_size'],
-                'description_title' => $this->translate('Name Size'),
-            ));
-
         CbpWidgetFormElements::text(array(
             'name'              => $this->getIdString('link'),
             'value'             => $instance['link'],
@@ -118,8 +103,7 @@ class ChpWidgetTeamMemeber extends CbpWidget
                     'img_src'              => '',
                     'image_is_circle'      => '0',
                     'name'                 => '',
-                    'name_size'            => 'h2',
-					'link'                 => '',
+                    'link'                 => '',
                     'job_title'            => '',
                     'number_of_characters' => '',
                         ), $atts));
@@ -144,18 +128,15 @@ class ChpWidgetTeamMemeber extends CbpWidget
             </div>
 
             <div class="two thirds align-left double-pad-left no-pad-small-tablet">
-				<<?php echo $name_size; ?>>
-				    <?php if (!empty($name)): ?>
-                    	<?php if (!empty($link)): ?>
-                        	<a href="<?php echo $link; ?>"><?php echo $title_size; ?><?php echo $name; ?></a>
-                    	<?php else: ?>
-                        	<?php echo $title_size; ?><?php echo $name; ?>
-                    	<?php endif; ?>
 
-                	<?php endif; ?>
-                </<?php echo $name_size; ?>>
-                
+                <?php if (!empty($name)): ?>
+                    <?php if (!empty($link)): ?>
+                        <a href="<?php echo $link; ?>"><h2><?php echo $name; ?></h2></a>
+                    <?php else: ?>
+                        <h2><?php echo $name; ?></h2>
+                    <?php endif; ?>
 
+                <?php endif; ?>
                 <hr />
                 <?php if (!empty($job_title)): ?>
                     <h6><?php echo $job_title; ?></h6>

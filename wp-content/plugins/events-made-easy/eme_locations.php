@@ -29,8 +29,8 @@ function eme_init_location_props($props) {
 
 function eme_locations_page() {
    $current_userid=get_current_user_id();
-   if (isset($_GET['eme_admin_action']) && $_GET['eme_admin_action'] == "editlocation") { 
-      $location_id = intval($_GET['location_ID']);
+   if (isset($_GET['eme_admin_action']) && $_GET['eme_admin_action'] == "edit_location") { 
+      $location_id = intval($_GET['location_id']);
       $location = eme_get_location($location_id);
       if (current_user_can( get_option('eme_cap_edit_locations')) ||
             (current_user_can( get_option('eme_cap_author_locations')) && ($location['location_author']==$current_userid))) {
@@ -40,8 +40,8 @@ function eme_locations_page() {
          $message = __('You have no right to edit this location!','eme');
          eme_locations_table_layout($message);
       }
-   } elseif (isset($_GET['eme_admin_action']) && $_GET['eme_admin_action'] == "copylocation") { 
-      $location_id = intval($_GET['location_ID']);
+   } elseif (isset($_GET['eme_admin_action']) && $_GET['eme_admin_action'] == "copy_location") { 
+      $location_id = intval($_GET['location_id']);
       $location = eme_get_location($location_id);
       // make it look like a new location
       unset($location['location_id']);
@@ -53,7 +53,7 @@ function eme_locations_page() {
          $message = __('You have no right to copy this location!','eme');
          eme_locations_table_layout($message);
       }
-    } elseif (isset($_POST['eme_admin_action']) && $_POST['eme_admin_action'] == "addlocation") { 
+    } elseif (isset($_POST['eme_admin_action']) && $_POST['eme_admin_action'] == "add_location") { 
       if (current_user_can( get_option('eme_cap_add_locations'))) {
          $location = eme_new_location();
          eme_locations_edit_layout($location);
@@ -61,7 +61,7 @@ function eme_locations_page() {
          $message = __('You have no right to add a location!','eme');
          eme_locations_table_layout($message);
       }
-   } elseif (isset($_POST['eme_admin_action']) && $_POST['eme_admin_action'] == "deletelocation" && isset($_POST['locations'])) { 
+   } elseif (isset($_POST['eme_admin_action']) && $_POST['eme_admin_action'] == "delete_location" && isset($_POST['locations'])) { 
       $locations = $_POST['locations'];
       foreach($locations as $location_id) {
          $location = eme_get_location(intval($location_id));
@@ -70,11 +70,12 @@ function eme_locations_page() {
             eme_delete_location(intval($location_id));
          }
       }
-      eme_locations_table_layout();
+      $message = __('Successfully deleted the selected locations.','eme');
+      eme_locations_table_layout($message);
    } elseif (isset($_POST['eme_admin_action']) && ($_POST['eme_admin_action'] == "do_editlocation" || $_POST['eme_admin_action'] == "do_addlocation")) { 
       $action = $_POST['eme_admin_action'];
       if ($action == "do_editlocation")
-         $orig_location=eme_get_location(intval($_POST['location_ID']));
+         $orig_location=eme_get_location(intval($_POST['location_id']));
 
       if ($action == "do_addlocation" && !current_user_can( get_option('eme_cap_add_locations'))) {
          $message = __('You have no right to add a location!','eme');
@@ -147,7 +148,7 @@ function eme_locations_page() {
                   $message = __('There has been a problem adding the location.', 'eme'); 
                }      
             } elseif ($action == "do_editlocation") {      
-               $location['location_id'] = intval($_POST['location_ID']);
+               $location['location_id'] = intval($_POST['location_id']);
                if (eme_update_location($location)) {
                   $message = __('The location has been updated.', 'eme');
                } else {
@@ -171,7 +172,6 @@ function eme_locations_edit_layout($location, $message = "") {
       $action="add";
    else
       $action="edit";
-   eme_admin_map_script();
    ?>
    <div class="wrap">
       <div id="poststuff">
@@ -198,16 +198,16 @@ function eme_locations_edit_layout($location, $message = "") {
          <input type="hidden" name="eme_admin_action" value="do_addlocation" />
          <?php } else { ?>
          <input type="hidden" name="eme_admin_action" value="do_editlocation" />
-         <input type="hidden" name="location_ID" value="<?php echo $location['location_id'] ?>" />
+         <input type="hidden" name="location_id" value="<?php echo $location['location_id'] ?>" />
          <?php } ?>
          
          <!-- we need titlediv and title for qtranslate as ID -->
-         <div id="titlediv" class="form-required">
+         <div id="titlediv" class="postbox">
             <h3>
                <?php _e('Location name', 'eme') ?>
             </h3>
             <div class="inside">
-           <input name="location_name" id="title" type="text" value="<?php echo eme_sanitize_html($location['location_name']); ?>" size="40" />
+           <input name="location_name" id="title" type="text" required="required" value="<?php echo eme_sanitize_html($location['location_name']); ?>" size="40" />
            <?php if ($action=="edit") {
                     _e ('Permalink: ', 'eme' );
                     echo trailingslashit(home_url()).eme_permalink_convert(get_option ( 'eme_permalink_locations_prefix')).$location['location_id']."/";
@@ -225,7 +225,7 @@ function eme_locations_edit_layout($location, $message = "") {
                <?php _e('Location address', 'eme') ?>
             </h3>
             <div class="inside">
-            <input id="location_address" name="location_address" type="text" value="<?php echo eme_sanitize_html($location['location_address']); ?>" size="40" />
+            <input id="location_address" name="location_address" type="text" value="<?php echo eme_trans_sanitize_html($location['location_address']); ?>" size="40" />
             </div>
          </div>
  
@@ -234,7 +234,7 @@ function eme_locations_edit_layout($location, $message = "") {
                <?php _e('Location town', 'eme') ?>
             </h3>
             <div class="inside">
-            <input name="location_town" id="location_town" type="text" value="<?php echo eme_sanitize_html($location['location_town']); ?>" size="40" />
+            <input name="location_town" id="location_town" type="text" value="<?php echo eme_trans_sanitize_html($location['location_town']); ?>" size="40" />
             </div>
          </div>
                         
@@ -301,9 +301,9 @@ jQuery(document).ready(function($){
     })
     .on('select', function() {
         var attachment = custom_uploader.state().get('selection').first().toJSON();
-        $('#event_image_url').val(attachment.url);
-        $('#event_image_id').val(attachment.id);
-        $('#eme_event_image_example' ).attr("src",attachment.url);
+        $('#location_image_url').val(attachment.url);
+        $('#location_image_id').val(attachment.id);
+        $('#eme_location_image_example' ).attr("src",attachment.url);
     })
     .open();
   });
@@ -339,8 +339,8 @@ jQuery(document).ready(function($){
             if ($gmap_is_active) :
           ?>   
          <div class="postbox"><?php 
-               if (function_exists('qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage') || defined('ICL_LANGUAGE_CODE')) {
-                  _e("Because qtranslate is active, the title of the location will not update automatically in the balloon, so don't panic there.");
+               if (function_exists('qtrans_getLanguage') || function_exists('ppqtrans_getLanguage') || defined('ICL_LANGUAGE_CODE')) {
+                  _e("Because qtranslate or a derivate is active, the title of the location might not update automatically in the balloon, so don't panic there.");
                }
               ?>
          </div>
@@ -386,7 +386,6 @@ jQuery(document).ready(function($){
 
 function eme_locations_table_layout($message = "") {
    $locations = eme_get_locations();
-   eme_admin_map_script();
 
    ?>
       <div class="wrap nosubsub">
@@ -404,7 +403,7 @@ function eme_locations_table_layout($message = "") {
          <?php } ?>
          <div class="wrap">
          <form id="locations-filter" method="post" action="<?php echo admin_url("admin.php?page=eme-locations"); ?>">
-            <input type="hidden" name="eme_admin_action" value="addlocation" />
+            <input type="hidden" name="eme_admin_action" value="add_location" />
             <input type="submit" class="button-primary" name="submit" value="<?php _e('Add location', 'eme');?>" />
          </form>
          </div>
@@ -413,7 +412,7 @@ function eme_locations_table_layout($message = "") {
          <div id="col-container">
              <div class="col-wrap">
                 <form id="locations-filter" method="post" action="<?php echo admin_url("admin.php?page=eme-locations"); ?>">
-                  <input type="hidden" name="eme_admin_action" value="deletelocation" />
+                  <input type="hidden" name="eme_admin_action" value="delete_location" />
                   <?php if (count($locations)>0) : ?>
                   <table class="widefat">
                      <thead>
@@ -433,7 +432,7 @@ function eme_locations_table_layout($message = "") {
                            <th><?php _e('Name', 'eme') ?></th>
                            <th><?php _e('Address', 'eme') ?></th>
                            <th><?php _e('Town', 'eme') ?></th>
-                           <th></th>
+                           <th><?php _e('Copy', 'eme') ?></th>
                         </tr>
                      </tfoot>
                      <tbody>
@@ -441,10 +440,10 @@ function eme_locations_table_layout($message = "") {
                         <tr>
                            <td><input type="checkbox" class ="row-selector" value="<?php echo $this_location['location_id']; ?>" name="locations[]" /></td>
                            <td><?php echo $this_location['location_id']; ?></td>
-                           <td><a href="<?php echo admin_url("admin.php?page=eme-locations&amp;eme_admin_action=editlocation&amp;location_ID=".$this_location['location_id']); ?>"><?php echo eme_trans_sanitize_html($this_location['location_name']); ?></a></td>
+                           <td><a href="<?php echo admin_url("admin.php?page=eme-locations&amp;eme_admin_action=edit_location&amp;location_id=".$this_location['location_id']); ?>" title="<?php _e('Edit location','eme');?>"><?php echo eme_trans_sanitize_html($this_location['location_name']); ?></a></td>
                            <td><?php echo eme_trans_sanitize_html($this_location['location_address']); ?></td>
                            <td><?php echo eme_trans_sanitize_html($this_location['location_town']); ?></td>
-                           <td><a href="<?php echo admin_url("admin.php?page=eme-locations&amp;eme_admin_action=copylocation&amp;location_ID=".$this_location['location_id']); ?>" title="<?php _e('Duplicate this location','eme'); ?>">+</a></td>
+                           <td><a href="<?php echo admin_url("admin.php?page=eme-locations&amp;eme_admin_action=copy_location&amp;location_id=".$this_location['location_id']); ?>" title="<?php _e('Duplicate this location','eme'); ?>"><img src='<?php echo EME_PLUGIN_URL."images/copy_16.png";?>'/></a></td>
                         </tr>
                         <?php endforeach; ?>
                      </tbody>
@@ -667,11 +666,6 @@ function eme_update_location($location) {
       unset($location['location_id']);
    }
 
-   // we can't check the return code for wpdb->update,
-   // since sometimes the update returns 0 because of no rows
-   // updated (eg, when you just add an image)
-   // DONE: add modif timestamps, so that changes for each update,
-   // and then we can check for the return code again (as for events)
    if (!is_serialized($location['location_attributes']))
       $location['location_attributes'] = serialize($location['location_attributes']);
       
@@ -691,7 +685,9 @@ function eme_update_location($location) {
    }
 }
 
-function eme_insert_location($location) {
+function eme_insert_location($location,$force=0) {
+   // the force parameter can be used to ignore capabilities for a user when inserting a location
+   // the frontend submit plugin can use this
    global $wpdb;  
    $table_name = $wpdb->prefix.LOCATIONS_TBNAME; 
 
@@ -717,15 +713,15 @@ function eme_insert_location($location) {
    if (!is_serialized($location['location_properties']))
       $location['location_properties'] = serialize($location['location_properties']);
       
-   if (current_user_can( get_option('eme_cap_add_locations'))) {
+   if (current_user_can( get_option('eme_cap_add_locations')) || $force) {
       $wpdb->show_errors(true);
       if (!$wpdb->insert($table_name,$location)) {
          $wpdb->print_error();
          $wpdb->show_errors(false);
          return false;
       } else {
-         $location_ID = $wpdb->insert_id;
-         $new_location = eme_get_location($location_ID);
+         $location_id = $wpdb->insert_id;
+         $new_location = eme_get_location($location_id);
          $wpdb->show_errors(false);
          return $new_location;
       }
@@ -738,7 +734,7 @@ function eme_delete_location($location_id) {
    global $wpdb;  
 
    $table_name = $wpdb->prefix.LOCATIONS_TBNAME;
-   $sql = $wpdb->prepare("DELETE FROM $table where location_id=%d",$location_id);
+   $sql = $wpdb->prepare("DELETE FROM $table_name where location_id=%d",$location_id);
    $wpdb->query( $sql );
 
    $events_table = $wpdb->prefix.EVENTS_TBNAME;
@@ -801,40 +797,32 @@ function eme_global_map($atts) {
          $prev_offset=$scope_offset-1;
          $next_offset=$scope_offset+1;
          if ($scope=="this_week") {
-            $day_offset=date('w');
-            $start_day=time()-$day_offset*86400;
-            $end_day=$start_day+6*86400;
-            $limit_start = date('Y-m-d',$start_day+$scope_offset*7*86400);
-            $limit_end   = date('Y-m-d',$end_day+$scope_offset*7*86400);
+            $start_of_week = get_option('start_of_week');
+            $day_offset=date('w')-$start_of_week;
+            if ($day_offset<0) $day_offset+=7;
+            $limit_start=eme_date_calc("-$day_offset days +$scope_offset week");
+            $limit_end=eme_date_calc("+6 days",$start_day);
             $scope = "$limit_start--$limit_end";
-            $scope_text = date_i18n (get_option('date_format'),$start_day+$scope_offset*7*86400)."--".date_i18n (get_option('date_format'),$end_day+$scope_offset*7*86400);
+            $scope_text = eme_localised_date($limit_start)." -- ".eme_localised_date($limit_end);
+
             $prev_text = __('Previous week','eme');
             $next_text = __('Next week','eme');
 
          } elseif ($scope=="this_month") {
-            // "first day of this month, last day of this month" works for newer versions of php (5.3+), but for compatibility:
-            // the year/month should be based on the first of the month, so if we are the 13th, we substract 12 days to get to day 1
-            // Reason: monthly offsets needs to be calculated based on the first day of the current month, not the current day,
-            //    otherwise if we're now on the 31st we'll skip next month since it has only 30 days
-            $day_offset=date('j')-1;
-            $year=date('Y', strtotime("$scope_offset month")-$day_offset*86400);
-            $month=date('m', strtotime("$scope_offset month")-$day_offset*86400);
-            $number_of_days_month=eme_days_in_month($month,$year);
-            $limit_start = "$year-$month-01";
-            $limit_end   = "$year-$month-$number_of_days_month";
+            $limit_start = eme_date_calc("first day of $scope_offset month");
+            $limit_end   = eme_date_calc("last day of $scope_offset month");
             $scope = "$limit_start--$limit_end";
-            //$prev_text = date_i18n (get_option('eme_show_period_monthly_dateformat'), strtotime("$prev_offset month")-$day_offset*86400);
-            //$next_text = date_i18n (get_option('eme_show_period_monthly_dateformat'), strtotime("$next_offset month")-$day_offset*86400);
-            $scope_text = date_i18n (get_option('eme_show_period_monthly_dateformat'), strtotime("$scope_offset month")-$day_offset*86400);
+            $scope_text = eme_localised_date($limit_start,get_option('eme_show_period_monthly_dateformat'));
             $prev_text = __('Previous month','eme');
             $next_text = __('Next month','eme');
 
          } elseif ($scope=="this_year") {
-            $year=date('Y', strtotime("$scope_offset year")-$day_offset*86400);
+            $year=date('Y')+$scope_offset;
             $limit_start = "$year-01-01";
             $limit_end   = "$year-12-31";
             $scope = "$limit_start--$limit_end";
-            $scope_text = date_i18n (get_option('eme_show_period_yearly_dateformat'), strtotime("$scope_offset year")-$day_offset*86400);
+            $scope = "$limit_start--$limit_end";
+            $scope_text = eme_localised_date($limit_start,get_option('eme_show_period_yearly_dateformat'));
             $prev_text = __('Previous year','eme');
             $next_text = __('Next year','eme');
 
@@ -842,7 +830,7 @@ function eme_global_map($atts) {
             $scope = date('Y-m-d',strtotime("$scope_offset days"));
             $limit_start = $scope;
             $limit_end   = $scope;
-            $scope_text = date_i18n (get_option('date_format'), strtotime("$scope_offset days"));
+            $scope_text = eme_localised_date($limit_start);
             $prev_text = __('Previous day','eme');
             $next_text = __('Next day','eme');
 
@@ -851,7 +839,7 @@ function eme_global_map($atts) {
             $scope = date('Y-m-d',strtotime("$scope_offset days"));
             $limit_start = $scope;
             $limit_end   = $scope;
-            $scope_text = date_i18n (get_option('date_format'), strtotime("$scope_offset days"));
+            $scope_text = eme_localised_date($limit_start);
             $prev_text = __('Previous day','eme');
             $next_text = __('Next day','eme');
          }
@@ -867,7 +855,10 @@ function eme_global_map($atts) {
       }
 
       $id_base = preg_replace("/\D/","_",microtime(1));
-      $result = "<div id='eme_global_map_$id_base' class='eme_global_map' style='width: {$width}px; height: {$height}px'>map</div>";
+      $id_base = rand()."_".$id_base;
+      if (!preg_match('/\%$|px$/',$width)) $width=$width."px";
+      if (!preg_match('/\%$|px$/',$height)) $height=$height."px";
+      $result = "<div id='eme_global_map_$id_base' class='eme_global_map' style='width: $width; height: $height'>map</div>";
       // get the paging output ready
       if ($paging==1) {
          $pagination_top = "<div id='locations-pagination-top'> ";
@@ -998,11 +989,11 @@ function eme_get_locations_shortcode($atts) {
       $format = ( $format != '' ) ? $format : "<li class=\"location-#_LOCATIONID\">#_LOCATIONNAME</li>";
       if (empty($eme_format_header)) {
 	      $eme_format_header = eme_replace_locations_placeholders(get_option('eme_location_list_format_header' ));
-	      $eme_format_header = ( $eme_format_header != '' ) ? $eme_format_header : "<ul class='eme_events_list'>";
+	      $eme_format_header = ( $eme_format_header != '' ) ? $eme_format_header : DEFAULT_LOCATION_LIST_HEADER_FORMAT;
       }
       if (empty($eme_format_footer)) {
 	      $eme_format_footer = eme_replace_locations_placeholders(get_option('eme_location_list_format_footer' ));
-	      $eme_format_footer = ( $eme_format_footer != '' ) ? $eme_format_footer : "</ul>";
+	      $eme_format_footer = ( $eme_format_footer != '' ) ? $eme_format_footer : DEFAULT_LOCATION_LIST_FOOTER_FORMAT;
       }
    }
 
@@ -1065,7 +1056,7 @@ function eme_replace_locations_placeholders($format, $location="", $target="html
       }
 
       if ($need_escape)
-         $replacement = eme_sanitize_request(preg_replace('/\n|\r/','',$replacement));
+         $replacement = eme_sanitize_request(eme_sanitize_html(preg_replace('/\n|\r/','',$replacement)));
       if ($need_urlencode)
          $replacement = rawurlencode($replacement);
       $format = str_replace($orig_result, $replacement ,$format );
@@ -1283,6 +1274,18 @@ function eme_replace_locations_placeholders($format, $location="", $target="html
             $replacement = apply_filters('eme_text', $replacement);
          }
 
+      } elseif (preg_match('/#_EDITLOCATIONLINK/', $result)) {
+         if (current_user_can( get_option('eme_cap_edit_locations')) ||
+            (current_user_can( get_option('eme_cap_author_locations')) && ($location['location_author']==$current_userid))) {
+            $replacement = "<a href=' ".admin_url("admin.php?page=eme-locations&amp;eme_admin_action=edit_location&amp;location_id=".$location['location_id'])."'>".__('Edit')."</a>";
+         }
+
+      } elseif (preg_match('/#_EDITLOCATIONURL/', $result)) {
+         if (current_user_can( get_option('eme_cap_edit_locations')) ||
+            (current_user_can( get_option('eme_cap_author_locations')) && ($location['location_author']==$current_userid))) {
+            $replacement = admin_url("admin.php?page=eme-locations&amp;eme_admin_action=edit_location&amp;location_id=".$location['location_id']);
+         }
+
       } elseif (preg_match('/#_IS_SINGLE_LOC/', $result)) {
          if (eme_is_single_location_page())
             $replacement = 1;
@@ -1307,7 +1310,7 @@ function eme_replace_locations_placeholders($format, $location="", $target="html
 
       if ($found) {
          if ($need_escape)
-            $replacement = eme_sanitize_request(preg_replace('/\n|\r/','',$replacement));
+            $replacement = eme_sanitize_request(eme_sanitize_html(preg_replace('/\n|\r/','',$replacement)));
          if ($need_urlencode)
             $replacement = rawurlencode($replacement);
          $format = str_replace($orig_result, $replacement ,$format );
@@ -1346,7 +1349,7 @@ function eme_replace_locations_placeholders($format, $location="", $target="html
       }
 
       if ($need_escape)
-         $replacement = eme_sanitize_request(preg_replace('/\n|\r/','',$replacement));
+         $replacement = eme_sanitize_request(eme_sanitize_html(preg_replace('/\n|\r/','',$replacement)));
       if ($need_urlencode)
          $replacement = rawurlencode($replacement);
       $format = str_replace($orig_result, $replacement ,$format );
@@ -1400,6 +1403,8 @@ function eme_single_location_map($location,$width=0,$height=0) {
       // the next is only possible when called from within an event (events-manager.php)
       if (isset($location['event_id'])) {
          $id_base = $location['event_id']."_".$id_base;
+      } else {
+         $id_base = rand()."_".$id_base;
       }
       $id="eme-location-map_".$id_base;
       $latitude_string="latitude_".$id_base;
@@ -1415,10 +1420,13 @@ function eme_single_location_map($location,$width=0,$height=0) {
       #$latitude_string="latitude";
       #$longitude_string="longitude";
          //$map_div = "<div id='$id' style=' background: green; width: 400px; height: 300px'></div>" ;
-      if ($width>0 && $height>0)
-         $map_div = "<div id='$id' style='width: {$width}px; height: {$height}px' ></div>" ;
-      else
+      if (!empty($width) && !empty($height)) {
+	 if (!preg_match('/\%$|px$/',$width)) $width=$width."px";
+	 if (!preg_match('/\%$|px$/',$height)) $height=$height."px";
+         $map_div = "<div id='$id' style='width: $width; height: $height' ></div>" ;
+      } else {
          $map_div = "<div id='$id' class='eme-location-map'></div>" ;
+      }
       $map_div .= "<script type='text/javascript'>
       <!--// 
       $latitude_string = parseFloat('".$location['location_latitude']."');
@@ -1449,86 +1457,49 @@ function eme_events_in_location_list($location, $scope = "") {
    return $list;
 }
 
-function eme_locations_autocomplete() {
-   $use_select_for_locations = get_option('eme_use_select_for_locations');
-   // qtranslate there? Then we need the select
-   if (function_exists('qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage') || defined('ICL_LANGUAGE_CODE')) {
-      $use_select_for_locations=1;
-   }
+function eme_locations_search_ajax() {
+   if(isset($_GET['id']) && $_GET['id'] != "") {
+      $item = eme_get_location($_GET['id']);
+      $record = array();
+      $record['id']      = $item['location_id'];
+      $record['name']    = eme_trans_sanitize_html($item['location_name']); 
+      $record['address'] = eme_trans_sanitize_html($item['location_address']);
+      $record['town']    = eme_trans_sanitize_html($item['location_town']); 
+      $record['latitude']    = eme_trans_sanitize_html($item['location_latitude']); 
+      $record['longitude']    = eme_trans_sanitize_html($item['location_longitude']); 
+      echo json_encode($record);
 
-   if ((isset($_REQUEST['eme_admin_action']) && ($_REQUEST['eme_admin_action'] == 'edit_event' || $_REQUEST['eme_admin_action'] == 'duplicate_event' || $_REQUEST['eme_admin_action'] == 'edit_recurrence')) || (isset($_GET['page']) && $_GET['page'] == 'eme-new_event')) {
-      ?>
+   } else {
 
-      <script type="text/javascript">
-      //<![CDATA[
+      $locations = eme_get_locations();
+      $return = array();
 
-      jQuery(document).ready(function() {
-         function htmlDecode(value){ 
-            return jQuery('<div/>').html(value).text(); 
-         }
+      if (!isset($_GET["q"])) {
+         echo json_encode($return);
+         return;
+      }
 
-         var gmap_enabled = <?php echo get_option('eme_gmap_is_active'); ?>; 
-         var use_select_for_locations = <?php echo $use_select_for_locations; ?>; 
+      foreach($locations as $item) {
+         $record = array();
+         $record['id']      = $item['location_id'];
+         $record['name']    = eme_trans_sanitize_html($item['location_name']); 
+         $record['address'] = eme_trans_sanitize_html($item['location_address']);
+         $record['town']    = eme_trans_sanitize_html($item['location_town']); 
+         $record['latitude']    = eme_trans_sanitize_html($item['location_latitude']); 
+         $record['longitude']    = eme_trans_sanitize_html($item['location_longitude']); 
+         $return[]  = $record;
+      }
 
-         if (!use_select_for_locations) {
-          jQuery("input[name=location_name]").autocomplete({
-            source: function(request, response) {
-                         jQuery.ajax({ url: "<?php echo EME_PLUGIN_URL; ?>locations-search.php",
-                                  data: { q: request.term},
-                                  dataType: "json",
-                                  type: "GET",
-                                  success: function(data){
-                                                response(jQuery.map(data, function(item) {
-                                                      return {
-                                                         label: item.name,
-                                                         name: htmlDecode(item.name),
-                                                         address: item.address,
-                                                         town: item.town,
-                                                         latitude: item.latitude,
-                                                         longitude: item.longitude,
-                                                      };
-                                                }));
-                                           }
-                                 });
-                    },
-            select:function(evt, ui) {
-                         // when a product is selected, populate related fields in this form
-                         jQuery('input[name=location_name]').val(ui.item.name);
-                         jQuery('input#location_address').val(ui.item.address);
-                         jQuery('input#location_town').val(ui.item.town);
-                         jQuery('input#location_latitude').val(ui.item.latitude);
-                         jQuery('input#location_longitude').val(ui.item.longitude);
-                         if(gmap_enabled) {
-                            loadMapLatLong(ui.item.name, ui.item.town, ui.item.address, ui.item.latitude, ui.item.longitude);
-                         }
-                         return false;
-                   },
-            minLength: 1
-          }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-            return jQuery( "<li></li>" )
-            .append("<a>"+htmlDecode(item.name)+'<br /><small>'+htmlDecode(item.address)+' - '+htmlDecode(item.town)+ '</small></a>')
-            .appendTo( ul );
-          };
-         } else {
-          jQuery('#location-select-id').change(function() {
-            jQuery.getJSON("<?php echo EME_PLUGIN_URL; ?>locations-search.php",{id: jQuery(this).val()}, function(item){
-               jQuery("input[name='location-select-name']").val(item.name);
-               jQuery("input[name='location-select-address']").val(item.address); 
-               jQuery("input[name='location-select-town']").val(item.town); 
-               jQuery("input[name='location-select-latitude']").val(item.latitude); 
-               jQuery("input[name='location-select-longitude']").val(item.longitude); 
-               if(gmap_enabled) {
-                  loadMapLatLong(item.name, item.town, item.address, item.latitude, item.longitude);
-               }
-            })
-          });
-         }
-      });   
-      //]]> 
+      $q = strtolower($_GET["q"]);
+      if (!$q) return;
 
-      </script>
-
-      <?php
-
+      $result=array();
+      foreach($return as $row) {
+         if (strpos(strtolower($row['name']), $q) !== false)
+            $result[]=$row;
+      }
+      echo json_encode($result);
    }
 }
+
+?>

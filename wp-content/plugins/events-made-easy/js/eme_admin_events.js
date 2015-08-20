@@ -7,12 +7,14 @@ function updateIntervalDescriptor () {
    var descriptor = "span#interval-"+jQuery("select#recurrence-frequency").val()+number;
    jQuery(descriptor).show();
 }
+
 function updateIntervalSelectors () {
    jQuery('p.alternate-selector').hide();
    jQuery('p#'+ jQuery('select#recurrence-frequency').val() + "-selector").show();
    //jQuery('p.recurrence-tip').hide();
    //jQuery('p#'+ jQuery(this).val() + "-tip").show();
 }
+
 function updateShowHideRecurrence () {
    if(jQuery('input#event-recurrence').attr("checked")) {
       jQuery("#event_recurrence_pattern").fadeIn();
@@ -74,6 +76,66 @@ function updateShowHideTime () {
    }
 }
 
+function eme_event_location_info () {
+    // for autocomplete to work, the element needs to exist, otherwise JS errors occur
+    // we check for that using length
+    if (!use_select_for_locations && jQuery("input[name=location_name]").length) {
+          jQuery("input[name=location_name]").autocomplete({
+            source: function(request, response) {
+                         jQuery.ajax({ url: self.location.href,
+                                  data: { q: request.term,
+                                          eme_admin_action: 'autocomplete_locations'
+                                        },
+                                  dataType: "json",
+                                  type: "GET",
+                                  success: function(data){
+                                                response(jQuery.map(data, function(item) {
+                                                      return {
+                                                         label: item.name,
+                                                         name: htmlDecode(item.name),
+                                                         address: item.address,
+                                                         town: item.town,
+                                                         latitude: item.latitude,
+                                                         longitude: item.longitude,
+                                                      };
+                                                }));
+                                           }
+                                 });
+                    },
+            select:function(evt, ui) {
+                         // when a location is selected, populate related fields in this form
+                         jQuery('input[name=location_name]').val(ui.item.name);
+                         jQuery('input#location_address').val(ui.item.address);
+                         jQuery('input#location_town').val(ui.item.town);
+                         jQuery('input#location_latitude').val(ui.item.latitude);
+                         jQuery('input#location_longitude').val(ui.item.longitude);
+                         if(gmap_enabled) {
+                            loadMapLatLong(ui.item.name, ui.item.town, ui.item.address, ui.item.latitude, ui.item.longitude);
+                         }
+                         return false;
+                   },
+            minLength: 1
+          }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            return jQuery( "<li></li>" )
+            .append("<a><strong>"+htmlDecode(item.name)+'</strong><br /><small>'+htmlDecode(item.address)+' - '+htmlDecode(item.town)+ '</small></a>')
+            .appendTo( ul );
+          };
+    } else {
+          jQuery('#location-select-id').change(function() {
+            jQuery.getJSON(self.location.href,{eme_admin_action: 'autocomplete_locations',id: jQuery(this).val()}, function(item){
+               jQuery("input[name='location-select-name']").val(item.name);
+               jQuery("input[name='location-select-address']").val(item.address); 
+               jQuery("input[name='location-select-town']").val(item.town); 
+               jQuery("input[name='location-select-latitude']").val(item.latitude); 
+               jQuery("input[name='location-select-longitude']").val(item.longitude); 
+               if(gmap_enabled) {
+                  loadMapLatLong(item.name, item.town, item.address, item.latitude, item.longitude);
+               }
+            })
+          });
+    }
+}
+
 jQuery(document).ready( function() {
    jQuery("#div_recurrence_date").hide();
    jQuery("#localised-start-date").show();
@@ -83,15 +145,17 @@ jQuery(document).ready( function() {
    jQuery("#rec-start-date-to-submit").hide();
    jQuery("#rec-end-date-to-submit").hide(); 
 
-   jQuery.datepick.setDefaults( jQuery.datepick.regional[locale_code] );
+   jQuery.datepick.setDefaults( jQuery.datepick.regionalOptions[locale_code] );
    jQuery.datepick.setDefaults({
       changeMonth: true,
-      changeYear: true
+      changeYear: true,
+      altFormat: "yyyy-mm-dd",
+      firstDay: firstDayOfWeek
    });
-   jQuery("#localised-start-date").datepick({ altField: "#start-date-to-submit", altFormat: "yyyy-mm-dd" });
-   jQuery("#localised-end-date").datepick({ altField: "#end-date-to-submit", altFormat: "yyyy-mm-dd" });
-   jQuery("#localised-rec-start-date").datepick({ altField: "#rec-start-date-to-submit", altFormat: "yyyy-mm-dd" });
-   jQuery("#localised-rec-end-date").datepick({ altField: "#rec-end-date-to-submit", altFormat: "yyyy-mm-dd" });
+   jQuery("#localised-start-date").datepick({ altField: "#start-date-to-submit" });
+   jQuery("#localised-end-date").datepick({ altField: "#end-date-to-submit" });
+   jQuery("#localised-rec-start-date").datepick({ altField: "#rec-start-date-to-submit" });
+   jQuery("#localised-rec-end-date").datepick({ altField: "#rec-end-date-to-submit" });
 
    jQuery("#start-time").timeEntry({spinnerImage: '', show24Hours: show24Hours });
    jQuery("#end-time").timeEntry({spinnerImage: '', show24Hours: show24Hours });
@@ -208,6 +272,7 @@ jQuery(document).ready( function() {
       }
    }); 
 
+   eme_event_location_info();
 
    updateIntervalDescriptor(); 
    updateIntervalSelectors();
@@ -230,8 +295,8 @@ jQuery(document).ready( function() {
       var recurring = jQuery("input[name=repeated_event]:checked").val();
       //requiredFields= new Array('event_name', 'localised_event_start_date', 'location_name','location_address','location_town');
       var requiredFields = ['event_name', 'localised_event_start_date'];
-      var localisedRequiredFields = {'event_name':"<?php _e ( 'Name', 'eme' )?>",
-                      'localised_event_start_date':"<?php _e ( 'Date', 'eme' )?>"
+      var localisedRequiredFields = {'event_name':eme.translate_name,
+                      'localised_event_start_date':eme.translate_date
                      };
       
       var missingFields = [];
@@ -246,10 +311,10 @@ jQuery(document).ready( function() {
       }
    
       if (missingFields.length > 0) {
-         errors = "<?php echo _e ( 'Some required fields are missing:', 'eme' )?> " + missingFields.join(", ") + ".\n";
+         errors = eme.translate_fields_missing + missingFields.join(", ") + ".\n";
       }
       if (recurring && jQuery("input#localised-rec-end-date").val() == "" && jQuery("select#recurrence-frequency").val() != "specific") {
-         errors = errors +  "<?php _e ( 'Since the event is repeated, you must specify an end date', 'eme' )?>."; 
+         errors = errors + eme.translate_enddate_required; 
          jQuery("input#localised-rec-end-date").css('border','2px solid red');
       } else {
          jQuery("input#localised-rec-end-date").css('border','1px solid #DFDFDF');

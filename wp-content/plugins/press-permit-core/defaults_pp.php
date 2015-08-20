@@ -24,6 +24,7 @@ function pp_default_options() {
 		'new_user_groups_ui' => 1,
 		'beta_updates' => false,
 		'admin_hide_uneditable_posts' => 1,
+		'post_blockage_priority' => get_option( 'ppperm_legacy_exception_handling' ) ? 0 : 1,
 		'advanced_options' => 0,
 		
 		'support_key' => false,
